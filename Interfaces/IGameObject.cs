@@ -1,6 +1,6 @@
-﻿using gameSnake.Core;
+﻿using SnakeGame.Core;
 
-namespace gameSnake.Interfaces
+namespace SnakeGame.Interfaces
 {
     /// <summary>
     /// Базовый интерфейс для всех игровых объектов
