@@ -1,7 +1,7 @@
-﻿using gameSnake.Core;
-using SnakeGame;
+﻿using gameSnake.GameObjects.Snake;
+using SnakeGame.Core;
 
-namespace gameSnake.Interfaces
+namespace SnakeGame.Interfaces
 {
     /// <summary>
     /// Интерфейс для обнаружения столкновений между игровыми объектами
