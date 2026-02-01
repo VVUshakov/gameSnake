@@ -1,8 +1,8 @@
-﻿using gameSnake.Core;
-using gameSnake.GameObjects.Snake;
-using gameSnake.Interfaces;
+﻿using SnakeGame.Core;
+using SnakeGame.GameObjects;
+using SnakeGame.Interfaces;
 
-namespace gameSnake.Systems.Collision
+namespace SnakeGame.Systems.Collision
 {
     /// <summary>
     /// Класс для обнаружения столкновений между игровыми объектами
