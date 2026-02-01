@@ -35,15 +35,12 @@ Logic() - игровая логика (движение, проверка сто
 
 SnakeGame/
 ├── README.md                    # Описание проекта
-├── SnakeGame.sln                # Файл решения
-├── SnakeGame.csproj            # Файл проекта
 ├── Program.cs                   # Точка входа
 │
 ├── Core/                       # Ядро игры
 │   ├── GameSettings.cs         # Настройки игры
 │   ├── Position.cs             # Структура позиции
-│   ├── Direction.cs            # Перечисление направлений
-│   └── GameState.cs            # Состояние игры (опционально)
+│   └── Direction.cs            # Перечисление направлений
 │
 ├── Interfaces/                 # Интерфейсы (SOLID)
 │   ├── IRenderer.cs
@@ -54,13 +51,10 @@ SnakeGame/
 │
 ├── GameObjects/                # Игровые объекты
 │   ├── Snake/
-│   │   ├── Snake.cs
-│   │   ├── SnakeSegment.cs    # (опционально, для расширения)
-│   │   └── SnakeState.cs      # (опционально)
+│   │   └── Snake.cs
 │   │
 │   └── Food/
-│       ├── Food.cs
-│       └── IFood.cs           # (опционально, для разных типов еды)
+│       └── Food.cs
 │
 ├── Systems/                    # Системы и сервисы
 │   ├── Rendering/
@@ -73,37 +67,13 @@ SnakeGame/
 │   │   └── CollisionDetector.cs
 │   │
 │   └── Factories/
-│       ├── GameObjectFactory.cs
-│       └── SnakeFactory.cs    # (опционально, для сложных сценариев)
+│       └── GameObjectFactory.cs
 │
-├── Engine/                     # Игровой движок
-│   ├── GameEngine.cs
-│   ├── GameLoop.cs            # (опционально, для разделения логики)
-│   └── GameInitializer.cs     # (опционально)
+├── Engine/                    # Игровой движок
+│   └── GameEngine.cs
 │
-├── Game/                       # Фасад и запуск игры
-│   ├── SnakeGame.cs           # Фасад
-│   └── GameController.cs      # (опционально, для управления игрой)
-│
-├── Utils/                      # Вспомогательные классы
-│   ├── RandomGenerator.cs     # Обертка для Random
-│   ├── ConsoleHelper.cs       # Помощник для работы с консолью
-│   └── Extensions/
-│       └── PositionExtensions.cs
-│
-├── Exceptions/                 # Пользовательские исключения
-│   ├── GameException.cs
-│   ├── CollisionException.cs
-│   └── InputException.cs
-│
-└── Tests/                      # Тесты (опционально)
-    ├── UnitTests/
-    │   ├── SnakeTests.cs
-    │   ├── CollisionDetectorTests.cs
-    │   └── GameEngineTests.cs
-    │
-    └── IntegrationTests/
-        └── GameIntegrationTests.cs
+└── Game/                      # Фасад и запуск игры
+    └── SnakeGame.cs           # Фасад
 
 
 Подробное описание структуры:
