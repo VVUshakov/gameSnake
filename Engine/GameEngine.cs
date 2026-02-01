@@ -1,9 +1,8 @@
-﻿using gameSnake.Core;
-using gameSnake.GameObjects.Food;
-using gameSnake.GameObjects.Snake;
-using gameSnake.Interfaces;
+﻿using SnakeGame.Core;
+using SnakeGame.GameObjects;
+using SnakeGame.Interfaces;
 
-namespace gameSnake.Engine
+namespace SnakeGame.Engine
 {
     /// <summary>
     /// Основной игровой движок, управляющий игровым циклом
