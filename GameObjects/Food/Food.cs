@@ -1,7 +1,7 @@
-﻿using gameSnake.Core;
-using gameSnake.Interfaces;
+﻿using SnakeGame.Core;
+using SnakeGame.Interfaces;
 
-namespace gameSnake.GameObjects.Food
+namespace SnakeGame.GameObjects
 {
     /// <summary>
     /// Класс, представляющий еду на игровом поле
