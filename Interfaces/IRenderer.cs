@@ -1,6 +1,7 @@
-﻿using SnakeGame;
+﻿using gameSnake.GameObjects.Food;
+using gameSnake.GameObjects.Snake;
 
-namespace gameSnake.Interfaces
+namespace SnakeGame.Interfaces
 {
     /// <summary>
     /// Интерфейс для отрисовки игрового состояния
