@@ -1,6 +1,4 @@
-﻿using SnakeGame;
-
-namespace gameSnake.Core
+﻿namespace SnakeGame.Core
 {
     /// <summary>
     /// Класс, содержащий настройки игры
