@@ -1,7 +1,7 @@
-﻿using gameSnake.Core;
-using gameSnake.Interfaces;
+﻿using SnakeGame.Core;
+using SnakeGame.Interfaces;
 
-namespace gameSnake.Systems.Input
+namespace SnakeGame.Systems.Input
 {
     /// <summary>
     /// Класс для обработки ввода с клавиатуры в консоли
