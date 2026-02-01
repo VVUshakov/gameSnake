@@ -1,7 +1,4 @@
-﻿using gameSnake.Game;
-
-
-namespace gameSnake
+﻿namespace SnakeGame
 {
     /// <summary>
     /// Главный класс приложения
@@ -13,7 +10,7 @@ namespace gameSnake
         /// </summary>
         static void Main()
         {
-            SnakeGame.Start();
+            Game.SnakeGame.Start();
         }
     }
 }
