@@ -1,4 +1,4 @@
-﻿namespace gameSnake.Core
+﻿namespace SnakeGame.Core
 {
     /// <summary>
     /// Перечисление возможных направлений движения
