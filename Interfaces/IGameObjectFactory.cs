@@ -1,5 +1,4 @@
-﻿using gameSnake.GameObjects.Food;
-using gameSnake.GameObjects.Snake;
+﻿using SnakeGame.GameObjects;
 
 namespace SnakeGame.Interfaces
 {
