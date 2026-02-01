@@ -1,7 +1,7 @@
-﻿using gameSnake.Core;
-using gameSnake.Interfaces;
+﻿using SnakeGame.Core;
+using SnakeGame.Interfaces;
 
-namespace gameSnake.GameObjects.Snake
+namespace SnakeGame.GameObjects
 {
     /// <summary>
     /// Класс, представляющий змейку - основной игровой объект
