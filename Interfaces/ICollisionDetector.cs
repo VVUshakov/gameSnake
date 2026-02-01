@@ -1,5 +1,5 @@
-﻿using gameSnake.GameObjects.Snake;
-using SnakeGame.Core;
+﻿using SnakeGame.Core;
+using SnakeGame.GameObjects;
 
 namespace SnakeGame.Interfaces
 {
