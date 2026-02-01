@@ -1,11 +1,11 @@
-﻿using gameSnake.Core;
-using gameSnake.Engine;
-using gameSnake.Systems.Collision;
-using gameSnake.Systems.Factories;
-using gameSnake.Systems.Input;
-using gameSnake.Systems.Rendering;
+﻿using SnakeGame.Core;
+using SnakeGame.Engine;
+using SnakeGame.Systems.Collision;
+using SnakeGame.Systems.Factories;
+using SnakeGame.Systems.Input;
+using SnakeGame.Systems.Rendering;
 
-namespace gameSnake.Game
+namespace SnakeGame.Game
 {
     /// <summary>
     /// Фасад для запуска игры, скрывающий сложность инициализации
@@ -22,12 +22,14 @@ namespace gameSnake.Game
 
             try
             {
+                // Создание зависимостей
                 var settings = new GameSettings();
                 var renderer = new ConsoleRenderer(settings);
                 var inputHandler = new ConsoleInputHandler();
                 var collisionDetector = new CollisionDetector();
                 var gameObjectFactory = new GameObjectFactory();
 
+                // Создание и запуск игрового движка
                 var gameEngine = new GameEngine(
                     settings,
                     renderer,
