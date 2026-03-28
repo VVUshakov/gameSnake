@@ -94,22 +94,50 @@
 
         private void DrawGameOver(PlayingField field)
         {
-            DrawCenteredMessage(field, "ИГРА ОКОНЧЕНА!");
+            string[] message = new string[] { "ИГРА ОКОНЧЕНА!" };
+            DrawCenteredMessage(field, message, ConsoleColor.Red);
         }
 
         private void DrawPause(PlayingField field)
         {
-            DrawCenteredMessage(field, "ПАУЗА");
+            string[] pauseBox = new string[]
+            {
+                "┌────────────────────────┐",
+                "│       ── ПАУЗА ──      │",
+                "│                        │",
+                "│  P - продолжить        │",
+                "│  Escape - выйти        │",
+                "└────────────────────────┘"
+            };
+
+            DrawCenteredMessage(field, pauseBox, ConsoleColor.Yellow);
         }
 
-        private void DrawCenteredMessage(PlayingField field, string message)
+        private void DrawCenteredMessage(PlayingField field, string[] lines, ConsoleColor color = ConsoleColor.White)
         {
-            int centerX = field.Width / 2;
-            int centerY = field.Height / 2;
-            int messageX = centerX - message.Length / 2;
+            int boxWidth = 0;
+            foreach(string line in lines)
+            {
+                if(line.Length > boxWidth)
+                {
+                    boxWidth = line.Length;
+                }
+            }
 
-            Console.SetCursorPosition(messageX, centerY);
-            Console.Write(message);
+            int boxHeight = lines.Length;
+            int startX = (field.Width - boxWidth) / 2;
+            int startY = (field.Height - boxHeight) / 2;
+
+            ConsoleColor originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+
+            for(int i = 0; i < lines.Length; i++)
+            {
+                Console.SetCursorPosition(startX, startY + i);
+                Console.Write(lines[i]);
+            }
+
+            Console.ForegroundColor = originalColor;
         }
     }
 }
