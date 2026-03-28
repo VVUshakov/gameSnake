@@ -60,9 +60,9 @@
         /// <summary>
         /// Отрисовывает служебную информацию (счёт, уровень и т.п.)
         /// </summary>
-        private void DrawHeader(Header header)
+        private static void DrawHeader(Header header)
         {
-            string[] lines = header.GetLinesHeader();
+            string[] lines = header.GetLines();
 
             for(int i = 0; i < lines.Length; i++)
             {
@@ -71,7 +71,7 @@
             }
         }
 
-        private void DrawField(PlayingField field, int headerHeight)
+        private static void DrawField(PlayingField field, int headerHeight)
         {
             int lastRow = field.Height - 1;   // последний индекс строки (ширина - 1)
             int lastCol = field.Width - 1;    // последний индекс столбца (высота - 1)
@@ -88,7 +88,7 @@
             }
         }
 
-        private void DrawSnake(Snake snake, int headerHeight)
+        private static void DrawSnake(Snake snake, int headerHeight)
         {
             int lastSegmentIndex = snake.Body.Count - 1;  // индекс последнего сегмента (голова)
 
@@ -103,7 +103,7 @@
             }
         }
 
-        private void DrawFood(Food food, int headerHeight)
+        private static void DrawFood(Food food, int headerHeight)
         {
             if(food.IsSuccess)
             {
@@ -112,19 +112,19 @@
             }
         }
 
-        private void DrawGameOver(PlayingField field, int headerHeight)
+        private static void DrawGameOver(PlayingField field, int headerHeight)
         {
             string[] message = new string[] { "ИГРА ОКОНЧЕНА!" };
             DrawCenteredMessage(field, message, headerHeight, GameOverColor);
         }
 
-        private void DrawGameWin(PlayingField field, int headerHeight)
+        private static void DrawGameWin(PlayingField field, int headerHeight)
         {
             string[] message = new string[] { "ПОБЕДА!" };
             DrawCenteredMessage(field, message, headerHeight, GameWinColor);
         }
 
-        private void DrawPause(PlayingField field, int headerHeight)
+        private static void DrawPause(PlayingField field, int headerHeight)
         {
             string[] pauseBox = new string[]
             {
@@ -139,7 +139,7 @@
             DrawCenteredMessage(field, pauseBox, headerHeight, PauseColor);
         }
 
-        private void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color = DefaultMessageColor)
+        private static void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color = DefaultMessageColor)
         {
             int boxWidth = 0;
             foreach(string line in lines)

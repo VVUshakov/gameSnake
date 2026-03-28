@@ -12,12 +12,12 @@ namespace Snake
         /// <summary>
         /// Возвращает количество строк, необходимых для отрисовки заголовка
         /// </summary>
-        public int Height => GetLinesHeader().Length;
+        public int Height => GetLines().Length;
 
         /// <summary>
         /// Возвращает список строк для отрисовки заголовка
         /// </summary>
-        public string[] GetLinesHeader()
+        public string[] GetLines()
         {
             var lines = new List<string>();
 
