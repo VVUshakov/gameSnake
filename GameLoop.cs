@@ -85,13 +85,11 @@
         /// <param name="state">Текущее состояние игры</param>
         private void Update(GameState state)
         {
+            // обрабатываем ввод
             _inputHandler.ProcessInput(state);
 
             // Обновляем игру только если не на паузе
-            if(!state.IsPaused)
-            {
-                _gameLogic.Update(state);
-            }
+            if(!state.IsPaused) { _gameLogic.Update(state); }
         }
     }
 }
