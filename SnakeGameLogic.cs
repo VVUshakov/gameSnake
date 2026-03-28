@@ -51,7 +51,7 @@
             if(foodEaten)
             {
                 // Если съели еду - увеличиваем счёт и создаём новую еду
-                state.Score += state.Food.PointsValue;
+                state.Header.Score += state.Food.PointsValue;
                 GenerateNewFood(state);
                 // Хвост НЕ удаляем - змейка растёт
             }

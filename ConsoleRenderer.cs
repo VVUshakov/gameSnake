@@ -7,9 +7,15 @@
     {
         // Символы отрисовки
         private const char BorderChar = '#';// символ рамки игрового поля
-        private const char SnakeHead = 'O'; // символ головы змейки 
+        private const char SnakeHead = 'O'; // символ головы змейки
         private const char SnakeBody = '*'; // символ тела змейки
         private const char FoodSymbol = '@';// символ еды
+
+        // Цвета сообщений
+        private const ConsoleColor GameOverColor = ConsoleColor.Red;        // цвет проигрыша
+        private const ConsoleColor GameWinColor = ConsoleColor.Green;       // цвет выигрыша
+        private const ConsoleColor PauseColor = ConsoleColor.Yellow;        // цвет паузы
+        private const ConsoleColor DefaultMessageColor = ConsoleColor.White;// цвет по умолчанию
 
         public void Clear()
         {
@@ -18,87 +24,107 @@
 
         public void Render(GameState state)
         {
+            int headerHeight = state.Header.Height;
+
+            // Отрисовать служебную информацию
+            DrawHeader(state.Header);
+
             // Нарисовать игровое поле
-            DrawField(state.Field);
+            DrawField(state.Field, headerHeight);
 
             // Нарисовать змейку
-            DrawSnake(state.Snake);
+            DrawSnake(state.Snake, headerHeight);
 
             // Нарисовать еду
-            DrawFood(state.Food);
+            DrawFood(state.Food, headerHeight);
 
-            // Нарисовать счёт
-            DrawScore(state.Score);
-
-            // Если игра окончена - показать сообщение
+            // Если игра проиграна - показать сообщение о проигрыше
             if(state.IsGameOver)
             {
-                DrawGameOver(state.Field);
+                DrawGameOver(state.Field, headerHeight);
             }
 
-            // Если пауза - показать экран паузы
+            // Если игра выиграна - показать сообщение о победе
+            if(state.IsWin)
+            {
+                DrawGameWin(state.Field, headerHeight);
+            }
+
+            // Если пауза - показать сообщение о паузе
             if(state.IsPaused)
             {
-                DrawPause(state.Field);
+                DrawPause(state.Field, headerHeight);
             }
         }
-
-        private void DrawField(PlayingField field)
+                
+        /// <summary>
+        /// Отрисовывает служебную информацию (счёт, уровень и т.п.)
+        /// </summary>
+        private void DrawHeader(Header header)
         {
-            // Верхняя граница
-            Console.SetCursorPosition(0, 0);
-            Console.Write(BorderChar + new string(BorderChar, field.Width) + BorderChar);
+            string[] lines = header.GetLinesHeader();
 
-            // Боковые границы
-            for(int y = 0; y < field.Height; y++)
+            for(int i = 0; i < lines.Length; i++)
             {
-                Console.SetCursorPosition(0, y + 1);
-                Console.Write(BorderChar);
-                Console.SetCursorPosition(field.Width + 1, y + 1);
-                Console.Write(BorderChar);
+                Console.SetCursorPosition(0, i);
+                Console.Write(lines[i]);
             }
-
-            // Нижняя граница
-            Console.SetCursorPosition(0, field.Height + 1);
-            Console.Write(BorderChar + new string(BorderChar, field.Width) + BorderChar);
         }
 
-        private void DrawSnake(Snake snake)
+        private void DrawField(PlayingField field, int headerHeight)
         {
-            for(int i = 0; i < snake.Body.Count; i++)
+            int lastRow = field.Height - 1;   // последний индекс строки (ширина - 1)
+            int lastCol = field.Width - 1;    // последний индекс столбца (высота - 1)
+
+            for(int y = 0; y <= lastRow; y++)
+            {
+                Console.SetCursorPosition(0, y + headerHeight);
+                for(int x = 0; x <= lastCol; x++)
+                {
+                    bool isBorder = (y == 0) || (y == lastRow) || (x == 0) || (x == lastCol);
+
+                    Console.Write(isBorder ? BorderChar : ' ');
+                }
+            }
+        }
+
+        private void DrawSnake(Snake snake, int headerHeight)
+        {
+            int lastSegmentIndex = snake.Body.Count - 1;  // индекс последнего сегмента (голова)
+
+            for(int i = 0; i <= lastSegmentIndex; i++)
             {
                 Point segment = snake.Body[i];
 
-                // Голова змейки - другим символом
-                char symbol = (i == snake.Body.Count - 1) ? SnakeHead : SnakeBody;
+                char symbol = (i == lastSegmentIndex) ? SnakeHead : SnakeBody;
 
-                Console.SetCursorPosition(segment.X + 1, segment.Y + 1);
+                Console.SetCursorPosition(segment.X, segment.Y + headerHeight);
                 Console.Write(symbol);
             }
         }
 
-        private void DrawFood(Food food)
+        private void DrawFood(Food food, int headerHeight)
         {
-            if(food.Position != null)
+            if(food.IsSuccess)
             {
-                Console.SetCursorPosition(food.Position.X + 1, food.Position.Y + 1);
+                Console.SetCursorPosition(food.Position.X, food.Position.Y + headerHeight);
                 Console.Write(FoodSymbol);
             }
         }
 
-        private void DrawScore(int score)
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.Write($"Счёт: {score}");
-        }
-
-        private void DrawGameOver(PlayingField field)
+        private void DrawGameOver(PlayingField field, int headerHeight)
         {
             string[] message = new string[] { "ИГРА ОКОНЧЕНА!" };
-            DrawCenteredMessage(field, message, ConsoleColor.Red);
+            DrawCenteredMessage(field, message, headerHeight, GameOverColor);
         }
 
-        private void DrawPause(PlayingField field)
+        private void DrawGameWin(PlayingField field, int headerHeight)
+        {
+            string[] message = new string[] { "ПОБЕДА!" };
+            DrawCenteredMessage(field, message, headerHeight, GameWinColor);
+        }
+
+        private void DrawPause(PlayingField field, int headerHeight)
         {
             string[] pauseBox = new string[]
             {
@@ -110,10 +136,10 @@
                 "└────────────────────────┘"
             };
 
-            DrawCenteredMessage(field, pauseBox, ConsoleColor.Yellow);
+            DrawCenteredMessage(field, pauseBox, headerHeight, PauseColor);
         }
 
-        private void DrawCenteredMessage(PlayingField field, string[] lines, ConsoleColor color = ConsoleColor.White)
+        private void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color = DefaultMessageColor)
         {
             int boxWidth = 0;
             foreach(string line in lines)
@@ -126,7 +152,8 @@
 
             int boxHeight = lines.Length;
             int startX = (field.Width - boxWidth) / 2;
-            int startY = (field.Height - boxHeight) / 2;
+            // Центрируем сообщение внутри игрового поля (с учётом headerHeight)
+            int startY = headerHeight + (field.Height - boxHeight) / 2;
 
             ConsoleColor originalColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
