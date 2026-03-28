@@ -1,52 +1,31 @@
 ﻿namespace Snake
 {
     /// <summary>
-    /// Реализует игровую логику змейки
+    /// Реализует игровую логику змейки.
+    /// Управляет движением змейки, столкновениями и поеданием еды.
     /// </summary>
     public class SnakeGameLogic : IGameLogic
     {
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
 
+        /// <summary>
+        /// Обновляет состояние игры: перемещает змейку, проверяет столкновения,
+        /// обрабатывает поедание еды.
+        /// </summary>
+        /// <param name="state">Текущее состояние игры</param>
         public void Update(GameState state)
         {
             // Если игра уже окончена, ничего не делаем
-            if(state.IsGameOver)
-            {
-                return;
-            }
+            if(state.IsGameOver) { return; }
 
-            // 1. Получаем текущую голову (последний элемент в списке)
-            Point head = state.Snake.Head;
+            // Вычисляем новую позицию головы
+            Point newHead = CalculateNewHeadPosition(state.Snake.Head, state.CurrentDirection);
 
-            // 2. Вычисляем новую голову в зависимости от направления
-            Point newHead = head;
-
-            switch(state.CurrentDirection)
-            {
-                case Direction.Up:
-                    newHead = new Point(head.X, head.Y - 1);
-                    break;
-                case Direction.Down:
-                    newHead = new Point(head.X, head.Y + 1);
-                    break;
-                case Direction.Left:
-                    newHead = new Point(head.X - 1, head.Y);
-                    break;
-                case Direction.Right:
-                    newHead = new Point(head.X + 1, head.Y);
-                    break;
-            }
-
-            // 3. Добавляем новую голову в конец списка
+            // Добавляем новую голову в конец списка
             state.Snake.Body.Add(newHead);
 
-            // 4. Проверяем, съедена ли еда (учитываем, что Position может быть null)
-            bool foodEaten = false;
-            if(state.Food.Position != null)
-            {
-                foodEaten = (newHead.X == state.Food.Position.X &&
-                             newHead.Y == state.Food.Position.Y);
-            }
+            // Проверяем, съедена ли еда
+            bool foodEaten = IsFoodEaten(newHead, state.Food);
 
             if(foodEaten)
             {
@@ -61,10 +40,45 @@
                 state.Snake.Body.Remove(state.Snake.Tail);
             }
 
-            // 5. Проверяем столкновения
+            // Проверяем столкновения
             CheckCollisions(state);
         }
 
+        /// <summary>
+        /// Вычисляет новую позицию головы на основе текущего направления
+        /// </summary>
+        /// <param name="head">Текущая позиция головы</param>
+        /// <param name="direction">Направление движения</param>
+        /// <returns>Новая позиция головы</returns>
+        private static Point CalculateNewHeadPosition(Point head, Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Up => new Point(head.X, head.Y - 1),
+                Direction.Down => new Point(head.X, head.Y + 1),
+                Direction.Left => new Point(head.X - 1, head.Y),
+                Direction.Right => new Point(head.X + 1, head.Y),
+                _ => head
+            };
+        }
+
+        /// <summary>
+        /// Проверяет, съела ли змейка еду
+        /// </summary>
+        /// <param name="head">Позиция головы змейки</param>
+        /// <param name="food">Объект еды</param>
+        /// <returns>true, если еда съедена, false в противном случае</returns>
+        private static bool IsFoodEaten(Point head, Food food)
+        {
+            if(food.Position == null) return false;
+
+            return head.X == food.Position.X && head.Y == food.Position.Y;
+        }
+
+        /// <summary>
+        /// Генерирует новую еду в случайном свободном месте
+        /// </summary>
+        /// <param name="state">Состояние игры</param>
         private void GenerateNewFood(GameState state)
         {
             // Считаем общее количество клеток на поле
@@ -73,7 +87,7 @@
             // Если змейка заняла всё поле - игрок выиграл
             if(state.Snake.Body.Count >= totalCells)
             {
-                state.IsGameOver = true;
+                state.IsWin = true;
                 return;
             }
 
@@ -93,19 +107,24 @@
                 if(attempts > maxAttempts)
                 {
                     // Если не нашли место - игра окончена (победа)
-                    state.IsGameOver = true;
+                    state.IsWin = true;
                     return;
                 }
             }
-            while(IsPositionOccupiedBySnake(state, newPosition)); // Проверить занимает ли змея эту позицию
+            while(IsPositionOccupiedBySnake(state, newPosition));
 
             // Создаём новую еду на свободном месте
             state.Food.Position = newPosition;
             state.Food.IsSuccess = true;
         }
 
-        // Проверить занимает ли змея эту позицию
-        private bool IsPositionOccupiedBySnake(GameState state, Point position)
+        /// <summary>
+        /// Проверяет, занята ли позиция змейкой
+        /// </summary>
+        /// <param name="state">Состояние игры</param>
+        /// <param name="position">Позиция для проверки</param>
+        /// <returns>true, если позиция занята, false в противном случае</returns>
+        private static bool IsPositionOccupiedBySnake(GameState state, Point position)
         {
             foreach(Point segment in state.Snake.Body)
             {
@@ -115,7 +134,10 @@
             return false;
         }
 
-        // Проверяем столкновения
+        /// <summary>
+        /// Проверяет столкновения змейки со стенами и собственным телом
+        /// </summary>
+        /// <param name="state">Состояние игры</param>
         private void CheckCollisions(GameState state)
         {
             Point head = state.Snake.Head;
