@@ -35,6 +35,12 @@
             {
                 DrawGameOver(state.Field);
             }
+
+            // Если пауза - показать экран паузы
+            if(state.IsPaused)
+            {
+                DrawPause(state.Field);
+            }
         }
 
         private void DrawField(PlayingField field)
@@ -88,11 +94,21 @@
 
         private void DrawGameOver(PlayingField field)
         {
-            string message = "ИГРА ОКОНЧЕНА!";
-            int messageX = (field.Width - message.Length) / 2 + 1;
-            int messageY = field.Height / 2 + 1;
+            DrawCenteredMessage(field, "ИГРА ОКОНЧЕНА!");
+        }
 
-            Console.SetCursorPosition(messageX, messageY);
+        private void DrawPause(PlayingField field)
+        {
+            DrawCenteredMessage(field, "ПАУЗА");
+        }
+
+        private void DrawCenteredMessage(PlayingField field, string message)
+        {
+            int centerX = field.Width / 2;
+            int centerY = field.Height / 2;
+            int messageX = centerX - message.Length / 2;
+
+            Console.SetCursorPosition(messageX, centerY);
             Console.Write(message);
         }
     }

@@ -20,7 +20,13 @@
                 _renderer.Clear();
                 _renderer.Render(state);
                 _inputHandler.ProcessInput(state);
-                _gameLogic.Update(state);
+                
+                // Обновляем игру только если не на паузе
+                if(!state.IsPaused)
+                {
+                    _gameLogic.Update(state);
+                }
+                
                 Thread.Sleep(state.Fps);
             }
         }

@@ -8,6 +8,7 @@
         // Управляющие флаги
         public bool IsExit { get; set; } = false;       // флаг выхода из игры
         public bool IsGameOver { get; set; } = false;   // флаг проигрыша
+        public bool IsPaused { get; set; } = false;     // флаг паузы
 
         // Настройки
         public int Fps { get; set; } = 100;     // задержка между кадрами (мс)

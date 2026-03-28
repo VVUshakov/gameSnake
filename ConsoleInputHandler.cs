@@ -11,18 +11,25 @@
             if(!Console.KeyAvailable) return;
 
             // Читаем клавишу (true - не отображать её на экране)
-            ConsoleKeyInfo key = Console.ReadKey(true);
-
-            // Если игра окончена - реагируем только на Escape
-            if(state.IsGameOver)
+            ConsoleKey key = Console.ReadKey(true).Key;
+                        
+            // Обработка паузы (клавиша P)
+            if(key == ConsoleKey.P)
             {
-                if(key.Key == ConsoleKey.Escape)
+                state.IsPaused = !state.IsPaused;
+                return;
+            }
+
+            // Если игра на паузе - не обрабатываем другие клавиши, кроме выход (Escape)
+            if (state.IsPaused)
+            {
+                if(key == ConsoleKey.Escape)
                     state.IsExit = true;
                 return;
             }
 
             // Обрабатываем стрелки
-            switch(key.Key)
+            switch(key)
             {
                 case ConsoleKey.UpArrow:
                     // Нельзя развернуться в противоположную сторону
