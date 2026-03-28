@@ -74,15 +74,23 @@
             {
                 _renderer.Clear();
                 _renderer.Render(state);
-                _inputHandler.ProcessInput(state);
-
-                // Обновляем игру только если не на паузе
-                if(!state.IsPaused)
-                {
-                    _gameLogic.Update(state);
-                }
-
+                Update(state);
                 Thread.Sleep(state.Fps);
+            }
+        }
+
+        /// <summary>
+        /// Обновляет состояние игры: обрабатывает ввод и обновляет игровую логику
+        /// </summary>
+        /// <param name="state">Текущее состояние игры</param>
+        private void Update(GameState state)
+        {
+            _inputHandler.ProcessInput(state);
+
+            // Обновляем игру только если не на паузе
+            if(!state.IsPaused)
+            {
+                _gameLogic.Update(state);
             }
         }
     }
