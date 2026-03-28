@@ -1,12 +1,5 @@
 ﻿namespace Snake
-{
-    /// <summary>
-    /// Этот класс занимается только математическими расчётами.
-    /// Он проверяет, помещается ли змейка в поле, и вычисляет,
-    /// где должна быть голова, чтобы вся змейка была ровно по центру.
-    /// Мы сделали его статическим, потому что ему не нужно хранить данные —
-    /// только вычислять
-    /// </summary>
+{    
     public static class PositionCalculator
     {
         /// <summary>
@@ -102,6 +95,56 @@
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Рассчитывает позицию для центрирования сообщения на игровом поле
+        /// </summary>
+        /// <param name="fieldWidth">Ширина игрового поля</param>
+        /// <param name="fieldHeight">Высота игрового поля</param>
+        /// <param name="messageWidth">Ширина сообщения (максимальная длина строки)</param>
+        /// <param name="messageHeight">Высота сообщения (количество строк)</param>
+        /// <param name="headerHeight">Высота заголовка (сдвиг по вертикали)</param>
+        /// <returns>Координаты верхнего левого угла для отрисовки сообщения</returns>
+        public static Point CalculateCenteredMessagePosition(
+            int fieldWidth,
+            int fieldHeight,
+            int messageWidth,
+            int messageHeight,
+            int headerHeight = 0)
+        {
+            int startX = (fieldWidth - messageWidth) / 2;
+            int startY = headerHeight + (fieldHeight - messageHeight) / 2;
+
+            return new Point(startX, startY);
+        }
+
+        /// <summary>
+        /// Вычисляет максимальную ширину сообщения (длину самой длинной строки)
+        /// </summary>
+        /// <param name="lines">Строки сообщения</param>
+        /// <returns>Максимальная длина строки</returns>
+        public static int GetMessageWidth(string[] lines)
+        {
+            int maxWidth = 0;
+            foreach(string line in lines)
+            {
+                if(line.Length > maxWidth)
+                {
+                    maxWidth = line.Length;
+                }
+            }
+            return maxWidth;
+        }
+
+        /// <summary>
+        /// Вычисляет высоту сообщения (количество строк)
+        /// </summary>
+        /// <param name="lines">Строки сообщения</param>
+        /// <returns>Количество строк</returns>
+        public static int GetMessageHeight(string[] lines)
+        {
+            return lines.Length;
         }
     }
 }

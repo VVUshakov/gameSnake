@@ -252,26 +252,22 @@
         /// <param name="color">Цвет текста сообщения</param>
         private static void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color = DefaultMessageColor)
         {
-            int boxWidth = 0;
-            foreach(string line in lines)
-            {
-                if(line.Length > boxWidth)
-                {
-                    boxWidth = line.Length;
-                }
-            }
+            int messageWidth = PositionCalculator.GetMessageWidth(lines);
+            int messageHeight = PositionCalculator.GetMessageHeight(lines);
 
-            int boxHeight = lines.Length;
-            int startX = (field.Width - boxWidth) / 2;
-            // Центрируем сообщение внутри игрового поля (с учётом headerHeight)
-            int startY = headerHeight + (field.Height - boxHeight) / 2;
+            Point position = PositionCalculator.CalculateCenteredMessagePosition(
+                field.Width,
+                field.Height,
+                messageWidth,
+                messageHeight,
+                headerHeight);
 
             ConsoleColor originalColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
 
             for(int i = 0; i < lines.Length; i++)
             {
-                Console.SetCursorPosition(startX, startY + i);
+                Console.SetCursorPosition(position.X, position.Y + i);
                 Console.Write(lines[i]);
             }
 
