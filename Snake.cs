@@ -1,17 +1,37 @@
 ﻿namespace Snake
 {
+    /// <summary>
+    /// Представляет змейку на игровом поле.
+    /// Содержит список сегментов тела и методы для работы со змейкой.
+    /// </summary>
     public class Snake
     {
-        // Список всех сегментов змейки: Body[0] - хвост, [Body.Count - 1] - голова
+        /// <summary>
+        /// Список всех сегментов змейки.
+        /// Body[0] — хвост, Body[Body.Count - 1] — голова.
+        /// </summary>
         public List<Point> Body { get; set; }
 
-        // Для удобства - вычисляемые свойства
-        public Point Head => Body[Body.Count - 1];  // координаты головы
-        public Point Tail => Body[0];               // координаты хвоста
+        /// <summary>
+        /// Координаты головы змейки (последний элемент списка)
+        /// </summary>
+        public Point Head => Body[Body.Count - 1];
 
+        /// <summary>
+        /// Координаты хвоста змейки (первый элемент списка)
+        /// </summary>
+        public Point Tail => Body[0];
+
+        /// <summary>
+        /// Инициализирует новую змейку с указанной позицией головы и направлением.
+        /// </summary>
+        /// <param name="headPosition">Позиция головы змейки</param>
+        /// <param name="direction">Начальное направление движения</param>
+        /// <param name="snakeLength">Длина змейки (по умолчанию 3)</param>
+        /// <exception cref="ArgumentException">Выбрасывается при неизвестном направлении</exception>
         public Snake(
             Point headPosition,     // позиция головы
-            Direction direction,    // начальное направление движения 
+            Direction direction,    // начальное направление движения
             int snakeLength = 3     // длина змейки
         )
         {
@@ -54,8 +74,10 @@
         }
 
         /// <summary>
-        /// Проверяет, содержит ли змейка указанную точку
+        /// Проверяет, содержит ли змейка указанную точку (сегмент тела).
         /// </summary>
+        /// <param name="point">Точка для проверки</param>
+        /// <returns>true, если точка является частью змейки; false в противном случае</returns>
         public bool Contains(Point point)
         {
             foreach(Point segment in Body)
