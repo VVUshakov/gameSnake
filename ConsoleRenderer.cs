@@ -1,27 +1,66 @@
 ﻿namespace Snake
 {
     /// <summary>
-    /// Отрисовывает игру в консоли
+    /// Отрисовывает игру в консоли.
+    /// Реализует отрисовку игрового поля, змейки, еды, служебной информации
+    /// и сообщений (пауза, проигрыш, победа).
     /// </summary>
     public class ConsoleRenderer : IGameRenderer
     {
         // Символы отрисовки
-        private const char BorderChar = '#';// символ рамки игрового поля
-        private const char SnakeHead = 'O'; // символ головы змейки
-        private const char SnakeBody = '*'; // символ тела змейки
-        private const char FoodSymbol = '@';// символ еды
+        /// <summary>
+        /// Символ рамки игрового поля
+        /// </summary>
+        private const char BorderChar = '#';
+
+        /// <summary>
+        /// Символ головы змейки
+        /// </summary>
+        private const char SnakeHead = 'O';
+
+        /// <summary>
+        /// Символ тела змейки
+        /// </summary>
+        private const char SnakeBody = '*';
+
+        /// <summary>
+        /// Символ еды
+        /// </summary>
+        private const char FoodSymbol = '@';
 
         // Цвета сообщений
-        private const ConsoleColor GameOverColor = ConsoleColor.Red;        // цвет проигрыша
-        private const ConsoleColor GameWinColor = ConsoleColor.Green;       // цвет выигрыша
-        private const ConsoleColor PauseColor = ConsoleColor.Yellow;        // цвет паузы
-        private const ConsoleColor DefaultMessageColor = ConsoleColor.White;// цвет по умолчанию
+        /// <summary>
+        /// Цвет сообщения о проигрыше
+        /// </summary>
+        private const ConsoleColor GameOverColor = ConsoleColor.Red;
 
+        /// <summary>
+        /// Цвет сообщения о победе
+        /// </summary>
+        private const ConsoleColor GameWinColor = ConsoleColor.Green;
+
+        /// <summary>
+        /// Цвет сообщения о паузе
+        /// </summary>
+        private const ConsoleColor PauseColor = ConsoleColor.Yellow;
+
+        /// <summary>
+        /// Цвет сообщения по умолчанию
+        /// </summary>
+        private const ConsoleColor DefaultMessageColor = ConsoleColor.White;
+
+        /// <summary>
+        /// Очищает консоль перед отрисовкой нового кадра
+        /// </summary>
         public void Clear()
         {
             Console.Clear();
         }
 
+        /// <summary>
+        /// Отрисовывает текущее состояние игры
+        /// </summary>
+        /// <param name="state">Состояние игры</param>
         public void Render(GameState state)
         {
             int headerHeight = state.Header.Height;
@@ -56,10 +95,11 @@
                 DrawPause(state.Field, headerHeight);
             }
         }
-                
+
         /// <summary>
         /// Отрисовывает служебную информацию (счёт, уровень и т.п.)
         /// </summary>
+        /// <param name="header">Объект служебной информации</param>
         private static void DrawHeader(Header header)
         {
             string[] lines = header.GetLines();
@@ -71,6 +111,11 @@
             }
         }
 
+        /// <summary>
+        /// Отрисовывает игровое поле с рамкой
+        /// </summary>
+        /// <param name="field">Объект игрового поля</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawField(PlayingField field, int headerHeight)
         {
             int lastRow = field.Height - 1;   // последний индекс строки (ширина - 1)
@@ -88,6 +133,11 @@
             }
         }
 
+        /// <summary>
+        /// Отрисовывает змейку на игровом поле
+        /// </summary>
+        /// <param name="snake">Объект змейки</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawSnake(Snake snake, int headerHeight)
         {
             int lastSegmentIndex = snake.Body.Count - 1;  // индекс последнего сегмента (голова)
@@ -103,6 +153,11 @@
             }
         }
 
+        /// <summary>
+        /// Отрисовывает еду на игровом поле
+        /// </summary>
+        /// <param name="food">Объект еды</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawFood(Food food, int headerHeight)
         {
             if(food.IsSuccess)
@@ -112,18 +167,33 @@
             }
         }
 
+        /// <summary>
+        /// Отрисовывает сообщение о проигрыше
+        /// </summary>
+        /// <param name="field">Объект игрового поля</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawGameOver(PlayingField field, int headerHeight)
         {
             string[] message = new string[] { "ИГРА ОКОНЧЕНА!" };
             DrawCenteredMessage(field, message, headerHeight, GameOverColor);
         }
 
+        /// <summary>
+        /// Отрисовывает сообщение о победе
+        /// </summary>
+        /// <param name="field">Объект игрового поля</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawGameWin(PlayingField field, int headerHeight)
         {
             string[] message = new string[] { "ПОБЕДА!" };
             DrawCenteredMessage(field, message, headerHeight, GameWinColor);
         }
 
+        /// <summary>
+        /// Отрисовывает сообщение о паузе
+        /// </summary>
+        /// <param name="field">Объект игрового поля</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawPause(PlayingField field, int headerHeight)
         {
             string[] pauseBox = new string[]
@@ -139,6 +209,13 @@
             DrawCenteredMessage(field, pauseBox, headerHeight, PauseColor);
         }
 
+        /// <summary>
+        /// Отрисовывает центрированное сообщение на игровом поле
+        /// </summary>
+        /// <param name="field">Объект игрового поля</param>
+        /// <param name="lines">Строки сообщения</param>
+        /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
+        /// <param name="color">Цвет текста сообщения</param>
         private static void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color = DefaultMessageColor)
         {
             int boxWidth = 0;
