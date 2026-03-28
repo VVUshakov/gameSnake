@@ -16,7 +16,7 @@
         public void Update(GameState state)
         {
             // Если игра уже окончена, ничего не делаем
-            if(state.IsGameOver) { return; }
+            if(state.IsGameOver || state.IsWin) { return; }
 
             // Вычисляем новую позицию головы
             Point newHead = CalculateNewHeadPosition(state.Snake.Head, state.CurrentDirection);
@@ -42,6 +42,9 @@
 
             // Проверяем столкновения
             CheckCollisions(state);
+
+            // Проверяем условие победы
+            CheckWinCondition(state);
         }
 
         /// <summary>
@@ -52,14 +55,28 @@
         /// <returns>Новая позиция головы</returns>
         private static Point CalculateNewHeadPosition(Point head, Direction direction)
         {
-            return direction switch
+            Point newHead = head;
+
+            switch(direction)
             {
-                Direction.Up => new Point(head.X, head.Y - 1),
-                Direction.Down => new Point(head.X, head.Y + 1),
-                Direction.Left => new Point(head.X - 1, head.Y),
-                Direction.Right => new Point(head.X + 1, head.Y),
-                _ => head
-            };
+                case Direction.Up:
+                    newHead = new Point(head.X, head.Y - 1);
+                    break;
+
+                case Direction.Down:
+                    newHead = new Point(head.X, head.Y + 1);
+                    break;
+
+                case Direction.Left:
+                    newHead = new Point(head.X - 1, head.Y);
+                    break;
+
+                case Direction.Right:
+                    newHead = new Point(head.X + 1, head.Y);
+                    break;
+            }
+
+            return newHead;
         }
 
         /// <summary>
@@ -81,16 +98,6 @@
         /// <param name="state">Состояние игры</param>
         private void GenerateNewFood(GameState state)
         {
-            // Считаем общее количество клеток на поле
-            int totalCells = state.Field.Width * state.Field.Height;
-
-            // Если змейка заняла всё поле - игрок выиграл
-            if(state.Snake.Body.Count >= totalCells)
-            {
-                state.IsWin = true;
-                return;
-            }
-
             // Пытаемся найти свободную клетку
             int maxAttempts = 1000;
             int attempts = 0;
@@ -106,8 +113,7 @@
 
                 if(attempts > maxAttempts)
                 {
-                    // Если не нашли место - игра окончена (победа)
-                    state.IsWin = true;
+                    // Если не нашли место — свободных клеток нет
                     return;
                 }
             }
@@ -116,6 +122,20 @@
             // Создаём новую еду на свободном месте
             state.Food.Position = newPosition;
             state.Food.IsSuccess = true;
+        }
+
+        /// <summary>
+        /// Проверяет условие победы — змейка заняла всё поле
+        /// </summary>
+        /// <param name="state">Состояние игры</param>
+        private static void CheckWinCondition(GameState state)
+        {
+            int totalCells = state.Field.Width * state.Field.Height;
+
+            if(state.Snake.Body.Count >= totalCells)
+            {
+                state.IsWin = true;
+            }
         }
 
         /// <summary>
