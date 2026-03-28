@@ -1,10 +1,15 @@
 ﻿namespace Snake
 {
     /// <summary>
-    /// Обрабатывает ввод с клавиатуры в консоли
+    /// Обрабатывает ввод с клавиатуры в консоли.
+    /// Управляет движением змейки, паузой и выходом из игры.
     /// </summary>
     public class ConsoleInputHandler : IInputHandler
     {
+        /// <summary>
+        /// Считывает и обрабатывает нажатия клавиш клавиатуры.
+        /// </summary>
+        /// <param name="state">Текущее состояние игры</param>
         public void ProcessInput(GameState state)
         {
             // Если нет нажатых клавиш - выходим
@@ -54,11 +59,12 @@
         }
 
         /// <summary>
-        /// Меняет направление движения змейки, если это не противоречит правилам
+        /// Меняет направление движения змейки, если это не противоречит правилам.
+        /// Разворот на 180° запрещён, если длина змейки больше 1 сегмента.
         /// </summary>
         /// <param name="state">Состояние игры</param>
-        /// <param name="newDirection">Новое направление</param>
-        /// <param name="oppositeDirection">Противоположное направление (запрещено)</param>
+        /// <param name="newDirection">Новое направление движения</param>
+        /// <param name="oppositeDirection">Противоположное направление (запрещено для разворота)</param>
         private static void ChangeDirection(GameState state, Direction newDirection, Direction oppositeDirection)
         {
             // Разворот на 180° запрещён, если длина змейки больше 1
