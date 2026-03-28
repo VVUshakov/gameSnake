@@ -1,11 +1,20 @@
 ﻿namespace Snake
 {
+    /// <summary>
+    /// Игровой цикл. Управляет отрисовкой, вводом и обновлением состояния игры.
+    /// </summary>
     public class GameLoop
     {
         private readonly IGameRenderer _renderer;
         private readonly IInputHandler _inputHandler;
         private readonly IGameLogic _gameLogic;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр игрового цикла
+        /// </summary>
+        /// <param name="renderer">Рендерер для отрисовки игры</param>
+        /// <param name="inputHandler">Обработчик ввода</param>
+        /// <param name="gameLogic">Игровая логика</param>
         public GameLoop(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic)
         {
             _renderer = renderer;
@@ -13,24 +22,9 @@
             _gameLogic = gameLogic;
         }
 
-        public void Run(GameState state)
-        {
-            while(!state.IsExit)
-            {
-                _renderer.Clear();
-                _renderer.Render(state);
-                _inputHandler.ProcessInput(state);
-                
-                // Обновляем игру только если не на паузе
-                if(!state.IsPaused)
-                {
-                    _gameLogic.Update(state);
-                }
-                
-                Thread.Sleep(state.Fps);
-            }
-        }
-
+        /// <summary>
+        /// Запускает игровой цикл с возможностью повторной игры
+        /// </summary>
         public void RunWithRestart()
         {
             bool playAgain = true;
@@ -45,25 +39,16 @@
                     // Запускаем игровой цикл
                     Run(state);
 
-                    // Если вышли не по Escape (т.е. проиграли)
+                    // Если игра проиграна — показываем сообщение и спрашиваем о повторной игре
                     if(state.IsGameOver)
                     {
-                        // Спрашиваем, хочет ли игрок сыграть ещё
-                        Console.SetCursorPosition(0, state.Field.Height + 5);
-                        Console.Write("Хотите сыграть ещё? (y/n): ");
-
-                        ConsoleKeyInfo key = Console.ReadKey();
-                        playAgain = (key.KeyChar == 'y' || key.KeyChar == 'Y');
-
-                        if(playAgain)
-                        {
-                            // Очищаем экран перед новой игрой
-                            Console.Clear();
-                        }
+                        //_renderer.Render(state);  // Рисуем последний кадр с сообщением
+                        playAgain = _renderer.AskPlayAgain();
                     }
-                    else
-                    {
-                        // Если вышли по Escape - не спрашиваем
+
+                    // Если вышли по Escape — не спрашиваем
+                    if (state.IsExit)
+                    {                        
                         playAgain = false;
                     }
                 }
@@ -76,6 +61,28 @@
                     Console.ReadKey();
                     playAgain = false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Запускает одиночный игровой цикл
+        /// </summary>
+        /// <param name="state">Начальное состояние игры</param>
+        public void Run(GameState state)
+        {
+            while(!state.IsExit)
+            {
+                _renderer.Clear();
+                _renderer.Render(state);
+                _inputHandler.ProcessInput(state);
+
+                // Обновляем игру только если не на паузе
+                if(!state.IsPaused)
+                {
+                    _gameLogic.Update(state);
+                }
+
+                Thread.Sleep(state.Fps);
             }
         }
     }

@@ -58,6 +58,24 @@
         }
 
         /// <summary>
+        /// Запрашивает у пользователя повторную игру после окончания (ожидает нажатия клавиши)
+        /// </summary>
+        /// <returns>true, если пользователь хочет сыграть ещё, false в противном случае</returns>
+        public bool AskPlayAgain()
+        {
+            ConsoleKeyInfo key = Console.ReadKey();
+            bool result = (key.KeyChar == 'y' || key.KeyChar == 'Y' ||
+                          key.KeyChar == 'н' || key.KeyChar == 'Н');
+
+            //if (result)
+            //{
+            //    Console.Clear();
+            //}
+
+            return result;
+        }
+
+        /// <summary>
         /// Отрисовывает текущее состояние игры
         /// </summary>
         /// <param name="state">Состояние игры</param>
@@ -174,7 +192,15 @@
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawGameOver(PlayingField field, int headerHeight)
         {
-            string[] message = new string[] { "ИГРА ОКОНЧЕНА!" };
+            string[] message = new string[]
+            {
+                "ИГРА ОКОНЧЕНА!",
+                "",
+                "Хотите сыграть ещё?",
+                "Нажмите Y для продолжения",
+                "Нажмите N для выхода"
+            };
+
             DrawCenteredMessage(field, message, headerHeight, GameOverColor);
         }
 
@@ -185,7 +211,15 @@
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawGameWin(PlayingField field, int headerHeight)
         {
-            string[] message = new string[] { "ПОБЕДА!" };
+            string[] message = new string[]
+            {
+                "ПОБЕДА!",
+                "",
+                "Хотите сыграть ещё?",
+                "Нажмите Y для продолжения",
+                "Нажмите N для выхода"
+            };
+
             DrawCenteredMessage(field, message, headerHeight, GameWinColor);
         }
 
