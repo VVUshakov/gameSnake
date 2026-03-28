@@ -45,7 +45,7 @@
             );
 
             // Создание еды с проверкой свободного места
-            Food = CreateInitialFood(Field, Snake);
+            Food = Food.CreateInitialFood(Field, Snake);
 
             // Проверяем, удалось ли создать еду
             if(!Food.IsSuccess)
@@ -55,57 +55,6 @@
                     "Нет свободного места для еды! Невозможно начать игру."
                 );
             }
-        }
-
-        /// <summary>
-        /// Создаёт начальную еду в случайном свободном месте
-        /// </summary>
-        private Food CreateInitialFood(PlayingField field, Snake snake)
-        {
-            // Сгенерировать случайную точку (координату) положения еды
-            Point? position = GenerateRandomFoodPosition(field, snake);
-
-            bool isSuccess; // флаг успешности операции
-
-            if(position == null)
-            {
-                isSuccess = false; // нет свободного места
-            }
-            else
-            {
-                isSuccess = true; // еда успешно создана
-            }
-
-            // Возвращаем объект еды
-            return new Food(
-                position: position,
-                isSuccess: isSuccess
-            );
-        }
-
-        /// <summary>
-        /// Генерирует случайное положение еды, не занятое змейкой
-        /// </summary>
-        private Point? GenerateRandomFoodPosition(PlayingField field, Snake snake)
-        {
-            int maxAttempts = 1000; // ограничиваем максимальное количество попыток
-
-            for(int attempt = 0; attempt < maxAttempts; attempt++)
-            {
-                Random _random = new Random();
-                int x = _random.Next(0, field.Width);   // случайная координата X
-                int y = _random.Next(0, field.Height);  // случайная координата Y
-                Point candidateFood = new Point(x, y);  // создаём координату
-
-                // Проверяем, не занята ли эта клетка змейкой
-                if(!snake.Contains(candidateFood))
-                {
-                    return candidateFood; // нашли свободное место!
-                }
-            }
-
-            // Если не нашли свободное место после всех попыток
-            return null;
         }
     }
 }
