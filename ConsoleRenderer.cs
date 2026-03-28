@@ -255,19 +255,19 @@
             int messageWidth = PositionCalculator.GetMessageWidth(lines);
             int messageHeight = PositionCalculator.GetMessageHeight(lines);
 
-            Point position = PositionCalculator.CalculateCenteredMessagePosition(
+            // Передаём высоту поля с учётом заголовка для правильного центрирования
+            Point startPosition = PositionCalculator.CalculateCenteredMessagePosition(
                 field.Width,
-                field.Height,
+                field.Height + headerHeight,
                 messageWidth,
-                messageHeight,
-                headerHeight);
+                messageHeight);
 
             ConsoleColor originalColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
 
             for(int i = 0; i < lines.Length; i++)
             {
-                Console.SetCursorPosition(position.X, position.Y + i);
+                Console.SetCursorPosition(startPosition.X, startPosition.Y + i);
                 Console.Write(lines[i]);
             }
 

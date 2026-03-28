@@ -101,20 +101,18 @@
         /// Рассчитывает позицию для центрирования сообщения на игровом поле
         /// </summary>
         /// <param name="fieldWidth">Ширина игрового поля</param>
-        /// <param name="fieldHeight">Высота игрового поля</param>
+        /// <param name="fieldHeight">Высота игрового поля (можно передать с учётом заголовка: fieldHeight + headerHeight)</param>
         /// <param name="messageWidth">Ширина сообщения (максимальная длина строки)</param>
         /// <param name="messageHeight">Высота сообщения (количество строк)</param>
-        /// <param name="headerHeight">Высота заголовка (сдвиг по вертикали)</param>
         /// <returns>Координаты верхнего левого угла для отрисовки сообщения</returns>
         public static Point CalculateCenteredMessagePosition(
             int fieldWidth,
             int fieldHeight,
             int messageWidth,
-            int messageHeight,
-            int headerHeight = 0)
+            int messageHeight)
         {
             int startX = (fieldWidth - messageWidth) / 2;
-            int startY = headerHeight + (fieldHeight - messageHeight) / 2;
+            int startY = (fieldHeight - messageHeight) / 2;
 
             return new Point(startX, startY);
         }
