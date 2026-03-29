@@ -9,7 +9,7 @@
         /// <summary>
         /// Рассчитывает позицию головы так, чтобы вся змейка была отцентрирована на поле.
         /// Учитывает, что рамка поля занимает координаты 0 и Width-1, Height-1.
-        /// Змейка должна находиться в пределах 1..Width-2 и 1..Height-2.
+        /// Змейка должна находиться в пределах между рамками.
         /// </summary>
         /// <param name="fieldWidth">Ширина игрового поля в клетках</param>
         /// <param name="fieldHeight">Высота игрового поля в клетках</param>
@@ -27,8 +27,8 @@
         )
         {
             // Доступное пространство между рамками
-            int availableWidth = fieldWidth - 2;   // от 1 до Width-2
-            int availableHeight = fieldHeight - 2; // от 1 до Height-2
+            int availableWidth = fieldWidth - 2;   // от Left+1 до Right-1
+            int availableHeight = fieldHeight - 2; // от Top+1 до Bottom-1
 
             // Проверка: помещается ли змейка в доступное пространство
             if((direction == Direction.Right || direction == Direction.Left) && snakeLength > availableWidth)

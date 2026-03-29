@@ -166,8 +166,7 @@
                 Point segment = snake.Body[i];
 
                 // Пропускаем сегменты за границами поля
-                if(segment.X < 0 || segment.X >= field.Width ||
-                   segment.Y < 0 || segment.Y >= field.Height)
+                if(!field.IsWithinBounds(segment))
                     continue;
 
                 char symbol = (i == lastSegmentIndex) ? SnakeHead : SnakeBody;
@@ -191,8 +190,7 @@
             Point pos = food.Position;
 
             // Пропускаем еду за границами поля
-            if(pos.X < 0 || pos.X >= field.Width ||
-               pos.Y < 0 || pos.Y >= field.Height)
+            if(!field.IsWithinBounds(pos))
                 return;
 
             Console.SetCursorPosition(pos.X, pos.Y + headerHeight);
