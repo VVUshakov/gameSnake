@@ -1,4 +1,8 @@
-﻿namespace Snake
+﻿using Snake.Interfaces;
+using Snake.Models;
+using static System.Console;
+
+namespace Snake.Core
 {
     /// <summary>
     /// Игровой цикл. Управляет отрисовкой, вводом и обновлением состояния игры.

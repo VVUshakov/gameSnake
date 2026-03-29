@@ -1,4 +1,4 @@
-﻿namespace Snake
+﻿namespace Snake.Models
 {
     /// <summary>
     /// Направления движения змейки в игровом поле

@@ -1,4 +1,7 @@
-﻿namespace Snake
+﻿using Snake.Core;
+using Snake.Models;
+
+namespace Snake.Interfaces
 {
     /// <summary>
     /// Интерфейс обработчика ввода.

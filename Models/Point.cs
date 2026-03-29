@@ -1,4 +1,4 @@
-﻿namespace Snake
+﻿namespace Snake.Models
 {
     /// <summary>
     /// Простейшее представление координат на игровом поле.

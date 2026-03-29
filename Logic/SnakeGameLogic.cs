@@ -1,4 +1,9 @@
-﻿namespace Snake
+﻿using Snake.Core;
+using Snake.Interfaces;
+using Snake.Models;
+using SnakeType = Snake.Models.Snake;
+
+namespace Snake.Logic
 {
     /// <summary>
     /// Реализует игровую логику змейки.

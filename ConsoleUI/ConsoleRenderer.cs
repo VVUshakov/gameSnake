@@ -1,4 +1,10 @@
-﻿namespace Snake
+﻿using Snake.Core;
+using Snake.Interfaces;
+using Snake.Models;
+using Snake.Utils;
+using SnakeType = Snake.Models.Snake;
+
+namespace Snake.ConsoleUI
 {
     /// <summary>
     /// Отрисовывает игру в консоли.
@@ -157,7 +163,7 @@
         /// <param name="snake">Объект змейки</param>
         /// <param name="field">Игровое поле для проверки границ</param>
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
-        private static void DrawSnake(Snake snake, PlayingField field, int headerHeight)
+        private static void DrawSnake(SnakeType snake, PlayingField field, int headerHeight)
         {
             int lastSegmentIndex = snake.Body.Count - 1;  // индекс последнего сегмента (голова)
 

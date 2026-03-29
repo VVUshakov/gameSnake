@@ -1,4 +1,8 @@
-﻿namespace Snake
+﻿using Snake.Core;
+using Snake.Interfaces;
+using Snake.Models;
+
+namespace Snake.ConsoleUI
 {
     /// <summary>
     /// Обрабатывает ввод с клавиатуры в консоли.

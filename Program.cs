@@ -1,4 +1,9 @@
-﻿namespace Snake
+﻿using Snake.ConsoleUI;
+using Snake.Core;
+using Snake.Interfaces;
+using Snake.Logic;
+
+namespace Snake
 {
     /// <summary>
     /// Точка входа в приложение

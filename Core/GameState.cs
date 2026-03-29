@@ -1,4 +1,8 @@
-﻿namespace Snake
+﻿using Snake.Models;
+using Snake.Utils;
+using SnakeType = Snake.Models.Snake;
+
+namespace Snake.Core
 {
     /// <summary>
     /// Состояние игры. Содержит все данные, необходимые для работы игры.
@@ -20,7 +24,7 @@
 
         // Компоненты игры
         public PlayingField Field { get; }  // объект игрового поля
-        public Snake Snake { get; }         // объект змейки
+        public SnakeType Snake { get; }     // объект змейки
         public Food Food { get; }           // объект еды
 
         public GameState()
@@ -38,7 +42,7 @@
             );
 
             // Создаём змейку с центрированным телом на игровом поле
-            Snake = new Snake(
+            Snake = new SnakeType(
                 headPosition: headPosition,
                 direction: Direction.Right,
                 snakeLength: 3

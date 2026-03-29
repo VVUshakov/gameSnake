@@ -1,4 +1,4 @@
-﻿namespace Snake
+﻿namespace Snake.Models
 {
     /// <summary>
     /// Представляет змейку на игровом поле.
@@ -8,17 +8,17 @@
     {
         /// <summary>
         /// Список всех сегментов змейки.
-        /// Body[0] — хвост, Body[Body.Count - 1] — голова.
+        /// Body[0] — хвост, Body[Body.Count - 1] — голова
         /// </summary>
         public List<Point> Body { get; set; }
 
         /// <summary>
-        /// Координаты головы змейки (последний элемент списка)
+        /// Координаты головы змейки (всегда последний элемент списка)
         /// </summary>
         public Point Head => Body[Body.Count - 1];
 
         /// <summary>
-        /// Координаты хвоста змейки (первый элемент списка)
+        /// Координаты хвоста змейки (всегда первый элемент списка)
         /// </summary>
         public Point Tail => Body[0];
 

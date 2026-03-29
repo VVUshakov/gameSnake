@@ -1,4 +1,4 @@
-﻿namespace Snake
+﻿namespace Snake.Models
 {
     /// <summary>
     /// Представляет еду на игровом поле.

@@ -1,4 +1,7 @@
-﻿namespace Snake
+﻿using Snake.Core;
+using Snake.Models;
+
+namespace Snake.Interfaces
 {
     public interface IGameRenderer
     {

@@ -1,4 +1,6 @@
-﻿namespace Snake
+﻿using Snake.Models;
+
+namespace Snake.Utils
 {
     /// <summary>
     /// Предоставляет методы для расчёта позиций объектов на игровом поле.
