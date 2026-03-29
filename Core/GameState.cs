@@ -14,6 +14,7 @@ namespace Snake.Core
         public bool IsGameOver { get; set; } = false;   // флаг проигрыша
         public bool IsWin { get; set; } = false;        // флаг победы
         public bool IsPaused { get; set; } = false;     // флаг паузы
+        public bool IsRestartRequested { get; set; } = false;  // флаг запроса перезапуска
 
         // Настройки
         public int Fps { get; set; } = 100;     // задержка между кадрами (мс)

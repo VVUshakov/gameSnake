@@ -10,6 +10,8 @@ namespace Snake.UI.ConsoleUI
     /// </summary>
     public class ConsoleInputHandler : IInputHandler
     {
+        private bool _waitingForRestart = false;
+
         /// <summary>
         /// Считывает и обрабатывает нажатия клавиш клавиатуры.
         /// </summary>
@@ -21,6 +23,25 @@ namespace Snake.UI.ConsoleUI
 
             // Читаем клавишу (true - не отображать её на экране)
             ConsoleKey key = Console.ReadKey(true).Key;
+
+            // Обработка перезапуска после проигрыша (клавиши Y/N)
+            if(_waitingForRestart)
+            {
+                // Получаем символ клавиши для поддержки русской раскладки
+                char keyChar = Console.ReadKey(true).KeyChar;
+                
+                if(keyChar == 'y' || keyChar == 'Y' || keyChar == 'н' || keyChar == 'Н')
+                {
+                    _waitingForRestart = false;
+                    state.IsRestartRequested = true;
+                }
+                else if(keyChar == 'n' || keyChar == 'N' || keyChar == 'т' || keyChar == 'Т' || keyChar == 27) // 27 = Escape
+                {
+                    _waitingForRestart = false;
+                    state.IsExit = true;
+                }
+                return;
+            }
 
             // Обработка паузы (клавиша P)
             if(key == ConsoleKey.P)
@@ -63,19 +84,11 @@ namespace Snake.UI.ConsoleUI
         }
 
         /// <summary>
-        /// Меняет направление движения змейки, если это не противоречит правилам.
-        /// Разворот на 180° запрещён, если длина змейки больше 1 сегмента.
+        /// Включает режим ожидания перезапуска (после проигрыша)
         /// </summary>
-        /// <param name="state">Состояние игры</param>
-        /// <param name="newDirection">Новое направление движения</param>
-        /// <param name="oppositeDirection">Противоположное направление (запрещено для разворота)</param>
-        private static void ChangeDirection(GameState state, Direction newDirection, Direction oppositeDirection)
+        public void WaitForRestart()
         {
-            // Разворот на 180° запрещён, если длина змейки больше 1
-            if(state.Snake.Body.Count > 1 && state.CurrentDirection != oppositeDirection)
-            {
-                state.CurrentDirection = newDirection;
-            }
+            _waitingForRestart = true;
         }
 
         /// <summary>
@@ -90,19 +103,24 @@ namespace Snake.UI.ConsoleUI
                 Console.ReadKey(true);
             }
 
-            ConsoleKeyInfo key = Console.ReadKey();
-            
-            // Обрабатываем английскую и русскую раскладку
-            bool playAgain = key.KeyChar == 'y' || key.KeyChar == 'Y' ||
-                            key.KeyChar == 'н' || key.KeyChar == 'Н';
-            
-            // Если нажали Y/н — очищаем консоль для новой игры
-            if(playAgain)
-            {
-                Console.Clear();
-            }
+            WaitForRestart();
+            return false; // Возвращаем false, реальное решение будет в ProcessInput
+        }
 
-            return playAgain;
+        /// <summary>
+        /// Меняет направление движения змейки, если это не противоречит правилам.
+        /// Разворот на 180° запрещён, если длина змейки больше 1 сегмента.
+        /// </summary>
+        /// <param name="state">Состояние игры</param>
+        /// <param name="newDirection">Новое направление движения</param>
+        /// <param name="oppositeDirection">Противоположное направление (запрещено для разворота)</param>
+        private static void ChangeDirection(GameState state, Direction newDirection, Direction oppositeDirection)
+        {
+            // Разворот на 180° запрещён, если длина змейки больше 1
+            if(state.Snake.Body.Count > 1 && state.CurrentDirection != oppositeDirection)
+            {
+                state.CurrentDirection = newDirection;
+            }
         }
     }
 }
