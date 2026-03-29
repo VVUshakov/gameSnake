@@ -197,8 +197,8 @@ namespace Snake.UI.ConsoleUI
                 "ИГРА ОКОНЧЕНА!",
                 "",
                 "Хотите сыграть ещё?",
-                "Нажмите Y для продолжения",
-                "Нажмите N для выхода"
+                "Нажмите Enter для продолжения",
+                "Нажмите Escape для выхода"
             };
 
             DrawCenteredMessage(field, message, headerHeight, GameOverColor);
@@ -216,8 +216,8 @@ namespace Snake.UI.ConsoleUI
                 "ПОБЕДА!",
                 "",
                 "Хотите сыграть ещё?",
-                "Нажмите Y для продолжения",
-                "Нажмите N для выхода"
+                "Нажмите Enter для продолжения",
+                "Нажмите Escape для выхода"
             };
 
             DrawCenteredMessage(field, message, headerHeight, GameWinColor);
@@ -235,7 +235,7 @@ namespace Snake.UI.ConsoleUI
                 "┌────────────────────────┐",
                 "│       ── ПАУЗА ──      │",
                 "│                        │",
-                "│  P - продолжить        │",
+                "│  Spacebar - продолжить │",
                 "│  Escape - выйти        │",
                 "└────────────────────────┘"
             };

@@ -19,67 +19,63 @@ namespace Snake.UI.ConsoleUI
         public void ProcessInput(GameState state)
         {
             // Если нет нажатых клавиш - выходим
-            if(!Console.KeyAvailable) return;
+            if (!Console.KeyAvailable) return;
 
             // Читаем клавишу (true - не отображать её на экране)
             ConsoleKey key = Console.ReadKey(true).Key;
 
-            // Обработка перезапуска после проигрыша (клавиши Y/N)
-            if(_waitingForRestart)
+            // Обрабатываем все клавиши в едином switch
+            switch (key)
             {
-                // Получаем символ клавиши для поддержки русской раскладки
-                char keyChar = Console.ReadKey(true).KeyChar;
-                
-                if(keyChar == 'y' || keyChar == 'Y' || keyChar == 'н' || keyChar == 'Н')
-                {
-                    _waitingForRestart = false;
-                    state.IsRestartRequested = true;
-                }
-                else if(keyChar == 'n' || keyChar == 'N' || keyChar == 'т' || keyChar == 'Т' || keyChar == 27) // 27 = Escape
-                {
-                    _waitingForRestart = false;
-                    state.IsExit = true;
-                }
-                return;
-            }
-
-            // Обработка паузы (клавиша P)
-            if(key == ConsoleKey.P)
-            {
-                state.IsPaused = !state.IsPaused;
-                return;
-            }
-
-            // Если игра на паузе - не обрабатываем другие клавиши, кроме выход (Escape)
-            if (state.IsPaused)
-            {
-                if(key == ConsoleKey.Escape)
-                    state.IsExit = true;
-                return;
-            }
-
-            // Обрабатываем стрелки
-            switch(key)
-            {
-                case ConsoleKey.UpArrow:
-                    ChangeDirection(state, Direction.Up, Direction.Down);
+                case ConsoleKey.Enter:
+                    // Подтверждение перезапуска игры
+                    _waitingForRestart = true;
                     break;
 
-                case ConsoleKey.DownArrow:
-                    ChangeDirection(state, Direction.Down, Direction.Up);
-                    break;
-
-                case ConsoleKey.LeftArrow:
-                    ChangeDirection(state, Direction.Left, Direction.Right);
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    ChangeDirection(state, Direction.Right, Direction.Left);
+                case ConsoleKey.P:
+                case ConsoleKey.Spacebar:
+                    // Пауза
+                    state.IsPaused = !state.IsPaused;
                     break;
 
                 case ConsoleKey.Escape:
+                    // Выход (в том числе из паузы)
                     state.IsExit = true;
                     break;
+
+                case ConsoleKey.UpArrow:
+                    // Движение вверх (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Up, Direction.Down);
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    // Движение вниз (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Down, Direction.Up);
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    // Движение влево (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Left, Direction.Right);
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    // Движение вправо (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Right, Direction.Left);
+                    break;
+            }
+
+            // Обработка перезапуска после проигрыша (клавиша Enter)
+            if (_waitingForRestart)
+            {
+                // Если нажат Enter, изменяем глобальный флаг перезапуска игры
+                if (key == ConsoleKey.Enter) { state.IsRestartRequested = true; }
+
+                // Изменяем локальный флаг перезапуска игры
+                _waitingForRestart = false;
             }
         }
 

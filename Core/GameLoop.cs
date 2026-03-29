@@ -43,22 +43,17 @@ namespace Snake.Core
                     // Запускаем игровой цикл
                     Run(state);
 
-                    // Если запрошен перезапуск — начинаем новую игру
-                    if(state.IsRestartRequested)
-                    {
-                        playAgain = true;
+                    // Если игра проиграна — показываем сообщение и спрашиваем о перезапуске игры
+                    if(state.IsGameOver)
+                    {                           
+                        // Если запрошен перезапуск — начинаем новую игру
+                        if(state.IsRestartRequested)
+                        {
+                            playAgain = true;
+                        }
                     }
-                    // Если игра проиграна — показываем сообщение и спрашиваем о повторной игре
-                    else if(state.IsGameOver)
-                    {
-                        _renderer.Render(state);  // Рисуем последний кадр с сообщением
-                        
-                        // Небольшая пауза, чтобы игрок успел прочитать сообщение
-                        Thread.Sleep(500);
-                        
-                        _inputHandler.AskPlayAgain();  // Включаем режим ожидания Y/N
-                    }
-                    else if(state.IsExit)
+                    
+                    if(state.IsExit)
                     {
                         // Если вышли по Escape — не спрашиваем
                         playAgain = false;
