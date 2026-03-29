@@ -7,6 +7,16 @@
     public class PlayingField
     {
         /// <summary>
+        /// Минимальная ширина поля (с учётом рамки и места для сообщений)
+        /// </summary>
+        public const int MinWidth = 20;
+
+        /// <summary>
+        /// Минимальная высота поля (с учётом рамки и места для сообщений)
+        /// </summary>
+        public const int MinHeight = 10;
+
+        /// <summary>
         /// Ширина игрового поля в клетках
         /// </summary>
         public int Width { get; }
@@ -72,10 +82,19 @@
         /// <summary>
         /// Инициализирует новое игровое поле с указанными размерами
         /// </summary>
-        /// <param name="width">Ширина поля в клетках (по умолчанию 20)</param>
-        /// <param name="height">Высота поля в клетках (по умолчанию 10)</param>
-        public PlayingField(int width = 20, int height = 10)
+        /// <param name="width">Ширина поля в клетках (по умолчанию 30)</param>
+        /// <param name="height">Высота поля в клетках (по умолчанию 30)</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Выбрасывается, если размер поля меньше минимального
+        /// </exception>
+        public PlayingField(int width = 30, int height = 30)
         {
+            if(width < MinWidth)
+                throw new ArgumentOutOfRangeException(nameof(width), $"Минимальная ширина поля: {MinWidth}");
+
+            if(height < MinHeight)
+                throw new ArgumentOutOfRangeException(nameof(height), $"Минимальная высота поля: {MinHeight}");
+
             Width = width;
             Height = height;
         }
