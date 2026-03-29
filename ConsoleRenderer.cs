@@ -90,10 +90,10 @@
             DrawField(state.Field, headerHeight);
 
             // Нарисовать змейку
-            DrawSnake(state.Snake, headerHeight);
+            DrawSnake(state.Snake, state.Field, headerHeight);
 
             // Нарисовать еду
-            DrawFood(state.Food, headerHeight);
+            DrawFood(state.Food, state.Field, headerHeight);
 
             // Если игра проиграна - показать сообщение о проигрыше
             if(state.IsGameOver)
@@ -155,14 +155,20 @@
         /// Отрисовывает змейку на игровом поле
         /// </summary>
         /// <param name="snake">Объект змейки</param>
+        /// <param name="field">Игровое поле для проверки границ</param>
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
-        private static void DrawSnake(Snake snake, int headerHeight)
+        private static void DrawSnake(Snake snake, PlayingField field, int headerHeight)
         {
             int lastSegmentIndex = snake.Body.Count - 1;  // индекс последнего сегмента (голова)
 
             for(int i = 0; i <= lastSegmentIndex; i++)
             {
                 Point segment = snake.Body[i];
+
+                // Пропускаем сегменты за границами поля
+                if(segment.X < 0 || segment.X >= field.Width ||
+                   segment.Y < 0 || segment.Y >= field.Height)
+                    continue;
 
                 char symbol = (i == lastSegmentIndex) ? SnakeHead : SnakeBody;
 
@@ -175,14 +181,22 @@
         /// Отрисовывает еду на игровом поле
         /// </summary>
         /// <param name="food">Объект еды</param>
+        /// <param name="field">Игровое поле для проверки границ</param>
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
-        private static void DrawFood(Food food, int headerHeight)
+        private static void DrawFood(Food food, PlayingField field, int headerHeight)
         {
-            if(food.IsSuccess)
-            {
-                Console.SetCursorPosition(food.Position.X, food.Position.Y + headerHeight);
-                Console.Write(FoodSymbol);
-            }
+            if(!food.IsSuccess || food.Position == null)
+                return;
+
+            Point pos = food.Position;
+
+            // Пропускаем еду за границами поля
+            if(pos.X < 0 || pos.X >= field.Width ||
+               pos.Y < 0 || pos.Y >= field.Height)
+                return;
+
+            Console.SetCursorPosition(pos.X, pos.Y + headerHeight);
+            Console.Write(FoodSymbol);
         }
 
         /// <summary>
