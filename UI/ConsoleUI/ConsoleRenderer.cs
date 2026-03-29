@@ -280,13 +280,22 @@ namespace Snake.UI.ConsoleUI
                 messageWidth,
                 messageHeight);
 
+            // Проверяем, что позиция в пределах поля
+            if(startPosition.X < 0 || startPosition.Y < headerHeight)
+                return;
+
             ConsoleColor originalColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
 
             for(int i = 0; i < lines.Length; i++)
             {
-                Console.SetCursorPosition(startPosition.X, startPosition.Y + i);
-                Console.Write(lines[i]);
+                int y = startPosition.Y + i;
+                // Проверяем, что строка не выходит за границы поля
+                if(y >= headerHeight && y < headerHeight + field.Height)
+                {
+                    Console.SetCursorPosition(startPosition.X, y);
+                    Console.Write(lines[i]);
+                }
             }
 
             Console.ForegroundColor = originalColor;
