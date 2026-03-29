@@ -84,6 +84,12 @@ namespace Snake.UI.ConsoleUI
         /// <returns>true, если пользователь хочет сыграть ещё, false в противном случае</returns>
         public bool AskPlayAgain()
         {
+            // Ждём, пока пользователь отпустит предыдущие клавиши
+            while(Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+            }
+
             ConsoleKeyInfo key = Console.ReadKey();
             
             // Обрабатываем английскую и русскую раскладку
