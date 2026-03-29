@@ -7,14 +7,16 @@
     public class PlayingField
     {
         /// <summary>
-        /// Минимальная ширина поля (с учётом рамки и места для сообщений)
+        /// Минимальная ширина поля (с учётом рамки и места для сообщений).
+        /// Сообщение о паузе имеет ширину 26 символов, поэтому минимум 28 (с рамкой и запасом)
         /// </summary>
-        public const int MinWidth = 20;
+        public const int MinWidth = 28;
 
         /// <summary>
-        /// Минимальная высота поля (с учётом рамки и места для сообщений)
+        /// Минимальная высота поля (с учётом рамки и места для сообщений).
+        /// Сообщение о паузе имеет высоту 6 строк, поэтому минимум 10 (с рамкой и запасом)
         /// </summary>
-        public const int MinHeight = 10;
+        public const int MinHeight = 12;
 
         /// <summary>
         /// Ширина игрового поля в клетках
@@ -87,7 +89,7 @@
         /// <exception cref="ArgumentOutOfRangeException">
         /// Выбрасывается, если размер поля меньше минимального
         /// </exception>
-        public PlayingField(int width = 30, int height = 30)
+        public PlayingField(int width = 20, int height = 10)
         {
             if(width < MinWidth)
                 throw new ArgumentOutOfRangeException(nameof(width), $"Минимальная ширина поля: {MinWidth}");
