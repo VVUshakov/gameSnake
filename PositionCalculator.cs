@@ -8,6 +8,8 @@
     {
         /// <summary>
         /// Рассчитывает позицию головы так, чтобы вся змейка была отцентрирована на поле.
+        /// Учитывает, что рамка поля занимает координаты 0 и Width-1, Height-1.
+        /// Змейка должна находиться в пределах 1..Width-2 и 1..Height-2.
         /// </summary>
         /// <param name="fieldWidth">Ширина игрового поля в клетках</param>
         /// <param name="fieldHeight">Высота игрового поля в клетках</param>
@@ -24,51 +26,54 @@
             Direction direction     // направление движения
         )
         {
-            // Проверка: помещается ли змейка в поле по ширине
-            if((direction == Direction.Right || direction == Direction.Left) && snakeLength > fieldWidth)
-                throw new ArgumentException($"Змейка длиной {snakeLength} не помещается в поле шириной {fieldWidth}");
+            // Доступное пространство между рамками
+            int availableWidth = fieldWidth - 2;   // от 1 до Width-2
+            int availableHeight = fieldHeight - 2; // от 1 до Height-2
 
-            // Проверка: помещается ли змейка в поле по высоте
-            if((direction == Direction.Up || direction == Direction.Down) && snakeLength > fieldHeight)
-                throw new ArgumentException($"Змейка длиной {snakeLength} не помещается в поле высотой {fieldHeight}");
+            // Проверка: помещается ли змейка в доступное пространство
+            if((direction == Direction.Right || direction == Direction.Left) && snakeLength > availableWidth)
+                throw new ArgumentException($"Змейка длиной {snakeLength} не помещается в поле шириной {availableWidth}");
 
-            // Центр поля
+            if((direction == Direction.Up || direction == Direction.Down) && snakeLength > availableHeight)
+                throw new ArgumentException($"Змейка длиной {snakeLength} не помещается в поле высотой {availableHeight}");
+
+            // Центр доступной области (между рамками)
             int centerX = fieldWidth / 2;
             int centerY = fieldHeight / 2;
 
             Point headPosition; // координаты головы
 
             // Рассчитываем позицию головы в зависимости от направления
-            // Важно: голова должна быть так, чтобы всё тело поместилось в поле
+            // Важно: голова должна быть так, чтобы всё тело поместилось в поле между рамками
             switch(direction)
             {
                 case Direction.Right:
                     // При движении вправо: голова в центре, хвост слева
-                    // Голова не должна быть ближе к левому краю, чем длина змейки - 1
-                    int headXRight = Math.Max(snakeLength - 1, centerX);
-                    // Но и не должна выходить за правую границу
-                    headXRight = Math.Min(headXRight, fieldWidth - 1);
+                    // Голова не должна быть ближе к левой рамке, чем длина змейки
+                    int headXRight = Math.Max(snakeLength, centerX);
+                    // Но и не должна выходить за правую рамку
+                    headXRight = Math.Min(headXRight, fieldWidth - 2);
                     headPosition = new Point(x: headXRight, y: centerY);
                     break;
 
                 case Direction.Left:
                     // При движении влево: голова в центре, хвост справа
-                    int headXLeft = Math.Min(fieldWidth - snakeLength, centerX);
-                    headXLeft = Math.Max(headXLeft, 0);
+                    int headXLeft = Math.Min(fieldWidth - 1 - snakeLength, centerX);
+                    headXLeft = Math.Max(headXLeft, 1);
                     headPosition = new Point(x: headXLeft, y: centerY);
                     break;
 
                 case Direction.Down:
                     // При движении вниз: голова в центре, хвост сверху
-                    int headYDown = Math.Max(snakeLength - 1, centerY);
-                    headYDown = Math.Min(headYDown, fieldHeight - 1);
+                    int headYDown = Math.Max(snakeLength, centerY);
+                    headYDown = Math.Min(headYDown, fieldHeight - 2);
                     headPosition = new Point(x: centerX, y: headYDown);
                     break;
 
                 case Direction.Up:
                     // При движении вверх: голова в центре, хвост снизу
-                    int headYUp = Math.Min(fieldHeight - snakeLength, centerY);
-                    headYUp = Math.Max(headYUp, 0);
+                    int headYUp = Math.Min(fieldHeight - 1 - snakeLength, centerY);
+                    headYUp = Math.Max(headYUp, 1);
                     headPosition = new Point(x: centerX, y: headYUp);
                     break;
 

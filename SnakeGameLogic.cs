@@ -162,9 +162,10 @@
         {
             Point head = state.Snake.Head;
 
-            // Проверка столкновения со стенами
-            if(head.X < 0 || head.X >= state.Field.Width ||
-                head.Y < 0 || head.Y >= state.Field.Height)
+            // Проверка столкновения со стенами (рамка поля — это границы 0 и Width-1, Height-1)
+            // Змейка должна находиться в пределах 1..Width-2 и 1..Height-2
+            if(head.X <= 0 || head.X >= state.Field.Width - 1 ||
+                head.Y <= 0 || head.Y >= state.Field.Height - 1)
             {
                 state.IsGameOver = true;
                 return;
