@@ -64,7 +64,8 @@
 
             for(int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                // Еда должна появляться между рамками игрового поля
+                // Еда должна появляться между рамками
+                // Random.Next(min, max) возвращает [min, max), поэтому max = field.Right (эксклюзивная граница)
                 int x = _random.Next(field.Left + 1, field.Right);   // координата X (между рамками)
                 int y = _random.Next(field.Top + 1, field.Bottom);   // координата Y (между рамками)
                 Point candidateFood = new Point(x, y);  // создаём координату

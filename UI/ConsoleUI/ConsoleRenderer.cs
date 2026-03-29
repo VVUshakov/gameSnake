@@ -171,8 +171,8 @@ namespace Snake.UI.ConsoleUI
             {
                 Point segment = snake.Body[i];
 
-                // Пропускаем сегменты за границами поля
-                if(!field.IsWithinBounds(segment))
+                // Пропускаем сегменты за границами поля (рисуем только между рамками)
+                if(!field.IsInside(segment))
                     continue;
 
                 char symbol = (i == lastSegmentIndex) ? SnakeHead : SnakeBody;
@@ -195,8 +195,8 @@ namespace Snake.UI.ConsoleUI
 
             Point pos = food.Position;
 
-            // Пропускаем еду за границами поля
-            if(!field.IsWithinBounds(pos))
+            // Пропускаем еду за границами поля (рисуем только между рамками)
+            if(!field.IsInside(pos))
                 return;
 
             Console.SetCursorPosition(pos.X, pos.Y + headerHeight);
