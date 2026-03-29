@@ -2,7 +2,7 @@
 using Snake.Interfaces;
 using Snake.Models;
 
-namespace Snake.ConsoleUI
+namespace Snake.UI.ConsoleUI
 {
     /// <summary>
     /// Обрабатывает ввод с клавиатуры в консоли.

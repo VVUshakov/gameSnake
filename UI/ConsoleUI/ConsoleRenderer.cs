@@ -4,7 +4,7 @@ using Snake.Models;
 using Snake.Utils;
 using SnakeType = Snake.Models.Snake;
 
-namespace Snake.ConsoleUI
+namespace Snake.UI.ConsoleUI
 {
     /// <summary>
     /// Отрисовывает игру в консоли.

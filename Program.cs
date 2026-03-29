@@ -1,4 +1,4 @@
-﻿using Snake.ConsoleUI;
+﻿using Snake.UI.ConsoleUI;
 using Snake.Core;
 using Snake.Interfaces;
 using Snake.Logic;
