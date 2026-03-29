@@ -89,16 +89,16 @@
         /// <exception cref="ArgumentOutOfRangeException">
         /// Выбрасывается, если размер поля меньше минимального
         /// </exception>
-        public PlayingField(int width = 20, int height = 10)
+        public PlayingField(int width = 30, int height = 15)
         {
-            if(width < MinWidth)
+            if (width < MinWidth)
                 throw new ArgumentOutOfRangeException(nameof(width), $"Минимальная ширина поля: {MinWidth}");
 
-            if(height < MinHeight)
+            if (height < MinHeight)
                 throw new ArgumentOutOfRangeException(nameof(height), $"Минимальная высота поля: {MinHeight}");
 
             Width = width;
             Height = height;
         }
-    }
+    }    
 }

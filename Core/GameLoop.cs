@@ -46,13 +46,12 @@ namespace Snake.Core
                     // Если игра проиграна — показываем сообщение и спрашиваем о повторной игре
                     if(state.IsGameOver)
                     {
-                        //_renderer.Render(state);  // Рисуем последний кадр с сообщением
+                        _renderer.Render(state);  // Рисуем последний кадр с сообщением
                         playAgain = _renderer.AskPlayAgain();
                     }
-
-                    // Если вышли по Escape — не спрашиваем
-                    if (state.IsExit)
-                    {                        
+                    else if(state.IsExit)
+                    {
+                        // Если вышли по Escape — не спрашиваем
                         playAgain = false;
                     }
                 }

@@ -70,15 +70,21 @@ namespace Snake.UI.ConsoleUI
         public bool AskPlayAgain()
         {
             ConsoleKeyInfo key = Console.ReadKey();
-            bool result = (key.KeyChar == 'y' || key.KeyChar == 'Y' ||
-                          key.KeyChar == 'н' || key.KeyChar == 'Н');
+            
+            // Обрабатываем английскую и русскую раскладку
+            bool playAgain = key.KeyChar == 'y' || key.KeyChar == 'Y' ||
+                            key.KeyChar == 'н' || key.KeyChar == 'Н';
+            
+            bool exit = key.KeyChar == 'n' || key.KeyChar == 'N' ||
+                       key.KeyChar == 'т' || key.KeyChar == 'Т';
 
-            //if (result)
-            //{
-            //    Console.Clear();
-            //}
+            // Если нажали Y/н — очищаем консоль для новой игры
+            if(playAgain)
+            {
+                Console.Clear();
+            }
 
-            return result;
+            return playAgain;
         }
 
         /// <summary>
