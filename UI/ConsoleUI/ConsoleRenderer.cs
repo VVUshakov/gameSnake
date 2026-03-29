@@ -64,30 +64,6 @@ namespace Snake.UI.ConsoleUI
         }
 
         /// <summary>
-        /// Запрашивает у пользователя повторную игру после окончания (ожидает нажатия клавиши)
-        /// </summary>
-        /// <returns>true, если пользователь хочет сыграть ещё, false в противном случае</returns>
-        public bool AskPlayAgain()
-        {
-            ConsoleKeyInfo key = Console.ReadKey();
-            
-            // Обрабатываем английскую и русскую раскладку
-            bool playAgain = key.KeyChar == 'y' || key.KeyChar == 'Y' ||
-                            key.KeyChar == 'н' || key.KeyChar == 'Н';
-            
-            bool exit = key.KeyChar == 'n' || key.KeyChar == 'N' ||
-                       key.KeyChar == 'т' || key.KeyChar == 'Т';
-
-            // Если нажали Y/н — очищаем консоль для новой игры
-            if(playAgain)
-            {
-                Console.Clear();
-            }
-
-            return playAgain;
-        }
-
-        /// <summary>
         /// Отрисовывает текущее состояние игры
         /// </summary>
         /// <param name="state">Состояние игры</param>

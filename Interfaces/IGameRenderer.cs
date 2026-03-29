@@ -15,11 +15,5 @@ namespace Snake.Interfaces
         /// </summary>
         /// <param name="state">Состояние игры</param>
         void Render(GameState state);
-
-        /// <summary>
-        /// Запрашивает у пользователя повторную игру после окончания (ожидает нажатия клавиши)
-        /// </summary>
-        /// <returns>true, если пользователь хочет сыграть ещё, false в противном случае</returns>
-        bool AskPlayAgain();
     }
 }

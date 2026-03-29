@@ -77,5 +77,26 @@ namespace Snake.UI.ConsoleUI
                 state.CurrentDirection = newDirection;
             }
         }
+
+        /// <summary>
+        /// Запрашивает у пользователя повторную игру после окончания
+        /// </summary>
+        /// <returns>true, если пользователь хочет сыграть ещё, false в противном случае</returns>
+        public bool AskPlayAgain()
+        {
+            ConsoleKeyInfo key = Console.ReadKey();
+            
+            // Обрабатываем английскую и русскую раскладку
+            bool playAgain = key.KeyChar == 'y' || key.KeyChar == 'Y' ||
+                            key.KeyChar == 'н' || key.KeyChar == 'Н';
+            
+            // Если нажали Y/н — очищаем консоль для новой игры
+            if(playAgain)
+            {
+                Console.Clear();
+            }
+
+            return playAgain;
+        }
     }
 }
