@@ -1,4 +1,7 @@
-﻿namespace Snake.Models
+﻿using gameSnake;
+using Snake.Utils;
+
+namespace Snake.Models
 {
     /// <summary>
     /// Представляет игровое поле.
