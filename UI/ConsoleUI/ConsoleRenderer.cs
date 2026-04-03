@@ -228,8 +228,8 @@ namespace Snake.UI.ConsoleUI
         /// <param name="color">Цвет текста сообщения</param>
         private static void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color = DefaultMessageColor)
         {
-            int messageWidth = PositionCalculator.GetMessageWidth(lines);
-            int messageHeight = PositionCalculator.GetMessageHeight(lines);
+            int messageWidth = MessageSizer.GetWidth(lines);
+            int messageHeight = MessageSizer.GetHeight(lines);
 
             // Передаём высоту поля с учётом заголовка для правильного центрирования
             Point startPosition = PositionCalculator.CalculateCenteredMessagePosition(

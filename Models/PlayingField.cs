@@ -87,8 +87,8 @@ namespace Snake.Models
 
             // Получаем минимальные ширину и высоту игрового поля (с учётом рамки и места для сервисных сообщений).
             // Вычисляется динамически на основе максимального габарита сервисного сообщения + рамка(2) + запас(2)
-            int minWidth = PositionCalculator.GetMaxMessageWidth(allMessages) + 4;
-            int minHeight = PositionCalculator.GetMaxMessageHeight(allMessages) + 4;
+            int minWidth = MessageSizer.GetMaxWidth(allMessages) + 4;
+            int minHeight = MessageSizer.GetMaxHeight(allMessages) + 4;
 
             // Проверяем входящие параметры на предмет соответсвия минимальным размерам
             if (width < minWidth) { width = minWidth; }
