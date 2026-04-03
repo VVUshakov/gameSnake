@@ -1,10 +1,18 @@
-﻿using System.Reflection;
+﻿using System;
 using Snake.Utils;
 
 namespace gameSnake
 {
     internal class ServiseMessange
     {
+        // Список всех методов, возвращающих сообщения
+        private static readonly Func<string[]>[] _messageSources =
+        {
+            GetPauseMessange,
+            GetGameOverMessange,
+            GetGameWinMessange
+        };
+
         internal static string[] GetPauseMessange()
         {
             return new string[]
@@ -43,27 +51,15 @@ namespace gameSnake
         }
 
         /// <summary>
-        /// Автоматически находит все методы, возвращающие string[], и вызывает их
+        /// Возвращает все сервисные сообщения, вызывая каждый делегат из списка
         /// </summary>
         internal static List<string[]> GetAllMessages()
         {
             var messages = new List<string[]>();
 
-            // Получаем все статические методы текущего класса
-            MethodInfo[] methods = typeof(ServiseMessange).GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-
-            foreach(MethodInfo method in methods)
+            foreach(var source in _messageSources)
             {
-                // Проверяем, что метод возвращает string[]
-                if(method.ReturnType == typeof(string[]))
-                {
-                    // Вызываем метод (параметр null для статического метода)
-                    string[]? result = method.Invoke(null, null) as string[];
-                    if(result != null)
-                    {
-                        messages.Add(result);
-                    }
-                }
+                messages.Add(source());
             }
 
             return messages;
