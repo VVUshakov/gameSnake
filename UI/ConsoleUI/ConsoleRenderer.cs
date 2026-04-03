@@ -217,17 +217,9 @@ namespace Snake.UI.ConsoleUI
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawPause(PlayingField field, int headerHeight)
         {
-            string[] pauseBox = new string[]
-            {
-                "┌────────────────────────┐",
-                "│       ── ПАУЗА ──      │",
-                "│                        │",
-                "│  Spacebar - продолжить │",
-                "│  Escape - выйти        │",
-                "└────────────────────────┘"
-            };
-
-            DrawCenteredMessage(field, pauseBox, headerHeight, PauseColor);
+            string[] message = ServiseMessange.GetPauseMessange();
+            
+            DrawCenteredMessage(field, message, headerHeight, PauseColor);
         }
 
         /// <summary>
