@@ -20,12 +20,10 @@ namespace gameSnake.Core
         {
             var state = new GameState();
 
-            // Вычисляем минимальные размеры на основе сервисных сообщений
-            var allMessages = ServiseMessange.GetAllMessages();
-            int minWidth = MessageSizer.GetMaxWidth(allMessages) + 4;
-            int minHeight = MessageSizer.GetMaxHeight(allMessages) + 4;
+            // Вычисляем итоговые размеры поля с учётом минимальных габаритов
+            int minWidth = GetMinWidth();
+            int minHeight = GetMinHeight();
 
-            // Корректируем размеры, если они меньше минимальных
             int finalWidth = fieldWidth;
             int finalHeight = fieldHeight;
             if(finalWidth < minWidth) finalWidth = minWidth;
@@ -52,6 +50,22 @@ namespace gameSnake.Core
                 throw new InvalidOperationException("Нет свободного места для еды! Невозможно начать игру.");
 
             return state;
+        }
+
+        /// <summary>
+        /// Возвращает минимальную ширину поля (сообщение + рамка + запас)
+        /// </summary>
+        private static int GetMinWidth()
+        {
+            return MessageSizer.GetMaxWidth(ServiseMessange.GetAllMessages()) + 4;
+        }
+
+        /// <summary>
+        /// Возвращает минимальную высоту поля (сообщение + рамка + запас)
+        /// </summary>
+        private static int GetMinHeight()
+        {
+            return MessageSizer.GetMaxHeight(ServiseMessange.GetAllMessages()) + 4;
         }
     }
 }
