@@ -1,30 +1,31 @@
-using gameSnake.Models;
+п»їusing gameSnake.Models;
 
 namespace gameSnake.Core
 {
     /// <summary>
-    /// Состояние игры. Содержит все данные, необходимые для работы игры.
-    /// Это чистый контейнер данных — инициализация через GameFactory.
+    /// РЎРѕСЃС‚РѕСЏРЅРёРµ РёРіСЂС‹. РЎРѕРґРµСЂР¶РёС‚ РІСЃРµ РґР°РЅРЅС‹Рµ, РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР»СЏ СЂР°Р±РѕС‚С‹ РёРіСЂС‹.
+    /// Р­С‚Рѕ С‡РёСЃС‚С‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ РґР°РЅРЅС‹С… вЂ” РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ С‡РµСЂРµР· GameFactory.
     /// </summary>
     public class GameState
     {
-        // Управляющие флаги
+        // РЈРїСЂР°РІР»СЏСЋС‰РёРµ С„Р»Р°РіРё
         public bool IsExit { get; set; } = false;
         public bool IsGameOver { get; set; } = false;
         public bool IsWin { get; set; } = false;
         public bool IsPaused { get; set; } = false;
         public bool IsRestartRequested { get; set; } = false;
 
-        // Настройки
+        // РќР°СЃС‚СЂРѕР№РєРё
         public int Fps { get; set; } = 100;
 
-        // Игровые данные
+        // РРіСЂРѕРІС‹Рµ РґР°РЅРЅС‹Рµ
         public Header Header { get; } = new Header();
         public Direction CurrentDirection { get; set; } = Direction.Right;
 
-        // Компоненты игры (инициализируются через GameFactory)
+        // РљРѕРјРїРѕРЅРµРЅС‚С‹ РёРіСЂС‹ (РёРЅРёС†РёР°Р»РёР·РёСЂСѓСЋС‚СЃСЏ С‡РµСЂРµР· GameFactory)
         public PlayingField Field { get; set; } = null!;
         public Snake Snake { get; set; } = null!;
         public Food Food { get; set; } = null!;
     }
 }
+
