@@ -193,7 +193,15 @@ namespace Snake.UI.ConsoleUI
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawGameOver(PlayingField field, int headerHeight)
         {
-            string[] message = ServiseMessange.GetGameOverMessange(); 
+            string[] message = new string[]
+            {
+                "ИГРА ОКОНЧЕНА!",
+                "",
+                "Хотите сыграть ещё?",
+                "Нажмите Enter для продолжения",
+                "Нажмите Escape для выхода"
+            };
+
 
             DrawCenteredMessage(field, message, headerHeight, GameOverColor);
         }
@@ -205,7 +213,14 @@ namespace Snake.UI.ConsoleUI
         /// <param name="headerHeight">Высота заголовка для сдвига поля вниз</param>
         private static void DrawGameWin(PlayingField field, int headerHeight)
         {
-            string[] message = ServiseMessange.GetGameWinMessange();           
+            string[] message = new string[]
+            {
+                "ПОБЕДА!",
+                "",
+                "Хотите сыграть ещё?",
+                "Нажмите Enter для продолжения",
+                "Нажмите Escape для выхода"
+            };
 
             DrawCenteredMessage(field, message, headerHeight, GameWinColor);
         }
