@@ -1,7 +1,6 @@
 ﻿using Snake.Core;
 using Snake.Interfaces;
 using Snake.Models;
-using SnakeType = Snake.Models.Snake;
 
 namespace Snake.Logic
 {
@@ -11,7 +10,12 @@ namespace Snake.Logic
     /// </summary>
     public class SnakeGameLogic : IGameLogic
     {
-        private readonly Random _random = new Random();
+        private readonly Random _random;
+
+        public SnakeGameLogic(Random? random = null)
+        {
+            _random = random ?? new Random();
+        }
 
         /// <summary>
         /// Обновляет состояние игры: перемещает змейку, проверяет столкновения,
