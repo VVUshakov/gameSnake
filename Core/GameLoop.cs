@@ -12,50 +12,19 @@ namespace Snake.Core
         private readonly IGameRenderer _renderer;
         private readonly IInputHandler _inputHandler;
         private readonly IGameLogic _gameLogic;
-        private readonly Func<GameState> _stateFactory;
 
-        public GameLoop(
-            IGameRenderer renderer,
-            IInputHandler inputHandler,
-            IGameLogic gameLogic,
-            Func<GameState> stateFactory)
+        public GameLoop(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic)
         {
             _renderer = renderer;
             _inputHandler = inputHandler;
             _gameLogic = gameLogic;
-            _stateFactory = stateFactory;
         }
 
         /// <summary>
-        /// Запускает игру с поддержкой перезапуска.
+        /// Запускает игровой цикл для одного состояния игры.
+        /// Возвращает управление, когда игра окончена или запрошен перезапуск.
         /// </summary>
-        public void Run()
-        {
-            while(true)
-            {
-                try
-                {
-                    GameState state = _stateFactory();
-                    RunSingleGame(state);
-
-                    if(state.IsExit) break;
-                    if(!state.IsRestartRequested) break;
-                }
-                catch(InvalidOperationException ex)
-                {
-                    Clear();
-                    WriteLine("ОШИБКА: " + ex.Message);
-                    WriteLine("Нажмите любую клавишу для выхода...");
-                    ReadKey();
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Запускает одну игровую сессию.
-        /// </summary>
-        private void RunSingleGame(GameState state)
+        public void Run(GameState state)
         {
             while(!state.IsExit && !state.IsRestartRequested)
             {

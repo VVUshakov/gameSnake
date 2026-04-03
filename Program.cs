@@ -2,12 +2,10 @@
 using Snake.Core;
 using Snake.Interfaces;
 using Snake.Logic;
+using static System.Console;
 
 namespace Snake
 {
-    /// <summary>
-    /// Точка входа в приложение
-    /// </summary>
     public class Program
     {
         static void Main()
@@ -15,9 +13,26 @@ namespace Snake
             IGameRenderer renderer = new ConsoleRenderer();
             IInputHandler input = new ConsoleInputHandler();
             IGameLogic logic = new SnakeGameLogic();
+            GameLoop gameLoop = new GameLoop(renderer, input, logic);
 
-            GameLoop gameLoop = new GameLoop(renderer, input, logic, () => GameFactory.CreateGameState());
-            gameLoop.Run();
+            while(true)
+            {
+                try
+                {
+                    GameState state = GameFactory.CreateGameState();
+                    gameLoop.Run(state);
+
+                    if(state.IsExit || !state.IsRestartRequested) break;
+                }
+                catch(InvalidOperationException ex)
+                {
+                    Clear();
+                    WriteLine("ОШИБКА: " + ex.Message);
+                    WriteLine("Нажмите любую клавишу для выхода...");
+                    ReadKey();
+                    break;
+                }
+            }
         }
     }
 }
