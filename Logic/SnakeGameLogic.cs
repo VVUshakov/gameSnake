@@ -103,7 +103,7 @@ namespace Snake.Logic
         /// <param name="state">Состояние игры</param>
         private void GenerateNewFood(GameState state)
         {
-            // Пытаемся найти свободную клетку
+            // Пытаемся найти свободную клетку между рамками
             int maxAttempts = 1000;
             int attempts = 0;
 
@@ -111,14 +111,16 @@ namespace Snake.Logic
 
             do
             {
-                int x = _random.Next(0, state.Field.Width);
-                int y = _random.Next(0, state.Field.Height);
+                // Генерируем позицию только между рамками (как в CreateInitialFood)
+                int x = _random.Next(state.Field.Left + 1, state.Field.Right);
+                int y = _random.Next(state.Field.Top + 1, state.Field.Bottom);
                 newPosition = new Point(x, y);
                 attempts++;
 
                 if(attempts > maxAttempts)
                 {
                     // Если не нашли место — свободных клеток нет
+                    state.Food.IsSuccess = false;
                     return;
                 }
             }
