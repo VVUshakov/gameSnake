@@ -1,4 +1,5 @@
 using gameSnake.Models;
+using gameSnake.Servises;
 using gameSnake.Utils;
 
 namespace gameSnake.Core
@@ -12,11 +13,6 @@ namespace gameSnake.Core
         /// <summary>
         /// Создаёт новое начальное состояние игры.
         /// </summary>
-        /// <param name="fieldWidth">Ширина поля (по умолчанию 30)</param>
-        /// <param name="fieldHeight">Высота поля (по умолчанию 15)</param>
-        /// <param name="initialSnakeLength">Начальная длина змейки (по умолчанию 3)</param>
-        /// <returns>Готовое состояние игры</returns>
-        /// <exception cref="InvalidOperationException">Если нет места для еды</exception>
         public static GameState CreateGameState(
             int fieldWidth = 30,
             int fieldHeight = 15,
@@ -24,8 +20,19 @@ namespace gameSnake.Core
         {
             var state = new GameState();
 
+            // Вычисляем минимальные размеры на основе сервисных сообщений
+            var allMessages = ServiseMessange.GetAllMessages();
+            int minWidth = MessageSizer.GetMaxWidth(allMessages) + 4;
+            int minHeight = MessageSizer.GetMaxHeight(allMessages) + 4;
+
+            // Корректируем размеры, если они меньше минимальных
+            int finalWidth = fieldWidth;
+            int finalHeight = fieldHeight;
+            if(finalWidth < minWidth) finalWidth = minWidth;
+            if(finalHeight < minHeight) finalHeight = minHeight;
+
             // Создаём поле
-            state.Field = new PlayingField(fieldWidth, fieldHeight);
+            state.Field = new PlayingField(finalWidth, finalHeight);
 
             // Рассчитываем позицию головы для центрирования змейки
             Point headPosition = PositionCalculator.CalculateCenteredHeadPosition(
@@ -42,9 +49,7 @@ namespace gameSnake.Core
             state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
 
             if(!state.Food.IsSuccess)
-            {
                 throw new InvalidOperationException("Нет свободного места для еды! Невозможно начать игру.");
-            }
 
             return state;
         }
