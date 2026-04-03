@@ -18,7 +18,7 @@ namespace gameSnake.Core
             int fieldHeight = 15,
             int initialSnakeLength = 3)
         {
-            // Создаем новое состояние
+            // Создаем начальное состояние игры
             var state = new GameState();
 
             // Вычисляем итоговые размеры с учётом минимально
