@@ -18,16 +18,15 @@ namespace gameSnake.Core
             int fieldHeight = 15,
             int initialSnakeLength = 3)
         {
+            // Создаем новое состояние
             var state = new GameState();
 
-            // Вычисляем итоговые размеры поля с учётом минимальных габаритов
+            // Вычисляем итоговые размеры с учётом минимально
+            // необходимых габаритов для вывода сервисных сообщений
             int minWidth = GetMinWidth();
             int minHeight = GetMinHeight();
-
-            int finalWidth = fieldWidth;
-            int finalHeight = fieldHeight;
-            if(finalWidth < minWidth) finalWidth = minWidth;
-            if(finalHeight < minHeight) finalHeight = minHeight;
+            int finalWidth = fieldWidth < minWidth ? minWidth : fieldWidth;
+            int finalHeight = fieldHeight < minHeight ? minHeight : fieldHeight;
 
             // Создаём поле
             state.Field = new PlayingField(finalWidth, finalHeight);
