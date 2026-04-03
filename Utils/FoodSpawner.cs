@@ -10,14 +10,22 @@ namespace gameSnake.Utils
         /// <summary>
         /// Создаёт еду в случайном свободном месте на поле.
         /// </summary>
-        /// <param name="field">Игровое поле</param>
-        /// <param name="snake">Змейка</param>
-        /// <param name="random">Генератор случайных чисел (опционально)</param>
         public static Food CreateFood(PlayingField field, Snake snake, Random? random = null)
         {
             random ??= new Random();
             Point? position = FindFreePosition(field, snake, random);
             return new Food(position, position != null);
+        }
+
+        /// <summary>
+        /// Размещает еду на поле, обновляя существующий объект Food.
+        /// </summary>
+        public static void SpawnFood(Food food, PlayingField field, Snake snake, Random? random = null)
+        {
+            random ??= new Random();
+            Point? position = FindFreePosition(field, snake, random);
+            food.Position = position;
+            food.IsSuccess = position != null;
         }
 
         /// <summary>
