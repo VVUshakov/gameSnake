@@ -68,39 +68,5 @@ namespace gameSnake
 
             return messages;
         }
-
-        /// <summary>
-        /// Вычисляет максимальную ширину среди всех сервисных сообщений
-        /// </summary>
-        internal static int GetMaxMessageWidth()
-        {
-            int maxWidth = 0;
-            foreach(var message in GetAllMessages())
-            {
-                int width = PositionCalculator.GetMessageWidth(message);
-                if(width > maxWidth)
-                {
-                    maxWidth = width;
-                }
-            }
-            return maxWidth;
-        }
-
-        /// <summary>
-        /// Вычисляет максимальную высоту среди всех сервисных сообщений
-        /// </summary>
-        internal static int GetMaxMessageHeight()
-        {
-            int maxHeight = 0;
-            foreach(var message in GetAllMessages())
-            {
-                int height = PositionCalculator.GetMessageHeight(message);
-                if(height > maxHeight)
-                {
-                    maxHeight = height;
-                }
-            }
-            return maxHeight;
-        }
     }
 }

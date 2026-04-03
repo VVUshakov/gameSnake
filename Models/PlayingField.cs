@@ -1,4 +1,5 @@
 ﻿using gameSnake;
+using Snake.Utils;
 
 namespace Snake.Models
 {
@@ -80,11 +81,14 @@ namespace Snake.Models
         /// Выбрасывается, если размер поля меньше минимального
         /// </exception>
         public PlayingField(int width = 30, int height = 15)
-        {            
-            /// Минимальная ширина и высота игрового поля (с учётом рамки и места для сообщений).
-            /// Вычисляется динамически на основе максимального сервисного сообщения + рамка (2) + запас (2)
-            int minWidth = ServiseMessange.GetMaxMessageWidth() + 4;
-            int minHeight = ServiseMessange.GetMaxMessageHeight() + 4;
+        {
+            // Получаем массив всех сервисных сообщений игры
+            List<string[]> allMessages = ServiseMessange.GetAllMessages();
+
+            // Получаем минимальные ширину и высоту игрового поля (с учётом рамки и места для сервисных сообщений).
+            // Вычисляется динамически на основе максимального габарита сервисного сообщения + рамка(2) + запас(2)
+            int minWidth = PositionCalculator.GetMaxMessageWidth(allMessages) + 4;
+            int minHeight = PositionCalculator.GetMaxMessageHeight(allMessages) + 4;
 
             // Проверяем входящие параметры на предмет соответсвия минимальным размерам
             if (width < minWidth) { width = minWidth; }
