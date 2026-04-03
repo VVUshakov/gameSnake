@@ -44,14 +44,19 @@ namespace gameSnake.Logic
         /// </summary>
         private static Point CalculateNewHeadPosition(Point head, Direction direction)
         {
-            return direction switch
+            switch(direction)
             {
-                Direction.Up    => new Point(head.X, head.Y - 1),
-                Direction.Down  => new Point(head.X, head.Y + 1),
-                Direction.Left  => new Point(head.X - 1, head.Y),
-                Direction.Right => new Point(head.X + 1, head.Y),
-                _               => head
-            };
+                case Direction.Up:
+                    return new Point(head.X, head.Y - 1);
+                case Direction.Down:
+                    return new Point(head.X, head.Y + 1);
+                case Direction.Left:
+                    return new Point(head.X - 1, head.Y);
+                case Direction.Right:
+                    return new Point(head.X + 1, head.Y);
+                default:
+                    return head;
+            }
         }
 
         /// <summary>
