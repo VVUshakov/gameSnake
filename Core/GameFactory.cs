@@ -40,7 +40,7 @@ namespace Snake.Core
             state.Snake = new SnakeType(headPosition, Direction.Right, initialSnakeLength);
 
             // Создаём еду
-            state.Food = Food.CreateInitialFood(state.Field, state.Snake);
+            state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
 
             if(!state.Food.IsSuccess)
             {
