@@ -1,10 +1,10 @@
-п»їusing Snake.UI.ConsoleUI;
-using Snake.Core;
-using Snake.Interfaces;
-using Snake.Logic;
+using gameSnake.UI.ConsoleUI;
+using gameSnake.Core;
+using gameSnake.Interfaces;
+using gameSnake.Logic;
 using static System.Console;
 
-namespace Snake
+namespace gameSnake
 {
     public class Program
     {
@@ -27,8 +27,8 @@ namespace Snake
                 catch(InvalidOperationException ex)
                 {
                     Clear();
-                    WriteLine("РћРЁРР‘РљРђ: " + ex.Message);
-                    WriteLine("РќР°Р¶РјРёС‚Рµ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ РґР»СЏ РІС‹С…РѕРґР°...");
+                    WriteLine("ОШИБКА: " + ex.Message);
+                    WriteLine("Нажмите любую клавишу для выхода...");
                     ReadKey();
                     break;
                 }

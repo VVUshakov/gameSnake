@@ -1,8 +1,7 @@
-using Snake.Models;
-using Snake.Utils;
-using SnakeType = Snake.Models.Snake;
+using gameSnake.Models;
+using gameSnake.Utils;
 
-namespace Snake.Core
+namespace gameSnake.Core
 {
     /// <summary>
     /// Фабрика для создания начального состояния игры.
@@ -37,7 +36,7 @@ namespace Snake.Core
             );
 
             // Создаём змейку
-            state.Snake = new SnakeType(headPosition, Direction.Right, initialSnakeLength);
+            state.Snake = new Snake(headPosition, Direction.Right, initialSnakeLength);
 
             // Создаём еду
             state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);

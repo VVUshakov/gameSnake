@@ -1,7 +1,6 @@
-using Snake.Models;
-using SnakeType = Snake.Models.Snake;
+using gameSnake.Models;
 
-namespace Snake.Utils
+namespace gameSnake.Utils
 {
     /// <summary>
     /// Отвечает за размещение еды на игровом поле.
@@ -13,7 +12,7 @@ namespace Snake.Utils
         /// <summary>
         /// Создаёт еду в случайном свободном месте на поле.
         /// </summary>
-        public static Food CreateFood(PlayingField field, SnakeType snake)
+        public static Food CreateFood(PlayingField field, Snake snake)
         {
             Point? position = FindFreePosition(field, snake);
             return new Food(position, position != null);
@@ -22,7 +21,7 @@ namespace Snake.Utils
         /// <summary>
         /// Ищет случайную свободную позицию между рамками поля.
         /// </summary>
-        private static Point? FindFreePosition(PlayingField field, SnakeType snake)
+        private static Point? FindFreePosition(PlayingField field, Snake snake)
         {
             int maxAttempts = 1000;
 

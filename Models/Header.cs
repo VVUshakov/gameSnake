@@ -1,4 +1,4 @@
-namespace Snake.Models
+namespace gameSnake.Models
 {
     /// <summary>
     /// Служебная информация (заголовок), отображаемая над игровым полем.

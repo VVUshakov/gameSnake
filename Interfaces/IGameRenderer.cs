@@ -1,19 +1,19 @@
-п»їusing Snake.Core;
-using Snake.Models;
+using gameSnake.Core;
+using gameSnake.Models;
 
-namespace Snake.Interfaces
+namespace gameSnake.Interfaces
 {
     public interface IGameRenderer
     {
         /// <summary>
-        /// РћС‡РёС‰Р°РµС‚ СЌРєСЂР°РЅ РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РЅРѕРІРѕРіРѕ РєР°РґСЂР°
+        /// Очищает экран для отрисовки нового кадра
         /// </summary>
         void Clear();
 
         /// <summary>
-        /// РћС‚СЂРёСЃРѕРІС‹РІР°РµС‚ С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РёРіСЂС‹
+        /// Отрисовывает текущее состояние игры
         /// </summary>
-        /// <param name="state">РЎРѕСЃС‚РѕСЏРЅРёРµ РёРіСЂС‹</param>
+        /// <param name="state">Состояние игры</param>
         void Render(GameState state);
     }
 }

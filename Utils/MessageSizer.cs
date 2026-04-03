@@ -1,4 +1,4 @@
-namespace Snake.Utils
+namespace gameSnake.Utils
 {
     /// <summary>
     /// Предоставляет методы для вычисления размеров текстовых сообщений.
