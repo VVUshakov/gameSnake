@@ -12,70 +12,50 @@ namespace Snake.Core
         private readonly IGameRenderer _renderer;
         private readonly IInputHandler _inputHandler;
         private readonly IGameLogic _gameLogic;
+        private readonly Func<GameState> _stateFactory;
 
-        /// <summary>
-        /// Инициализирует новый экземпляр игрового цикла
-        /// </summary>
-        /// <param name="renderer">Рендерер для отрисовки игры</param>
-        /// <param name="inputHandler">Обработчик ввода</param>
-        /// <param name="gameLogic">Игровая логика</param>
-        public GameLoop(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic)
+        public GameLoop(
+            IGameRenderer renderer,
+            IInputHandler inputHandler,
+            IGameLogic gameLogic,
+            Func<GameState> stateFactory)
         {
             _renderer = renderer;
             _inputHandler = inputHandler;
             _gameLogic = gameLogic;
+            _stateFactory = stateFactory;
         }
 
         /// <summary>
-        /// Запускает игровой цикл с возможностью повторной игры
+        /// Запускает игру с поддержкой перезапуска.
         /// </summary>
-        public void RunWithRestart()
+        public void Run()
         {
-            bool playAgain = true;
-
-            while(playAgain)
+            while(true)
             {
                 try
                 {
-                    // Создаём новую игру
-                    GameState state = new GameState();
+                    GameState state = _stateFactory();
+                    RunSingleGame(state);
 
-                    // Запускаем игровой цикл
-                    Run(state);
-
-                    // Если игра проиграна — показываем сообщение и спрашиваем о перезапуске игры
-                    if(state.IsGameOver)
-                    {                           
-                        // Если запрошен перезапуск — начинаем новую игру
-                        if(state.IsRestartRequested)
-                        {
-                            playAgain = true;
-                        }
-                    }
-                    
-                    if(state.IsExit)
-                    {
-                        // Если вышли по Escape — не спрашиваем
-                        playAgain = false;
-                    }
+                    if(state.IsExit) break;
+                    if(!state.IsRestartRequested) break;
                 }
                 catch(InvalidOperationException ex)
                 {
-                    // Если не удалось создать игру (нет места для еды)
-                    Console.Clear();
-                    Console.WriteLine("ОШИБКА: " + ex.Message);
-                    Console.WriteLine("Нажмите любую клавишу для выхода...");
-                    Console.ReadKey();
-                    playAgain = false;
+                    Clear();
+                    WriteLine("ОШИБКА: " + ex.Message);
+                    WriteLine("Нажмите любую клавишу для выхода...");
+                    ReadKey();
+                    break;
                 }
             }
         }
 
         /// <summary>
-        /// Запускает одиночный игровой цикл
+        /// Запускает одну игровую сессию.
         /// </summary>
-        /// <param name="state">Начальное состояние игры</param>
-        public void Run(GameState state)
+        private void RunSingleGame(GameState state)
         {
             while(!state.IsExit && !state.IsRestartRequested)
             {
@@ -86,17 +66,10 @@ namespace Snake.Core
             }
         }
 
-        /// <summary>
-        /// Обновляет состояние игры: обрабатывает ввод и обновляет игровую логику
-        /// </summary>
-        /// <param name="state">Текущее состояние игры</param>
         private void Update(GameState state)
         {
-            // обрабатываем ввод
             _inputHandler.ProcessInput(state);
-
-            // Обновляем игру только если не на паузе
-            if(!state.IsPaused) { _gameLogic.Update(state); }
+            if(!state.IsPaused) _gameLogic.Update(state);
         }
     }
 }

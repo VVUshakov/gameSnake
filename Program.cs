@@ -2,7 +2,6 @@
 using Snake.Core;
 using Snake.Interfaces;
 using Snake.Logic;
-using Snake.Models;
 
 namespace Snake
 {
@@ -13,14 +12,12 @@ namespace Snake
     {
         static void Main()
         {
-            // Создаём зависимости
             IGameRenderer renderer = new ConsoleRenderer();
             IInputHandler input = new ConsoleInputHandler();
             IGameLogic logic = new SnakeGameLogic();
 
-            // Создаём и запускаем игровой цикл
-            GameLoop gameLoop = new GameLoop(renderer, input, logic);
-            gameLoop.RunWithRestart();
+            GameLoop gameLoop = new GameLoop(renderer, input, logic, () => GameFactory.CreateGameState());
+            gameLoop.Run();
         }
     }
 }

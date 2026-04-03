@@ -1,65 +1,31 @@
 ﻿using Snake.Models;
-using Snake.Utils;
 using SnakeType = Snake.Models.Snake;
 
 namespace Snake.Core
 {
     /// <summary>
     /// Состояние игры. Содержит все данные, необходимые для работы игры.
+    /// Это чистый контейнер данных — инициализация через GameFactory.
     /// </summary>
     public class GameState
     {
         // Управляющие флаги
-        public bool IsExit { get; set; } = false;       // флаг выхода из игры
-        public bool IsGameOver { get; set; } = false;   // флаг проигрыша
-        public bool IsWin { get; set; } = false;        // флаг победы
-        public bool IsPaused { get; set; } = false;     // флаг паузы
-        public bool IsRestartRequested { get; set; } = false;  // флаг запроса перезапуска
+        public bool IsExit { get; set; } = false;
+        public bool IsGameOver { get; set; } = false;
+        public bool IsWin { get; set; } = false;
+        public bool IsPaused { get; set; } = false;
+        public bool IsRestartRequested { get; set; } = false;
 
         // Настройки
-        public int Fps { get; set; } = 100;     // задержка между кадрами (мс)
+        public int Fps { get; set; } = 100;
 
         // Игровые данные
-        public Header Header { get; } = new Header();   // служебная информация (счёт, уровень и т.п.)
-        public Direction CurrentDirection { get; set; } = Direction.Right; // текущее направление
+        public Header Header { get; } = new Header();
+        public Direction CurrentDirection { get; set; } = Direction.Right;
 
-        // Компоненты игры
-        public PlayingField Field { get; }  // объект игрового поля
-        public SnakeType Snake { get; }     // объект змейки
-        public Food Food { get; }           // объект еды
-
-        public GameState()
-        {
-            // Создаём поле
-            Field = new PlayingField();
-
-            // Рассчитываем необходимую координату головы,
-            // чтобы тело змейки была центровано на игровом поле
-            Point headPosition = PositionCalculator.CalculateCenteredHeadPosition(
-                fieldWidth: Field.Width,    // ширина игрового поля
-                fieldHeight: Field.Height,  // высота игрового поля
-                snakeLength: 3,             // начальная длина змейки
-                direction: Direction.Right  // направление змейки
-            );
-
-            // Создаём змейку с центрированным телом на игровом поле
-            Snake = new SnakeType(
-                headPosition: headPosition,
-                direction: Direction.Right,
-                snakeLength: 3
-            );
-
-            // Создание еды с проверкой свободного места
-            Food = Food.CreateInitialFood(Field, Snake);
-
-            // Проверяем, удалось ли создать еду
-            if(!Food.IsSuccess)
-            {
-                // Если нет свободного места - игру нельзя начать
-                throw new InvalidOperationException(
-                    "Нет свободного места для еды! Невозможно начать игру."
-                );
-            }
-        }
+        // Компоненты игры (инициализируются через GameFactory)
+        public PlayingField Field { get; set; } = null!;
+        public SnakeType Snake { get; set; } = null!;
+        public Food Food { get; set; } = null!;
     }
 }
