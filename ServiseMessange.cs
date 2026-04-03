@@ -5,6 +5,7 @@ namespace gameSnake
 {
     internal class ServiseMessange
     {
+        [ServiceMessage]
         internal static string[] GetPauseMessange()
         {
             return new string[]
@@ -18,6 +19,7 @@ namespace gameSnake
             };
         }
 
+        [ServiceMessage]
         internal static string[] GetGameOverMessange()
         {
             return new string[]
@@ -30,6 +32,7 @@ namespace gameSnake
             };
         }
 
+        [ServiceMessage]
         internal static string[] GetGameWinMessange()
         {
             return new string[]
@@ -43,21 +46,21 @@ namespace gameSnake
         }
 
         /// <summary>
-        /// Автоматически находит все методы, возвращающие string[], и вызывает их
+        /// Находит все методы с атрибутом [ServiceMessage] и вызывает их
         /// </summary>
         internal static List<string[]> GetAllMessages()
         {
             var messages = new List<string[]>();
 
-            // Получаем все статические методы текущего класса
             MethodInfo[] methods = typeof(ServiseMessange).GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 
             foreach(MethodInfo method in methods)
             {
-                // Проверяем, что метод возвращает string[]
-                if(method.ReturnType == typeof(string[]))
+                // Проверяем наличие атрибута [ServiceMessage]
+                bool hasAttribute = method.IsDefined(typeof(ServiceMessageAttribute), inherit: false);
+
+                if(hasAttribute)
                 {
-                    // Вызываем метод (параметр null для статического метода)
                     string[]? result = method.Invoke(null, null) as string[];
                     if(result != null)
                     {
