@@ -1,4 +1,4 @@
-﻿using gameSnake;
+﻿using gameSnake.Servises;
 using Snake.Core;
 using Snake.Interfaces;
 using Snake.Models;

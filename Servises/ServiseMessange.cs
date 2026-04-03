@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Snake.Utils;
 
-namespace gameSnake
+namespace gameSnake.Servises
 {
     internal class ServiseMessange
     {

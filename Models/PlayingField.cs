@@ -1,4 +1,4 @@
-﻿using gameSnake;
+﻿using gameSnake.Servises;
 using Snake.Utils;
 
 namespace Snake.Models
