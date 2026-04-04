@@ -5,13 +5,19 @@ namespace gameSnake.Models
     /// </summary>
     public enum GameMessage
     {
-        /// <summary>Пауза</summary>
+        /// <summary>
+        /// Пауза
+        /// </summary>
         Pause,
 
-        /// <summary>Игра окончена</summary>
+        /// <summary>
+        /// Игра окончена
+        /// </summary>
         GameOver,
 
-        /// <summary>Победа</summary>
+        /// <summary>
+        /// Победа
+        /// </summary>
         Win
     }
 }
