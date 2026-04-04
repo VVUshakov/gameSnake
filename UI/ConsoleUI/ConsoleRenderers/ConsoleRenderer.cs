@@ -14,7 +14,7 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
 
         public void Render(GameState state)
         {
-            int headerHeight = state.Header.Height;
+            int headerHeight = HeaderFormatter.GetHeight(state.Header);
             HeaderRenderer.Draw(state.Header);
             FieldRenderer.Draw(state.Field, headerHeight);
             SnakeRenderer.Draw(state.Snake, state.Field, headerHeight);

@@ -1,4 +1,3 @@
-using System.Reflection;
 using gameSnake.Attributes;
 
 namespace gameSnake.Models
@@ -26,35 +25,5 @@ namespace gameSnake.Models
         /// </summary>
         [HeaderInfo]
         public int Lives { get; set; } = 1;
-
-        /// <summary>
-        /// Возвращает количество строк, необходимых для отрисовки заголовка
-        /// </summary>
-        public int Height => GetLines().Count;
-
-        /// <summary>
-        /// Возвращает список строк для отрисовки заголовка.
-        /// Автоматически включает все свойства с атрибутом HeaderInfo.
-        /// </summary>
-        public List<string> GetLines()
-        {
-            var lines = new List<string>();
-
-            PropertyInfo[] properties = typeof(Header).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            foreach (var prop in properties)
-            {
-                // Пропускаем свойства без атрибута HeaderInfo
-                if (prop.GetCustomAttribute<HeaderInfoAttribute>() == null) continue;
-
-                object? value = prop.GetValue(this);
-                if (value != null)
-                {
-                    lines.Add($"{prop.Name}: {value}");
-                }
-            }
-
-            return lines;
-        }
     }
 }
