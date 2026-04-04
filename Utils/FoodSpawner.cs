@@ -22,14 +22,18 @@ namespace gameSnake.Utils
         /// </summary>
         private static Point? FindFreePosition(PlayingField field, Snake snake, Random random)
         {
+            // Ограничиваем количество попыток
             int maxAttempts = 1000;
 
             for(int attempt = 0; attempt < maxAttempts; attempt++)
             {
+                // Создаем координаты для новой еды
                 int x = random.Next(field.Left + 1, field.Right);
                 int y = random.Next(field.Top + 1, field.Bottom);
                 Point candidate = new Point(x, y);
 
+                // Если координаты не пересекаются со змейкой, возвращаем результат,
+                // иначе повторяем пока есть попытки
                 if(!snake.Contains(candidate))
                     return candidate;
             }
