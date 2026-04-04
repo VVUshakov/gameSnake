@@ -12,8 +12,8 @@ namespace gameSnake.Utils
         /// Рассчитывает позицию головы так, чтобы вся змейка была отцентрирована на поле.
         /// Если змейка не помещается, длина автоматически уменьшается до допустимой.
         /// </summary>
-        /// <returns>Кортеж: позиция головы и фактическая длина змейки</returns>
-        public static (Point headPosition, int adjustedLength) CalculateCenteredHeadPosition(
+        /// <returns>Кортеж: позиция головы и скорректированная длина змейки</returns>
+        public static (Point headPosition, int finalSnakeLength) CalculateCenteredHeadPosition(
             int fieldWidth,
             int fieldHeight,
             int snakeLength,
@@ -23,7 +23,7 @@ namespace gameSnake.Utils
             int availableHeight = fieldHeight - 2;
 
             // Ограничиваем длину змейки доступным пространством
-            int adjustedLength = direction == Direction.Left || direction == Direction.Right
+            int finalSnakeLength = direction == Direction.Left || direction == Direction.Right
                 ? Math.Min(snakeLength, availableWidth)
                 : Math.Min(snakeLength, availableHeight);
 
@@ -32,14 +32,14 @@ namespace gameSnake.Utils
 
             Point headPosition = direction switch
             {
-                Direction.Right => new Point(Math.Min(Math.Max(adjustedLength, centerX), fieldWidth - 2), centerY),
-                Direction.Left  => new Point(Math.Max(Math.Min(fieldWidth - 1 - adjustedLength, centerX), 1), centerY),
-                Direction.Down  => new Point(centerX, Math.Min(Math.Max(adjustedLength, centerY), fieldHeight - 2)),
-                Direction.Up    => new Point(centerX, Math.Max(Math.Min(fieldHeight - 1 - adjustedLength, centerY), 1)),
+                Direction.Right => new Point(Math.Min(Math.Max(finalSnakeLength, centerX), fieldWidth - 2), centerY),
+                Direction.Left  => new Point(Math.Max(Math.Min(fieldWidth - 1 - finalSnakeLength, centerX), 1), centerY),
+                Direction.Down  => new Point(centerX, Math.Min(Math.Max(finalSnakeLength, centerY), fieldHeight - 2)),
+                Direction.Up    => new Point(centerX, Math.Max(Math.Min(fieldHeight - 1 - finalSnakeLength, centerY), 1)),
                 _               => new Point(centerX, centerY)
             };
 
-            return (headPosition, adjustedLength);
+            return (headPosition, finalSnakeLength);
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace gameSnake
 
             while (true)
             {
-                // Вычисляем размеры поля на основе сообщений
+                // Вычисляем размеры игрового поля на основе сообщений
                 var messages = ServiseMessange.GetAllMessages();
                 int fieldWidth = MessageSizer.GetMaxWidth(messages) + 4;
                 int fieldHeight = MessageSizer.GetMaxHeight(messages) + 4;
