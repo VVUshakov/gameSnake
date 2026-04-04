@@ -21,12 +21,9 @@ namespace gameSnake.Core
             // Создаем начальное состояние игры
             var state = new GameState();
 
-            // Вычисляем итоговые размеры с учётом минимально
-            // необходимых габаритов для вывода сервисных сообщений
-            int minWidth = GetMinWidth();
-            int minHeight = GetMinHeight();
-            int finalWidth = fieldWidth < minWidth ? minWidth : fieldWidth;
-            int finalHeight = fieldHeight < minHeight ? minHeight : fieldHeight;
+            // Вычисляем итоговые размеры игрового поля
+            // с учётом минимальных габаритов для сервисных сообщений
+            (int finalWidth, int finalHeight) = GetFinalSize(fieldWidth, fieldHeight);
 
             // Создаём поле
             state.Field = new PlayingField(finalWidth, finalHeight);
@@ -52,19 +49,19 @@ namespace gameSnake.Core
         }
 
         /// <summary>
-        /// Возвращает минимальную ширину поля (сообщение + рамка + запас)
+        /// Возвращает итоговые размеры поля, не меньше минимальных.
+        /// Минимум вычисляется на основе габаритов сервисных сообщений + рамка(2) + запас(2).
         /// </summary>
-        private static int GetMinWidth()
+        private static (int width, int height) GetFinalSize(int width, int height)
         {
-            return MessageSizer.GetMaxWidth(ServiseMessange.GetAllMessages()) + 4;
-        }
+            var messages = ServiseMessange.GetAllMessages();
+            int minWidth = MessageSizer.GetMaxWidth(messages) + 4;
+            int minHeight = MessageSizer.GetMaxHeight(messages) + 4;
 
-        /// <summary>
-        /// Возвращает минимальную высоту поля (сообщение + рамка + запас)
-        /// </summary>
-        private static int GetMinHeight()
-        {
-            return MessageSizer.GetMaxHeight(ServiseMessange.GetAllMessages()) + 4;
+            return (
+                width < minWidth ? minWidth : width,
+                height < minHeight ? minHeight : height
+            );
         }
     }
 }
