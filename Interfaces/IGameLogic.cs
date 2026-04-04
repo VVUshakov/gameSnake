@@ -1,5 +1,4 @@
 using gameSnake.Core;
-using gameSnake.Models;
 
 namespace gameSnake.Interfaces
 {
