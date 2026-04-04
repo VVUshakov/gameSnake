@@ -23,6 +23,11 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
             DrawCenteredMessage(field, lines, headerHeight, color);
         }
 
+        /// <summary>
+        /// Возвращает текст сообщения по его типу.
+        /// </summary>
+        /// <param name="message">Тип сервисного сообщения</param>
+        /// <returns>Массив строк с текстом сообщения</returns>
         private static string[] GetContent(GameMessage message) => message switch
         {
             GameMessage.Pause    => GameMessages.GetPauseMessage(),
@@ -31,6 +36,11 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
             _                    => Array.Empty<string>()
         };
 
+        /// <summary>
+        /// Возвращает цвет сообщения по его типу.
+        /// </summary>
+        /// <param name="message">Тип сервисного сообщения</param>
+        /// <returns>Цвет для отрисовки сообщения</returns>
         private static ConsoleColor GetColor(GameMessage message) => message switch
         {
             GameMessage.Pause    => RenderConstants.PauseColor,
@@ -39,6 +49,13 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
             _                    => RenderConstants.DefaultMessageColor
         };
 
+        /// <summary>
+        /// Отрисовывает центрированное сообщение на игровом поле с указанным цветом.
+        /// </summary>
+        /// <param name="field">Игровое поле для расчёта позиции</param>
+        /// <param name="lines">Строки сообщения</param>
+        /// <param name="headerHeight">Высота заголовка для смещения</param>
+        /// <param name="color">Цвет текста сообщения</param>
         private static void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color)
         {
             (int messageWidth, int messageHeight) = MessageSizer.GetSize(lines);
