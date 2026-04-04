@@ -1,7 +1,7 @@
 using gameSnake.Models;
 using gameSnake.Utils;
 
-namespace gameSnake.Logic.GameLogicComponents
+namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
     /// Обработчик еды: проверка совпадения координат и спавн через FoodSpawner.

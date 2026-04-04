@@ -1,6 +1,6 @@
 using gameSnake.Models;
 
-namespace gameSnake.Logic.GameLogicComponents
+namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
     /// Стратегия движения змейки: смещение на 1 клетку по направлению.

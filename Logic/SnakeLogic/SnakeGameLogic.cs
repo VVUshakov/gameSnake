@@ -1,9 +1,9 @@
 ﻿using gameSnake.Core;
 using gameSnake.Interfaces;
-using gameSnake.Logic.GameLogicComponents;
+using gameSnake.Logic.SnakeLogic;
 using gameSnake.Models;
 
-namespace gameSnake.Logic
+namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
     /// Основная логика игры: обновление состояния змейки.
@@ -20,7 +20,7 @@ namespace gameSnake.Logic
         {
             if (state.IsGameOver || state.IsWin || state.IsPaused) return;
 
-            // 1. Движение
+            // 1. Движение змейки
             Point newHead = SnakeMovement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
             state.Snake.Body.Add(newHead);
 

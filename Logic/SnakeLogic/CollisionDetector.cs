@@ -1,6 +1,6 @@
 using gameSnake.Models;
 
-namespace gameSnake.Logic.GameLogicComponents
+namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
     /// Детектор столкновений: проверка стен и тела змейки.

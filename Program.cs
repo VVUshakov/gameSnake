@@ -2,7 +2,7 @@ using gameSnake.UI.ConsoleUI.InputHandlers;
 using gameSnake.UI.ConsoleUI.ConsoleRenderers;
 using gameSnake.Core;
 using gameSnake.Interfaces;
-using gameSnake.Logic;
+using gameSnake.Logic.SnakeLogic;
 using gameSnake.Servises;
 using gameSnake.Utils;
 
