@@ -18,17 +18,17 @@ namespace gameSnake
 
             while (true)
             {
-                // Вычисляем размеры поля
+                // Вычисляем размеры игрового поля
                 (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate();
 
-                // Подстраиваем консоль под поле
+                // Подстраиваем консоль под игровое поле
                 ConsoleWindowConfigurator.Configure(fieldWidth, fieldHeight);
 
                 // Создаём и запускаем игру
                 GameState state = GameStateFactory.Create(fieldWidth, fieldHeight);
                 gameLoop.Run(state);
 
-                if (state.IsExit || !state.IsRestartRequested) break;
+                if (state.Flags.IsExit || !state.Flags.IsRestartRequested) break;
             }
         }
     }

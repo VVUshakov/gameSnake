@@ -26,19 +26,19 @@ namespace gameSnake.Core
         /// </summary>
         public void Run(GameState state)
         {
-            while(!state.IsExit && !state.IsRestartRequested)
+            while (!state.Flags.IsExit && !state.Flags.IsRestartRequested)
             {
                 _renderer.Clear();
                 _renderer.Render(state);
                 Update(state);
-                Thread.Sleep(state.Fps);
+                Thread.Sleep(state.Settings.Fps);
             }
         }
 
         private void Update(GameState state)
         {
             _inputHandler.ProcessInput(state);
-            if(!state.IsPaused) _gameLogic.Update(state);
+            if (!state.Flags.IsPaused) _gameLogic.Update(state);
         }
     }
 }

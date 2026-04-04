@@ -3,20 +3,16 @@
 namespace gameSnake.Core
 {
     /// <summary>
-    /// Состояние игры. Содержит все данные, необходимые для работы игры.
+    /// Состояние игры. Содержит флаги, настройки и игровые объекты.
     /// Обязательные игровые объекты задаются через конструктор.
     /// </summary>
     public class GameState
     {
-        // Управляющие флаги
-        public bool IsExit { get; set; }
-        public bool IsGameOver { get; set; }
-        public bool IsWin { get; set; }
-        public bool IsPaused { get; set; }
-        public bool IsRestartRequested { get; set; }
+        /// <summary>Управляющие флаги</summary>
+        public GameFlags Flags { get; } = new GameFlags();
 
-        // Настройки
-        public int Fps { get; set; } = 100;
+        /// <summary>Настройки игры</summary>
+        public GameSettings Settings { get; } = new GameSettings();
 
         // Игровые объекты (обязательные — только через конструктор)
         public Header Header { get; }

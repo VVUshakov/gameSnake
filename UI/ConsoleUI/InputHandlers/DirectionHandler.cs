@@ -16,7 +16,7 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
         /// <param name="state">Текущее состояние игры</param>
         public static void Handle(ConsoleKey key, GameState state)
         {
-            if (state.IsPaused) return;
+            if (state.Flags.IsPaused) return;
 
             switch (key)
             {

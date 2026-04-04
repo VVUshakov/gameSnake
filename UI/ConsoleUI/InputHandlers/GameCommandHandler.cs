@@ -18,15 +18,15 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
             switch (key)
             {
                 case ConsoleKey.Enter:
-                    state.IsRestartRequested = true;
+                    state.Flags.IsRestartRequested = true;
                     break;
                 case ConsoleKey.P:
                 case ConsoleKey.Spacebar:
-                    state.IsPaused = !state.IsPaused;
-                    state.ActiveMessage = state.IsPaused ? GameMessage.Pause : null;
+                    state.Flags.IsPaused = !state.Flags.IsPaused;
+                    state.ActiveMessage = state.Flags.IsPaused ? GameMessage.Pause : null;
                     break;
                 case ConsoleKey.Escape:
-                    state.IsExit = true;
+                    state.Flags.IsExit = true;
                     break;
             }
         }

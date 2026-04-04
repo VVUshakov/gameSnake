@@ -18,7 +18,7 @@ namespace gameSnake.Logic.SnakeLogic
         /// <param name="state">Текущее состояние игры</param>
         public void Update(GameState state)
         {
-            if (state.IsGameOver || state.IsWin || state.IsPaused) return;
+            if (state.Flags.IsGameOver || state.Flags.IsWin || state.Flags.IsPaused) return;
 
             // 1. Движение змейки
             Point newHead = SnakeMovement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
@@ -32,7 +32,7 @@ namespace gameSnake.Logic.SnakeLogic
 
                 if (!state.Food.IsSuccess)
                 {
-                    state.IsWin = true;
+                    state.Flags.IsWin = true;
                     state.ActiveMessage = GameMessage.Win;
                     return;
                 }
@@ -45,7 +45,7 @@ namespace gameSnake.Logic.SnakeLogic
             // 3. Проверка столкновений
             if (CollisionDetector.HasCollision(state.Snake, state.Field))
             {
-                state.IsGameOver = true;
+                state.Flags.IsGameOver = true;
                 state.ActiveMessage = GameMessage.GameOver;
             }
         }
