@@ -9,13 +9,19 @@ namespace gameSnake.UI.ConsoleUI
     /// </summary>
     public class ConsoleInputHandler : IInputHandler
     {
+        private readonly IConsoleInput _input;
         private bool _waitingForRestart = false;
+
+        public ConsoleInputHandler(IConsoleInput? input = null)
+        {
+            _input = input ?? new ConsoleInput();
+        }
 
         /// <summary>Считывает и обрабатывает нажатия клавиш клавиатуры.</summary>
         public void ProcessInput(GameState state)
         {
-            if(!Console.KeyAvailable) return;
-            ConsoleKey key = Console.ReadKey(true).Key;
+            if(!_input.KeyAvailable) return;
+            ConsoleKey key = _input.ReadKey(true);
 
             switch(key)
             {
@@ -56,7 +62,7 @@ namespace gameSnake.UI.ConsoleUI
         /// <summary>Запрашивает у пользователя повторную игру после окончания</summary>
         public bool AskPlayAgain()
         {
-            while(Console.KeyAvailable) Console.ReadKey(true);
+            while(_input.KeyAvailable) _input.ReadKey(true);
             WaitForRestart();
             return false;
         }
