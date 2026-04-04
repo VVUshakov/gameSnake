@@ -81,8 +81,8 @@ namespace gameSnake.UI.ConsoleUI
         /// </summary>
         private static void DrawHeader(Header header)
         {
-            string[] lines = header.GetLines();
-            for(int i = 0; i < lines.Length; i++)
+            List<string> lines = header.GetLines();
+            for(int i = 0; i < lines.Count; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write(lines[i]);

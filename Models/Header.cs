@@ -26,13 +26,13 @@ namespace gameSnake.Models
         /// <summary>
         /// Возвращает количество строк, необходимых для отрисовки заголовка
         /// </summary>
-        public int Height => GetLines().Length;
+        public int Height => GetLines().Count;
 
         /// <summary>
         /// Возвращает список строк для отрисовки заголовка.
         /// Автоматически включает все публичные свойства класса.
         /// </summary>
-        public string[] GetLines()
+        public List<string> GetLines()
         {
             var lines = new List<string>();
 
@@ -51,7 +51,7 @@ namespace gameSnake.Models
                 }
             }
 
-            return lines.ToArray();
+            return lines;
         }
     }
 }
