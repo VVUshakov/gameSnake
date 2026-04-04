@@ -10,14 +10,13 @@ namespace gameSnake.UI.ConsoleUI
     public class ConsoleInputHandler : IInputHandler
     {
         private readonly IConsoleInput _input;
-        private bool _waitingForRestart = false;
 
         public ConsoleInputHandler(IConsoleInput? input = null)
         {
             _input = input ?? new ConsoleInput();
         }
 
-        /// <summary>Считывает и обрабатывает нажатия клавиш клавиатуры.</summary>
+        /// <summary>Считывает и обрабатывает нажатия клавиш.</summary>
         public void ProcessInput(GameState state)
         {
             if(!_input.KeyAvailable) return;
@@ -26,7 +25,7 @@ namespace gameSnake.UI.ConsoleUI
             switch(key)
             {
                 case ConsoleKey.Enter:
-                    _waitingForRestart = true;
+                    state.IsRestartRequested = true;
                     break;
                 case ConsoleKey.P:
                 case ConsoleKey.Spacebar:
@@ -48,23 +47,6 @@ namespace gameSnake.UI.ConsoleUI
                     if(!state.IsPaused) ChangeDirection(state, Direction.Right, Direction.Left);
                     break;
             }
-
-            if(_waitingForRestart)
-            {
-                if(key == ConsoleKey.Enter) state.IsRestartRequested = true;
-                _waitingForRestart = false;
-            }
-        }
-
-        /// <summary>Включает режим ожидания перезапуска (после проигрыша)</summary>
-        public void WaitForRestart() => _waitingForRestart = true;
-
-        /// <summary>Запрашивает у пользователя повторную игру после окончания</summary>
-        public bool AskPlayAgain()
-        {
-            while(_input.KeyAvailable) _input.ReadKey(true);
-            WaitForRestart();
-            return false;
         }
 
         /// <summary>Меняет направление, запрещая разворот на 180 при длине > 1</summary>

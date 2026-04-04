@@ -7,7 +7,10 @@ namespace gameSnake.UI.ConsoleUI
     /// </summary>
     public class ConsoleInput : IConsoleInput
     {
-        public bool KeyAvailable => System.Console.KeyAvailable;
-        public System.ConsoleKey ReadKey(bool showKeyOnScreen) => System.Console.ReadKey(!showKeyOnScreen).Key;
+        public bool KeyAvailable => Console.KeyAvailable;
+        public ConsoleKey ReadKey(bool showKeyOnScreen)
+        {
+            return Console.ReadKey(!showKeyOnScreen).Key;
+        }
     }
 }
