@@ -18,27 +18,27 @@ namespace gameSnake.Core
             int fieldHeight = 15,
             int initialSnakeLength = 3)
         {
-            // Создаем начальное состояние игры
-            var state = new GameState();
-
             // Вычисляем итоговые размеры игрового поля
-            // с учётом минимальных габаритов для сервисных сообщений
             (int finalWidth, int finalHeight) = GetFinalSize(fieldWidth, fieldHeight);
 
             // Создаём поле
-            state.Field = new PlayingField(finalWidth, finalHeight);
+            PlayingField field = new PlayingField(finalWidth, finalHeight);
 
             // Рассчитываем позицию головы для центрирования змейки
             var (headPosition, adjustedLength) = PositionCalculator.CalculateCenteredHeadPosition(
-                state.Field.Width, state.Field.Height, initialSnakeLength, Direction.Right);
+                field.Width, field.Height, initialSnakeLength, Direction.Right);
 
-            // Создаём змейку с возможно скорректированной длиной
-            state.Snake = new Snake(headPosition, Direction.Right, adjustedLength);
+            // Создаём змейку
+            Snake snake = new Snake(headPosition, Direction.Right, adjustedLength);
 
             // Создаём еду
-            state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
+            Food food = FoodSpawner.CreateFood(field, snake);
 
-            return state;
+            // Создаём заголовок
+            Header header = new Header();
+
+            // Передаём всё в конструктор GameState
+            return new GameState(header, field, snake, food);
         }
 
         /// <summary>
