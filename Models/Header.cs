@@ -11,16 +11,19 @@ namespace gameSnake.Models
         /// <summary>
         /// Текущий счёт игрока
         /// </summary>
+        [HeaderInfo]
         public int Score { get; set; } = 0;
 
         /// <summary>
         /// Текущий уровень
         /// </summary>
+        [HeaderInfo]
         public int Level { get; set; } = 1;
 
         /// <summary>
         /// Количество жизней
         /// </summary>
+        [HeaderInfo]
         public int Lives { get; set; } = 1;
 
         /// <summary>
@@ -30,22 +33,21 @@ namespace gameSnake.Models
 
         /// <summary>
         /// Возвращает список строк для отрисовки заголовка.
-        /// Автоматически включает все публичные свойства класса.
+        /// Автоматически включает все свойства с атрибутом HeaderInfo.
         /// </summary>
         public List<string> GetLines()
         {
             var lines = new List<string>();
 
-            // Автоматически находим все публичные свойства и добавляем их значения
             PropertyInfo[] properties = typeof(Header).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            foreach(var prop in properties)
+            foreach (var prop in properties)
             {
-                // Пропускаем Height — это служебное свойство
-                if(prop.Name == nameof(Height)) continue;
+                // Пропускаем свойства без атрибута HeaderInfo
+                if (prop.GetCustomAttribute<HeaderInfoAttribute>() == null) continue;
 
                 object? value = prop.GetValue(this);
-                if(value != null)
+                if (value != null)
                 {
                     lines.Add($"{prop.Name}: {value}");
                 }
