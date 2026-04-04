@@ -29,15 +29,11 @@ namespace gameSnake.Core
             state.Field = new PlayingField(finalWidth, finalHeight);
 
             // Рассчитываем позицию головы для центрирования змейки
-            Point headPosition = PositionCalculator.CalculateCenteredHeadPosition(
-                state.Field.Width,
-                state.Field.Height,
-                initialSnakeLength,
-                Direction.Right
-            );
+            var (headPosition, adjustedLength) = PositionCalculator.CalculateCenteredHeadPosition(
+                state.Field.Width, state.Field.Height, initialSnakeLength, Direction.Right);
 
-            // Создаём змейку
-            state.Snake = new Snake(headPosition, Direction.Right, initialSnakeLength);
+            // Создаём змейку с возможно скорректированной длиной
+            state.Snake = new Snake(headPosition, Direction.Right, adjustedLength);
 
             // Создаём еду
             state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
