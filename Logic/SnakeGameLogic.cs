@@ -1,16 +1,27 @@
 ﻿using gameSnake.Core;
 using gameSnake.Interfaces;
+using gameSnake.Logic.GameLogicComponents;
 using gameSnake.Models;
-using gameSnake.Utils;
 
 namespace gameSnake.Logic
 {
     /// <summary>
-    /// Реализует игровую логику змейки.
-    /// Управляет движением змейки, столкновениями и поеданием еды.
+    /// Основная логика игры: обновление состояния змейки.
+    /// Делегирует подзадачи отдельным компонентам: движению, еде, коллизиям.
     /// </summary>
     public class SnakeGameLogic : IGameLogic
     {
+        private readonly IMovementStrategy _movement;
+        private readonly IFoodHandler _foodHandler;
+        private readonly ICollisionDetector _collisionDetector;
+
+        public SnakeGameLogic()
+        {
+            _movement = new StandardMovement();
+            _foodHandler = new StandardFoodHandler();
+            _collisionDetector = new StandardCollisionDetector();
+        }
+
         /// <summary>
         /// Обновляет состояние игры: перемещает змейку, проверяет столкновения,
         /// обрабатывает поедание еды.
@@ -18,26 +29,19 @@ namespace gameSnake.Logic
         /// <param name="state">Текущее состояние игры</param>
         public void Update(GameState state)
         {
-            // Если проигрыш или победа, выходим из метода
-            if(state.IsGameOver || state.IsWin) { return; }
+            if (state.IsGameOver || state.IsWin || state.IsPaused) return;
 
-            // Высчитываем координату головы для следующего кадра и добавляем ее к змейке
-            Point newHead = CalculateNewHeadPosition(state.Snake.Head, state.CurrentDirection);
+            // 1. Движение
+            Point newHead = _movement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
             state.Snake.Body.Add(newHead);
 
-            // Проверяем сьедена ли еда
-            bool foodEaten = IsFoodEaten(newHead, state.Food);
-                        
-            if(foodEaten)
+            // 2. Проверка еды
+            if (_foodHandler.IsFoodEaten(state.Snake, state.Food))
             {
-                // Добавляем счет на стоимость сьеденной еды
                 state.Header.Score += state.Food.PointsValue;
+                state.Food = _foodHandler.RespawnFood(state.Field, state.Snake);
 
-                // Создаем новую еду
-                state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
-
-                // Если не удалось разместить еду — змейка заполнила всё поле
-                if(!state.Food.IsSuccess)
+                if (!state.Food.IsSuccess)
                 {
                     state.IsWin = true;
                     return;
@@ -45,68 +49,12 @@ namespace gameSnake.Logic
             }
             else
             {
-                // Удаляем "старый" хвост змейки
                 state.Snake.Body.Remove(state.Snake.Tail);
             }
 
-            CheckCollisions(state);
-        }
-
-        /// <summary>
-        /// Вычисляет новую позицию головы на основе текущего направления
-        /// </summary>
-        private static Point CalculateNewHeadPosition(Point head, Direction direction)
-        {
-            switch(direction)
-            {
-                case Direction.Up:
-                    return new Point(head.X, head.Y - 1);
-                case Direction.Down:
-                    return new Point(head.X, head.Y + 1);
-                case Direction.Left:
-                    return new Point(head.X - 1, head.Y);
-                case Direction.Right:
-                    return new Point(head.X + 1, head.Y);
-                default:
-                    return head;
-            }
-        }
-
-        /// <summary>
-        /// Проверяет, съела ли змейка еду
-        /// </summary>
-        private static bool IsFoodEaten(Point head, Food food)
-        {
-            if (food.Position == null) return false;
-            Point pos = food.Position.Value;
-            return head.X == pos.X && head.Y == pos.Y;
-        }
-
-        /// <summary>
-        /// Проверяет столкновения змейки со стенами и собственным телом
-        /// </summary>
-        private void CheckCollisions(GameState state)
-        {
-            Point head = state.Snake.Head;
-
-            // Столкновение со стенами (рамка поля)
-            if(!state.Field.IsInside(head))
-            {
+            // 3. Проверка столкновений
+            if (_collisionDetector.HasCollision(state.Snake, state.Field))
                 state.IsGameOver = true;
-                return;
-            }
-
-            // Столкновение с собственным телом
-            for(int i = 0; i < state.Snake.Body.Count - 1; i++)
-            {
-                Point segment = state.Snake.Body[i];
-                if(segment.X == head.X && segment.Y == head.Y)
-                {
-                    state.IsGameOver = true;
-                    return;
-                }
-            }
         }
     }
 }
-
