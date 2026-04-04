@@ -18,16 +18,6 @@ namespace gameSnake.Utils
         }
 
         /// <summary>
-        /// Создаёт новую еду в случайном свободном месте.
-        /// </summary>
-        public static Food SpawnFood(PlayingField field, Snake snake, Random? random = null)
-        {
-            random ??= new Random();
-            Point? position = FindFreePosition(field, snake, random);
-            return new Food(position, position != null);
-        }
-
-        /// <summary>
         /// Ищет случайную свободную позицию между рамками поля.
         /// </summary>
         private static Point? FindFreePosition(PlayingField field, Snake snake, Random random)

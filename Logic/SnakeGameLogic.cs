@@ -18,17 +18,23 @@ namespace gameSnake.Logic
         /// <param name="state">Текущее состояние игры</param>
         public void Update(GameState state)
         {
+            // Если проигрыш или победа, выходим из метода
             if(state.IsGameOver || state.IsWin) { return; }
 
+            // Высчитываем координату головы для следующего кадра и добавляем ее к змейке
             Point newHead = CalculateNewHeadPosition(state.Snake.Head, state.CurrentDirection);
             state.Snake.Body.Add(newHead);
 
+            // Проверяем сьедена ли еда
             bool foodEaten = IsFoodEaten(newHead, state.Food);
-
+                        
             if(foodEaten)
             {
+                // Добавляем счет на стоимость сьеденной еды
                 state.Header.Score += state.Food.PointsValue;
-                state.Food = FoodSpawner.SpawnFood(state.Field, state.Snake);
+
+                // Создаем новую еду
+                state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
 
                 // Если не удалось разместить еду — змейка заполнила всё поле
                 if(!state.Food.IsSuccess)
@@ -39,6 +45,7 @@ namespace gameSnake.Logic
             }
             else
             {
+                // Удаляем "старый" хвост змейки
                 state.Snake.Body.Remove(state.Snake.Tail);
             }
 
