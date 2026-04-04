@@ -5,12 +5,15 @@ namespace gameSnake.Logic.GameLogicComponents
     /// <summary>
     /// Стандартный детектор столкновений: проверка стен и тела змейки.
     /// </summary>
-    public class StandardCollisionDetector : ICollisionDetector
+    public static class StandardCollisionDetector
     {
         /// <summary>
         /// Проверяет наличие столкновения со стеной или собственным телом.
         /// </summary>
-        public bool HasCollision(Snake snake, PlayingField field)
+        /// <param name="snake">Змейка</param>
+        /// <param name="field">Игровое поле</param>
+        /// <returns>True, если есть столкновение</returns>
+        public static bool HasCollision(Snake snake, PlayingField field)
         {
             Point head = snake.Head;
 

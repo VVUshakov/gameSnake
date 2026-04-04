@@ -11,17 +11,6 @@ namespace gameSnake.Logic
     /// </summary>
     public class SnakeGameLogic : IGameLogic
     {
-        private readonly IMovementStrategy _movement;
-        private readonly IFoodHandler _foodHandler;
-        private readonly ICollisionDetector _collisionDetector;
-
-        public SnakeGameLogic()
-        {
-            _movement = new StandardMovement();
-            _foodHandler = new StandardFoodHandler();
-            _collisionDetector = new StandardCollisionDetector();
-        }
-
         /// <summary>
         /// Обновляет состояние игры: перемещает змейку, проверяет столкновения,
         /// обрабатывает поедание еды.
@@ -32,14 +21,14 @@ namespace gameSnake.Logic
             if (state.IsGameOver || state.IsWin || state.IsPaused) return;
 
             // 1. Движение
-            Point newHead = _movement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
+            Point newHead = StandardMovement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
             state.Snake.Body.Add(newHead);
 
-            // 2. Проверка еды
-            if (_foodHandler.IsFoodEaten(state.Snake, state.Food))
+            // 2. Проверка еды и удаление хвоста у змейки, если не сьедена
+            if (StandardFoodHandler.IsFoodEaten(state.Snake, state.Food))
             {
                 state.Header.Score += state.Food.PointsValue;
-                state.Food = _foodHandler.RespawnFood(state.Field, state.Snake);
+                state.Food = StandardFoodHandler.RespawnFood(state.Field, state.Snake);
 
                 if (!state.Food.IsSuccess)
                 {
@@ -53,7 +42,7 @@ namespace gameSnake.Logic
             }
 
             // 3. Проверка столкновений
-            if (_collisionDetector.HasCollision(state.Snake, state.Field))
+            if (StandardCollisionDetector.HasCollision(state.Snake, state.Field))
                 state.IsGameOver = true;
         }
     }

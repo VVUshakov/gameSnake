@@ -5,12 +5,15 @@ namespace gameSnake.Logic.GameLogicComponents
     /// <summary>
     /// Стандартная стратегия движения: смещение на 1 клетку по направлению.
     /// </summary>
-    public class StandardMovement : IMovementStrategy
+    public static class StandardMovement
     {
         /// <summary>
         /// Вычисляет новую позицию головы на основе текущего направления.
         /// </summary>
-        public Point CalculateNewHead(Point currentHead, Direction direction) => direction switch
+        /// <param name="currentHead">Текущая позиция головы</param>
+        /// <param name="direction">Направление движения</param>
+        /// <returns>Новая позиция головы</returns>
+        public static Point CalculateNewHead(Point currentHead, Direction direction) => direction switch
         {
             Direction.Up    => new Point(currentHead.X, currentHead.Y - 1),
             Direction.Down  => new Point(currentHead.X, currentHead.Y + 1),
