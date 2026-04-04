@@ -23,10 +23,10 @@ namespace gameSnake.Core
         {
             PlayingField field = new PlayingField(fieldWidth, fieldHeight);
 
-            var (headPosition, adjustedLength) = PositionCalculator.CalculateCenteredHeadPosition(
+            var (headPosition, finalSnakeLength) = PositionCalculator.CalculateCenteredHeadPosition(
                 field.Width, field.Height, initialSnakeLength, Direction.Right);
 
-            Snake snake = new Snake(headPosition, Direction.Right, adjustedLength);
+            Snake snake = new Snake(headPosition, Direction.Right, finalSnakeLength);
             Food food = FoodSpawner.CreateFood(field, snake);
             Header header = new Header();
 
