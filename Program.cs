@@ -1,4 +1,4 @@
-using gameSnake.UI.ConsoleUI;
+using gameSnake.UI.ConsoleUI.InputHandlers;
 using gameSnake.UI.ConsoleUI.ConsoleRenderers;
 using gameSnake.Core;
 using gameSnake.Interfaces;
