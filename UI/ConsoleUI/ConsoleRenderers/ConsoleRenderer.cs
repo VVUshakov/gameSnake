@@ -9,8 +9,17 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
     /// </summary>
     public class ConsoleRenderer : IGameRenderer
     {
+        /// <summary>
+        /// Очищает консоль перед отрисовкой нового кадра.
+        /// </summary>
         public void Clear() => Console.Clear();
 
+        /// <summary>
+        /// Отрисовывает текущее состояние игры.
+        /// Последовательно вызывает рендереры: заголовок, поле, змейку, еду,
+        /// а при необходимости — активное сервисное сообщение.
+        /// </summary>
+        /// <param name="state">Текущее состояние игры со всеми игровыми объектами</param>
         public void Render(GameState state)
         {
             int headerHeight = HeaderFormatter.GetHeight(state.Header);
