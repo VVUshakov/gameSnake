@@ -28,7 +28,7 @@ namespace gameSnake.Logic
             if(foodEaten)
             {
                 state.Header.Score += state.Food.PointsValue;
-                FoodSpawner.SpawnFood(state.Food, state.Field, state.Snake);
+                state.Food = FoodSpawner.SpawnFood(state.Field, state.Snake);
 
                 // Если не удалось разместить еду — змейка заполнила всё поле
                 if(!state.Food.IsSuccess)

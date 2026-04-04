@@ -18,14 +18,13 @@ namespace gameSnake.Utils
         }
 
         /// <summary>
-        /// Размещает еду на поле, обновляя существующий объект Food.
+        /// Создаёт новую еду в случайном свободном месте.
         /// </summary>
-        public static void SpawnFood(Food food, PlayingField field, Snake snake, Random? random = null)
+        public static Food SpawnFood(PlayingField field, Snake snake, Random? random = null)
         {
             random ??= new Random();
             Point? position = FindFreePosition(field, snake, random);
-            food.Position = position;
-            food.IsSuccess = position != null;
+            return new Food(position, position != null);
         }
 
         /// <summary>
