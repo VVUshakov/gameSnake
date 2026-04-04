@@ -3,12 +3,12 @@ using gameSnake.Core;
 namespace gameSnake.UI.ConsoleUI.InputHandlers
 {
     /// <summary>
-    /// Обрабатывает игровые команды: рестарт, пауза, выход и т.п.
+    /// Обрабатывает игровые команды: рестарт, пауза, выход.
     /// </summary>
     public static class GameCommandHandler
     {
         /// <summary>
-        /// Обрабатывает игровую команду
+        /// Обрабатывает игровую команду.
         /// </summary>
         /// <param name="key">Нажатая клавиша</param>
         /// <param name="state">Текущее состояние игры</param>
