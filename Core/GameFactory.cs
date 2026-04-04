@@ -38,9 +38,6 @@ namespace gameSnake.Core
             // Создаём еду
             state.Food = FoodSpawner.CreateFood(state.Field, state.Snake);
 
-            if(!state.Food.IsSuccess)
-                throw new InvalidOperationException("Нет свободного места для еды! Невозможно начать игру.");
-
             return state;
         }
 

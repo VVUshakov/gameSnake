@@ -17,21 +17,10 @@ namespace gameSnake
 
             while(true)
             {
-                try
-                {
-                    GameState state = GameFactory.CreateGameState();
-                    gameLoop.Run(state);
+                GameState state = GameFactory.CreateGameState();
+                gameLoop.Run(state);
 
-                    if(state.IsExit || !state.IsRestartRequested) break;
-                }
-                catch(InvalidOperationException ex)
-                {
-                    Clear();
-                    WriteLine("ОШИБКА: " + ex.Message);
-                    WriteLine("Нажмите любую клавишу для выхода...");
-                    ReadKey();
-                    break;
-                }
+                if(state.IsExit || !state.IsRestartRequested) break;
             }
         }
     }

@@ -29,6 +29,13 @@ namespace gameSnake.Logic
             {
                 state.Header.Score += state.Food.PointsValue;
                 FoodSpawner.SpawnFood(state.Food, state.Field, state.Snake);
+
+                // Если не удалось разместить еду — змейка заполнила всё поле
+                if(!state.Food.IsSuccess)
+                {
+                    state.IsWin = true;
+                    return;
+                }
             }
             else
             {
@@ -36,7 +43,6 @@ namespace gameSnake.Logic
             }
 
             CheckCollisions(state);
-            CheckWinCondition(state);
         }
 
         /// <summary>
@@ -66,16 +72,6 @@ namespace gameSnake.Logic
         {
             if(food.Position == null) return false;
             return head.X == food.Position.X && head.Y == food.Position.Y;
-        }
-
-        /// <summary>
-        /// Проверяет условие победы — змейка заняла всё поле
-        /// </summary>
-        private static void CheckWinCondition(GameState state)
-        {
-            int totalCells = state.Field.Width * state.Field.Height;
-            if(state.Snake.Body.Count >= totalCells)
-                state.IsWin = true;
         }
 
         /// <summary>
