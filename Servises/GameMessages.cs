@@ -1,13 +1,16 @@
-using System.Reflection;
 using gameSnake.Attributes;
-using gameSnake.Utils;
 
 namespace gameSnake.Servises
 {
-    internal class ServiseMessange
+    /// <summary>
+    /// Содержит текст сервисных сообщений игры.
+    /// Чистый контент — без логики обнаружения или форматирования.
+    /// </summary>
+    public static class GameMessages
     {
+        /// <summary>Сообщение паузы</summary>
         [MessageInfo]
-        internal static string[] GetPauseMessange()
+        public static string[] GetPauseMessage()
         {
             return new string[]
             {
@@ -20,8 +23,9 @@ namespace gameSnake.Servises
             };
         }
 
+        /// <summary>Сообщение о проигрыше</summary>
         [MessageInfo]
-        internal static string[] GetGameOverMessange()
+        public static string[] GetGameOverMessage()
         {
             return new string[]
             {
@@ -33,8 +37,9 @@ namespace gameSnake.Servises
             };
         }
 
+        /// <summary>Сообщение о победе</summary>
         [MessageInfo]
-        internal static string[] GetGameWinMessange()
+        public static string[] GetWinMessage()
         {
             return new string[]
             {
@@ -45,30 +50,5 @@ namespace gameSnake.Servises
                 "Нажмите Escape для выхода"
             };
         }
-
-        /// <summary>
-        /// Автоматически находит все методы с атрибутом MessageInfo и вызывает их
-        /// </summary>
-        internal static List<string[]> GetAllMessages()
-        {
-            var messages = new List<string[]>();
-
-            MethodInfo[] methods = typeof(ServiseMessange).GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-
-            foreach (MethodInfo method in methods)
-            {
-                // Пропускаем методы без атрибута MessageInfo
-                if (method.GetCustomAttribute<MessageInfoAttribute>() == null) continue;
-
-                string[]? result = method.Invoke(null, null) as string[];
-                if (result != null)
-                {
-                    messages.Add(result);
-                }
-            }
-
-            return messages;
-        }
     }
 }
-

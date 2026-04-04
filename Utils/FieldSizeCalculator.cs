@@ -15,7 +15,7 @@ namespace gameSnake.Utils
         /// <returns>Размеры игрового поля (ширина, высота)</returns>
         public static (int width, int height) Calculate()
         {
-            var messages = ServiseMessange.GetAllMessages();
+            var messages = MessageRegistry.GetAll();
             return (
                 MessageSizer.GetMaxWidth(messages) + BorderPadding,
                 MessageSizer.GetMaxHeight(messages) + BorderPadding

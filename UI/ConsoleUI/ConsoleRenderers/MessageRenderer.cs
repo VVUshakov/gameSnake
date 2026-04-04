@@ -25,9 +25,9 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
 
         private static string[] GetContent(GameMessage message) => message switch
         {
-            GameMessage.Pause    => ServiseMessange.GetPauseMessange(),
-            GameMessage.GameOver => ServiseMessange.GetGameOverMessange(),
-            GameMessage.Win      => ServiseMessange.GetGameWinMessange(),
+            GameMessage.Pause    => GameMessages.GetPauseMessage(),
+            GameMessage.GameOver => GameMessages.GetGameOverMessage(),
+            GameMessage.Win      => GameMessages.GetWinMessage(),
             _                    => Array.Empty<string>()
         };
 
