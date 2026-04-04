@@ -6,6 +6,6 @@ namespace gameSnake.Interfaces
     public interface IConsoleInput
     {
         bool KeyAvailable { get; }
-        ConsoleKey ReadKey(bool intercept);
+        System.ConsoleKey ReadKey(bool showKeyOnScreen);
     }
 }

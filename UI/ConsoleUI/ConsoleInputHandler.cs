@@ -21,7 +21,7 @@ namespace gameSnake.UI.ConsoleUI
         public void ProcessInput(GameState state)
         {
             if(!_input.KeyAvailable) return;
-            ConsoleKey key = _input.ReadKey(true);
+            ConsoleKey key = _input.ReadKey(showKeyOnScreen: false);
 
             switch(key)
             {

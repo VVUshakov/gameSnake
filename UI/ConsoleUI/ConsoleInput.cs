@@ -8,6 +8,6 @@ namespace gameSnake.UI.ConsoleUI
     public class ConsoleInput : IConsoleInput
     {
         public bool KeyAvailable => System.Console.KeyAvailable;
-        public System.ConsoleKey ReadKey(bool intercept) => System.Console.ReadKey(intercept).Key;
+        public System.ConsoleKey ReadKey(bool showKeyOnScreen) => System.Console.ReadKey(!showKeyOnScreen).Key;
     }
 }
