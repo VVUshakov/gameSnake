@@ -41,6 +41,9 @@ namespace gameSnake.Models
 
             foreach(var prop in properties)
             {
+                // Пропускаем Height — это служебное свойство
+                if(prop.Name == nameof(Height)) continue;
+
                 object? value = prop.GetValue(this);
                 if(value != null)
                 {
