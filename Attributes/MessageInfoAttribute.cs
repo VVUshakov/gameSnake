@@ -1,4 +1,4 @@
-namespace gameSnake.Servises
+namespace gameSnake.Attributes
 {
     /// <summary>
     /// Атрибут-маркер для обозначения методов, возвращающих сообщения

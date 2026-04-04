@@ -1,4 +1,4 @@
-namespace gameSnake.Models
+namespace gameSnake.Attributes
 {
     /// <summary>
     /// Атрибут-маркер для обозначения свойств, отображаемых в заголовке
