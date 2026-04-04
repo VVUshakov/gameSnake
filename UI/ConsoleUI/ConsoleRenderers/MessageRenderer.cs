@@ -41,8 +41,7 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
 
         private static void DrawCenteredMessage(PlayingField field, string[] lines, int headerHeight, ConsoleColor color)
         {
-            int messageWidth = MessageSizer.GetWidth(lines);
-            int messageHeight = MessageSizer.GetHeight(lines);
+            var (messageWidth, messageHeight) = MessageSizer.GetSize(lines);
 
             Point startPosition = PositionCalculator.CalculateCenteredMessagePosition(
                 field.Width, field.Height + headerHeight, messageWidth, messageHeight);

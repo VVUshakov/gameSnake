@@ -16,9 +16,10 @@ namespace gameSnake.Utils
         public static (int width, int height) Calculate()
         {
             var messages = MessageRegistry.GetAll();
+            var (fieldWidth, fieldHeight) = MessageSizer.GetMaxSize(messages);
             return (
-                MessageSizer.GetMaxWidth(messages) + BorderPadding,
-                MessageSizer.GetMaxHeight(messages) + BorderPadding
+                fieldWidth + BorderPadding,
+                fieldHeight + BorderPadding
             );
         }
     }
