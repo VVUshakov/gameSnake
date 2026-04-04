@@ -35,6 +35,14 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
             }
         }
 
+        /// <summary>
+        /// Меняет направление змейки, запрещая разворот на 180 градусов.
+        /// Разворот запрещён, если длина змейки больше 1 и текущее направление
+        /// не противоположно новому.
+        /// </summary>
+        /// <param name="state">Текущее состояние игры</param>
+        /// <param name="newDir">Новое направление движения</param>
+        /// <param name="oppositeDir">Противоположное направление (запрещённое)</param>
         private static void ChangeDirection(GameState state, Direction newDir, Direction oppositeDir)
         {
             if (state.Snake.Body.Count > 1 && state.CurrentDirection != oppositeDir)
