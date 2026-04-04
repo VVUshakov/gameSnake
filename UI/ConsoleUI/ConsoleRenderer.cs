@@ -14,45 +14,15 @@ namespace gameSnake.UI.ConsoleUI
     public class ConsoleRenderer : IGameRenderer
     {
         // Символы отрисовки
-        /// <summary>
-        /// Символ рамки игрового поля
-        /// </summary>
         private const char BorderChar = '#';
-
-        /// <summary>
-        /// Символ головы змейки
-        /// </summary>
         private const char SnakeHead = 'O';
-
-        /// <summary>
-        /// Символ тела змейки
-        /// </summary>
         private const char SnakeBody = '*';
-
-        /// <summary>
-        /// Символ еды
-        /// </summary>
         private const char FoodSymbol = '@';
 
         // Цвета сообщений
-        /// <summary>
-        /// Цвет сообщения о проигрыше
-        /// </summary>
         private const ConsoleColor GameOverColor = ConsoleColor.Red;
-
-        /// <summary>
-        /// Цвет сообщения о победе
-        /// </summary>
         private const ConsoleColor GameWinColor = ConsoleColor.Green;
-
-        /// <summary>
-        /// Цвет сообщения о паузе
-        /// </summary>
         private const ConsoleColor PauseColor = ConsoleColor.Yellow;
-
-        /// <summary>
-        /// Цвет сообщения по умолчанию
-        /// </summary>
         private const ConsoleColor DefaultMessageColor = ConsoleColor.White;
 
         /// <summary>
