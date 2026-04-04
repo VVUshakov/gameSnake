@@ -3,12 +3,13 @@ using gameSnake.Attributes;
 namespace gameSnake.Servises
 {
     /// <summary>
-    /// Содержит текст сервисных сообщений игры.
-    /// Чистый контент — без логики обнаружения или форматирования.
+    /// Содержит текст сервисных сообщений игры
     /// </summary>
     public static class GameMessages
     {
-        /// <summary>Сообщение паузы</summary>
+        /// <summary>
+        /// Сообщение паузы
+        /// </summary>
         [MessageInfo]
         public static string[] GetPauseMessage()
         {
@@ -23,7 +24,9 @@ namespace gameSnake.Servises
             };
         }
 
-        /// <summary>Сообщение о проигрыше</summary>
+        /// <summary>
+        /// Сообщение о проигрыше
+        /// </summary>
         [MessageInfo]
         public static string[] GetGameOverMessage()
         {
@@ -37,7 +40,9 @@ namespace gameSnake.Servises
             };
         }
 
-        /// <summary>Сообщение о победе</summary>
+        /// <summary>
+        /// Сообщение о победе
+        /// </summary>
         [MessageInfo]
         public static string[] GetWinMessage()
         {

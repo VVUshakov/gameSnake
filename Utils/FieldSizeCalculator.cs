@@ -3,7 +3,7 @@ using gameSnake.Servises;
 namespace gameSnake.Utils
 {
     /// <summary>
-    /// Вычисляет размеры игрового поля на основе сервисных сообщений.
+    /// Вычисляет размеры игрового поля на основе габаритов сервисных сообщений.
     /// </summary>
     public static class FieldSizeCalculator
     {
