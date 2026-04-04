@@ -3,9 +3,9 @@ using gameSnake.Models;
 namespace gameSnake.Logic.GameLogicComponents
 {
     /// <summary>
-    /// Стандартный детектор столкновений: проверка стен и тела змейки.
+    /// Детектор столкновений: проверка стен и тела змейки.
     /// </summary>
-    public static class StandardCollisionDetector
+    public static class CollisionDetector
     {
         /// <summary>
         /// Проверяет наличие столкновения со стеной или собственным телом.

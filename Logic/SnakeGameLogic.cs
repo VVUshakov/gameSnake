@@ -21,14 +21,14 @@ namespace gameSnake.Logic
             if (state.IsGameOver || state.IsWin || state.IsPaused) return;
 
             // 1. Движение
-            Point newHead = StandardMovement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
+            Point newHead = SnakeMovement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
             state.Snake.Body.Add(newHead);
 
-            // 2. Проверка еды и удаление хвоста у змейки, если не сьедена
-            if (StandardFoodHandler.IsFoodEaten(state.Snake, state.Food))
+            // 2. Проверка еды
+            if (FoodHandler.IsFoodEaten(state.Snake, state.Food))
             {
                 state.Header.Score += state.Food.PointsValue;
-                state.Food = StandardFoodHandler.RespawnFood(state.Field, state.Snake);
+                state.Food = FoodHandler.RespawnFood(state.Field, state.Snake);
 
                 if (!state.Food.IsSuccess)
                 {
@@ -42,7 +42,7 @@ namespace gameSnake.Logic
             }
 
             // 3. Проверка столкновений
-            if (StandardCollisionDetector.HasCollision(state.Snake, state.Field))
+            if (CollisionDetector.HasCollision(state.Snake, state.Field))
                 state.IsGameOver = true;
         }
     }

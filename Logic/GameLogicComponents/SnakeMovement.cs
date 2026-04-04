@@ -3,9 +3,9 @@ using gameSnake.Models;
 namespace gameSnake.Logic.GameLogicComponents
 {
     /// <summary>
-    /// Стандартная стратегия движения: смещение на 1 клетку по направлению.
+    /// Стратегия движения змейки: смещение на 1 клетку по направлению.
     /// </summary>
-    public static class StandardMovement
+    public static class SnakeMovement
     {
         /// <summary>
         /// Вычисляет новую позицию головы на основе текущего направления.

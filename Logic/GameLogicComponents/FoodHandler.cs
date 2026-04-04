@@ -4,9 +4,9 @@ using gameSnake.Utils;
 namespace gameSnake.Logic.GameLogicComponents
 {
     /// <summary>
-    /// Стандартный обработчик еды: проверка совпадения координат и спавн через FoodSpawner.
+    /// Обработчик еды: проверка совпадения координат и спавн через FoodSpawner.
     /// </summary>
-    public static class StandardFoodHandler
+    public static class FoodHandler
     {
         /// <summary>
         /// Проверяет, съела ли змейка еду.
