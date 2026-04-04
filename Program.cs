@@ -3,7 +3,6 @@ using gameSnake.UI.ConsoleUI.ConsoleRenderers;
 using gameSnake.Core;
 using gameSnake.Interfaces;
 using gameSnake.Logic;
-using static System.Console;
 
 namespace gameSnake
 {

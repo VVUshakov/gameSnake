@@ -1,30 +1,8 @@
 namespace gameSnake.Models
 {
     /// <summary>
-    /// Простейшее представление координат на игровом поле.
-    /// Используется для позиционирования змейки, еды и других объектов.
+    /// Представляет точку на игровом поле с координатами X и Y.
+    /// Является типом-значением с семантикой сравнения по значению.
     /// </summary>
-    public class Point
-    {
-        /// <summary>
-        /// Координата X (горизонтальная позиция)
-        /// </summary>
-        public int X { get; set; }
-
-        /// <summary>
-        /// Координата Y (вертикальная позиция)
-        /// </summary>
-        public int Y { get; set; }
-
-        /// <summary>
-        /// Инициализирует новую точку с указанными координатами
-        /// </summary>
-        /// <param name="x">Координата X</param>
-        /// <param name="y">Координата Y</param>
-        public Point(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-    }
+    public record struct Point(int X, int Y);
 }

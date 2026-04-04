@@ -18,7 +18,7 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
         public static void Draw(Food food, PlayingField field, int headerHeight)
         {
             if (!food.IsSuccess || food.Position == null) return;
-            Point pos = food.Position;
+            Point pos = food.Position.Value;
             if (!field.IsInside(pos)) return;
             Console.SetCursorPosition(pos.X, pos.Y + headerHeight);
             Console.Write(RenderConstants.FoodSymbol);

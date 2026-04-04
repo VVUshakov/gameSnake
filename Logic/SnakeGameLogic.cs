@@ -77,8 +77,9 @@ namespace gameSnake.Logic
         /// </summary>
         private static bool IsFoodEaten(Point head, Food food)
         {
-            if(food.Position == null) return false;
-            return head.X == food.Position.X && head.Y == food.Position.Y;
+            if (food.Position == null) return false;
+            Point pos = food.Position.Value;
+            return head.X == pos.X && head.Y == pos.Y;
         }
 
         /// <summary>
