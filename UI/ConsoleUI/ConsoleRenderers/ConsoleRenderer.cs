@@ -1,6 +1,5 @@
 ﻿using gameSnake.Core;
 using gameSnake.Interfaces;
-using gameSnake.Servises;
 
 namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
 {
@@ -20,12 +19,8 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
             SnakeRenderer.Draw(state.Snake, state.Field, headerHeight);
             FoodRenderer.Draw(state.Food, state.Field, headerHeight);
 
-            if (state.IsGameOver)
-                MessageRenderer.Draw(state.Field, headerHeight, ServiseMessange.GetGameOverMessange(), RenderConstants.GameOverColor);
-            if (state.IsWin)
-                MessageRenderer.Draw(state.Field, headerHeight, ServiseMessange.GetGameWinMessange(), RenderConstants.GameWinColor);
-            if (state.IsPaused)
-                MessageRenderer.Draw(state.Field, headerHeight, ServiseMessange.GetPauseMessange(), RenderConstants.PauseColor);
+            if (state.ActiveMessage.HasValue)
+                MessageRenderer.Draw(state.Field, headerHeight, state.ActiveMessage.Value);
         }
     }
 }

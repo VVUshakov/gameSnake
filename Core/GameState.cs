@@ -25,6 +25,12 @@ namespace gameSnake.Core
         public Snake Snake { get; }
         public Food Food { get; set; }
 
+        /// <summary>
+        /// Активное сервисное сообщение для отображения поверх игрового поля.
+        /// Задаётся игровой логикой, рендерер только отображает.
+        /// </summary>
+        public GameMessage? ActiveMessage { get; set; }
+
         public GameState(Header header, PlayingField field, Snake snake, Food food)
         {
             Header = header;

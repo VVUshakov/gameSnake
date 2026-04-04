@@ -1,4 +1,5 @@
 using gameSnake.Core;
+using gameSnake.Models;
 
 namespace gameSnake.UI.ConsoleUI.InputHandlers
 {
@@ -22,6 +23,7 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
                 case ConsoleKey.P:
                 case ConsoleKey.Spacebar:
                     state.IsPaused = !state.IsPaused;
+                    state.ActiveMessage = state.IsPaused ? GameMessage.Pause : null;
                     break;
                 case ConsoleKey.Escape:
                     state.IsExit = true;

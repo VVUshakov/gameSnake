@@ -33,6 +33,7 @@ namespace gameSnake.Logic.SnakeLogic
                 if (!state.Food.IsSuccess)
                 {
                     state.IsWin = true;
+                    state.ActiveMessage = GameMessage.Win;
                     return;
                 }
             }
@@ -43,7 +44,10 @@ namespace gameSnake.Logic.SnakeLogic
 
             // 3. Проверка столкновений
             if (CollisionDetector.HasCollision(state.Snake, state.Field))
+            {
                 state.IsGameOver = true;
+                state.ActiveMessage = GameMessage.GameOver;
+            }
         }
     }
 }
