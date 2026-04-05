@@ -15,6 +15,7 @@ namespace gameSnake.Core.Engine
         private readonly IInputHandler _inputHandler;
         private readonly IGameLogic _gameLogic;
         private readonly ITimer _timer;
+        private readonly IWindowConfigurator _windowConfigurator;
 
         /// <summary>
         /// Создаёт экземпляр игры с указанными зависимостями.
@@ -23,12 +24,14 @@ namespace gameSnake.Core.Engine
         /// <param name="inputHandler">Обработчик пользовательского ввода</param>
         /// <param name="gameLogic">Логика игры</param>
         /// <param name="timer">Таймер для управления скоростью игры</param>
-        public Game(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic, ITimer timer)
+        /// <param name="windowConfigurator">Конфигуратор окна приложения</param>
+        public Game(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic, ITimer timer, IWindowConfigurator windowConfigurator)
         {
             _renderer = renderer;
             _inputHandler = inputHandler;
             _gameLogic = gameLogic;
             _timer = timer;
+            _windowConfigurator = windowConfigurator;
         }
 
         /// <summary>
@@ -51,12 +54,15 @@ namespace gameSnake.Core.Engine
         /// настраивает консоль и инициализирует игровые объекты.
         /// </summary>
         /// <returns>Готовое начальное состояние игры</returns>
-        private static GameState CreateGameState()
+        private GameState CreateGameState()
         {
             var messages = MessageRegistry.GetAll();
             var (maxMsgWidth, maxMsgHeight) = MessageSizer.GetMaxSize(messages);
             (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate(maxMsgWidth, maxMsgHeight);
-            ConsoleWindowConfigurator.Configure(fieldWidth, fieldHeight);
+            
+            // Настраиваем окно через интерфейс
+            _windowConfigurator.Configure(fieldWidth, fieldHeight);
+            
             return GameStateFactory.Create(fieldWidth, fieldHeight);
         }
     }

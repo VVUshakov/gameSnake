@@ -5,6 +5,7 @@ using gameSnake.Core.Engine;
 using gameSnake.Core;
 using gameSnake.Interfaces;
 using gameSnake.Logic.SnakeLogic;
+using gameSnake.Utils;
 
 namespace gameSnake
 {
@@ -16,8 +17,9 @@ namespace gameSnake
             IInputHandler input = new ConsoleInputHandler();
             IGameLogic logic = new SnakeGameLogic();
             ITimer timer = new SystemTimer();
+            IWindowConfigurator windowConfigurator = new ConsoleWindowConfigurator();
             
-            var game = new Game(renderer, input, logic, timer);
+            var game = new Game(renderer, input, logic, timer, windowConfigurator);
             game.Run();
         }
     }

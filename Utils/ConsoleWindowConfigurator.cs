@@ -1,9 +1,11 @@
+using gameSnake.Interfaces;
+
 namespace gameSnake.Utils
 {
     /// <summary>
     /// Настраивает размер окна консоли под игровое поле.
     /// </summary>
-    public static class ConsoleWindowConfigurator
+    public class ConsoleWindowConfigurator : IWindowConfigurator
     {
         private const int WidthPadding = 4;
         private const int HeightPadding = 6;
@@ -13,7 +15,7 @@ namespace gameSnake.Utils
         /// </summary>
         /// <param name="fieldWidth">Ширина игрового поля</param>
         /// <param name="fieldHeight">Высота игрового поля</param>
-        public static void Configure(int fieldWidth, int fieldHeight)
+        public void Configure(int fieldWidth, int fieldHeight)
         {
             Console.SetWindowSize(
                 fieldWidth + WidthPadding,
