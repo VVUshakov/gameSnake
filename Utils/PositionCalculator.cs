@@ -29,13 +29,13 @@ namespace gameSnake.Utils
             int frameTop = 0;
             int frameBottom = fieldHeight - 1;
 
-            // Доступная область (между рамками)
+            // Границы доступной области (между рамками)
             int playableLeft = frameLeft + 1;
             int playableRight = frameRight - 1;
             int playableTop = frameTop + 1;
             int playableBottom = frameBottom - 1;
 
-            // Размеры доступной области
+            // Размеры доступной области (между рамками)
             int availableWidth = playableRight - playableLeft;
             int availableHeight = playableBottom - playableTop;
 
