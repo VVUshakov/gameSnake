@@ -24,7 +24,7 @@ namespace gameSnake.Core
         /// Запускает игровой цикл для одного состояния игры.
         /// Возвращает управление, когда игра окончена или запрошен перезапуск.
         /// </summary>
-        public void Run(GameState state)
+        public void Run(State.GameState state)
         {
             while (!state.Flags.IsExit && !state.Flags.IsRestartRequested)
             {
@@ -35,7 +35,7 @@ namespace gameSnake.Core
             }
         }
 
-        private void Update(GameState state)
+        private void Update(State.GameState state)
         {
             _inputHandler.ProcessInput(state);
             if (!state.Flags.IsPaused) _gameLogic.Update(state);

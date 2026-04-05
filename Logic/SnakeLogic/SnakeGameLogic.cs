@@ -1,4 +1,4 @@
-﻿using gameSnake.Core;
+﻿using GameState = gameSnake.Core.State.GameState;
 using gameSnake.Interfaces;
 using gameSnake.Logic.SnakeLogic;
 using gameSnake.Models;

@@ -1,4 +1,4 @@
-namespace gameSnake.Core
+namespace gameSnake.Core.State
 {
     /// <summary>
     /// Управляющие флаги состояния игры.

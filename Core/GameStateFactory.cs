@@ -16,7 +16,7 @@ namespace gameSnake.Core
         /// <param name="fieldHeight">Высота игрового поля</param>
         /// <param name="initialSnakeLength">Начальная длина змейки (по умолчанию 3)</param>
         /// <returns>Готовое начальное состояние игры</returns>
-        public static GameState Create(
+        public static State.GameState Create(
             int fieldWidth,
             int fieldHeight,
             int initialSnakeLength = 3)
@@ -30,7 +30,7 @@ namespace gameSnake.Core
             Food food = FoodSpawner.CreateFood(field, snake);
             Header header = new Header();
 
-            return new GameState(header, field, snake, food);
+            return new State.GameState(header, field, snake, food);
         }
     }
 }

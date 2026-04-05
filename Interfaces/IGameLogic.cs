@@ -1,4 +1,4 @@
-using gameSnake.Core;
+using GameState = gameSnake.Core.State.GameState;
 
 namespace gameSnake.Interfaces
 {

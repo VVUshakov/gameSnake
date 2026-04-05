@@ -1,6 +1,6 @@
 ﻿using gameSnake.Models;
 
-namespace gameSnake.Core
+namespace gameSnake.Core.State
 {
     /// <summary>
     /// Состояние игры. Содержит флаги, настройки и игровые объекты.

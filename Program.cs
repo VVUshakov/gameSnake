@@ -1,3 +1,4 @@
+using State = gameSnake.Core.State.GameState;
 using gameSnake.UI.ConsoleUI.InputHandlers;
 using gameSnake.UI.ConsoleUI.ConsoleRenderers;
 using gameSnake.Core;
@@ -25,7 +26,7 @@ namespace gameSnake
                 ConsoleWindowConfigurator.Configure(fieldWidth, fieldHeight);
 
                 // Создаём и запускаем игру
-                GameState state = GameStateFactory.Create(fieldWidth, fieldHeight);
+                State state = GameStateFactory.Create(fieldWidth, fieldHeight);
                 gameLoop.Run(state);
 
                 if (state.Flags.IsExit || !state.Flags.IsRestartRequested) break;
