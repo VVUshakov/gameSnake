@@ -1,6 +1,6 @@
 using gameSnake.Models;
 
-namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
+namespace gameSnake.UI.ConsoleUI.ConsoleRenderers.Renderers
 {
     /// <summary>
     /// Отвечает за отрисовку змейки на игровом поле.

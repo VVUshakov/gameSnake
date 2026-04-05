@@ -1,7 +1,7 @@
 using gameSnake.Core.State;
 using gameSnake.Models;
 
-namespace gameSnake.Logic.SnakeLogic
+namespace gameSnake.Logic.SnakeLogic.Steps
 {
     /// <summary>
     /// Шаг движения змейки: вычисляет новую позицию головы и добавляет её к телу.

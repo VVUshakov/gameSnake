@@ -1,5 +1,6 @@
 ﻿using GameState = gameSnake.Core.State.GameState;
 using gameSnake.Interfaces;
+using gameSnake.UI.ConsoleUI.ConsoleRenderers.Renderers;
 
 namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
 {

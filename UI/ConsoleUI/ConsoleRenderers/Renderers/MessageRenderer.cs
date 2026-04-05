@@ -1,7 +1,7 @@
 using gameSnake.Models;
 using gameSnake.Utils;
 
-namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
+namespace gameSnake.UI.ConsoleUI.ConsoleRenderers.Renderers
 {
     /// <summary>
     /// Отвечает за отрисовку сервисных сообщений поверх игрового поля.

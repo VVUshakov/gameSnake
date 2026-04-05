@@ -1,7 +1,7 @@
 using gameSnake.Core.State;
 using gameSnake.Models;
 
-namespace gameSnake.Logic.SnakeLogic
+namespace gameSnake.Logic.SnakeLogic.Steps
 {
     /// <summary>
     /// Шаг поедания еды: проверяет, съела ли змейка еду, обновляет счёт и создаёт новую еду.

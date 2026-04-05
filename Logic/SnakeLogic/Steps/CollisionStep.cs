@@ -1,7 +1,7 @@
 using gameSnake.Core.State;
 using gameSnake.Models;
 
-namespace gameSnake.Logic.SnakeLogic
+namespace gameSnake.Logic.SnakeLogic.Steps
 {
     /// <summary>
     /// Шаг проверки столкновений: определяет столкновение змейки со стеной или собственным телом.

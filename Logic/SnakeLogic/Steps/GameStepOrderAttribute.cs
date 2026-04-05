@@ -1,4 +1,4 @@
-namespace gameSnake.Logic.SnakeLogic
+namespace gameSnake.Logic.SnakeLogic.Steps
 {
     /// <summary>
     /// Атрибут для указания порядка выполнения шага игровой логики.
