@@ -5,19 +5,29 @@ namespace gameSnake.Core
     /// </summary>
     public class GameFlags
     {
-        /// <summary>Запрос на выход из игры</summary>
+        /// <summary>
+        /// Запрос на выход из игры
+        /// </summary>
         public bool IsExit { get; set; }
 
-        /// <summary>Игра окончена (проигрыш)</summary>
+        /// <summary>
+        /// Игра окончена (проигрыш)
+        /// </summary>
         public bool IsGameOver { get; set; }
 
-        /// <summary>Победа (поле заполнено)</summary>
+        /// <summary>
+        /// Победа (поле заполнено)
+        /// </summary>
         public bool IsWin { get; set; }
 
-        /// <summary>Пауза</summary>
+        /// <summary>
+        /// Пауза
+        /// </summary>
         public bool IsPaused { get; set; }
 
-        /// <summary>Запрос на перезапуск игры</summary>
+        /// <summary>
+        /// Запрос на перезапуск игры
+        /// </summary>
         public bool IsRestartRequested { get; set; }
     }
 }

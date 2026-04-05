@@ -8,13 +8,19 @@ namespace gameSnake.Core
     /// </summary>
     public class GameState
     {
-        /// <summary>Управляющие флаги</summary>
+        /// <summary>
+        /// Управляющие флаги
+        /// </summary>
         public GameFlags Flags { get; } = new GameFlags();
 
-        /// <summary>Настройки игры</summary>
+        /// <summary>
+        /// Настройки игры
+        /// </summary>
         public GameSettings Settings { get; } = new GameSettings();
 
-        // Игровые объекты (обязательные — только через конструктор)
+        /// <summary>
+        /// Игровые объекты (обязательные — только через конструктор)
+        /// </summary>
         public Header Header { get; }
         public Direction CurrentDirection { get; set; }
         public PlayingField Field { get; }

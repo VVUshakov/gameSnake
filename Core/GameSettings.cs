@@ -5,7 +5,9 @@ namespace gameSnake.Core
     /// </summary>
     public class GameSettings
     {
-        /// <summary>Кадров в секунду (скорость игры)</summary>
+        /// <summary>
+        /// Кадров в секунду (скорость игры)
+        /// </summary>
         public int Fps { get; set; } = 100;
     }
 }
