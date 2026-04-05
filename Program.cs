@@ -4,6 +4,7 @@ using gameSnake.UI.ConsoleUI.ConsoleRenderers;
 using gameSnake.Core;
 using gameSnake.Interfaces;
 using gameSnake.Logic.SnakeLogic;
+using gameSnake.Servises;
 using gameSnake.Utils;
 
 namespace gameSnake
@@ -19,10 +20,14 @@ namespace gameSnake
 
             while (true)
             {
-                // Вычисляем размеры игрового поля
-                (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate();
+                // Вычисляем максимальные размеры сервисных сообщений
+                var messages = MessageRegistry.GetAll();
+                var (maxMessageWidth, maxMessageHeight) = MessageSizer.GetMaxSize(messages);
 
-                // Подстраиваем консоль под игровое поле
+                // Вычисляем размеры игрового поля (с учетом габаритов сервисных сообщений)
+                (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate(maxMessageWidth, maxMessageHeight);
+
+                // Подстраиваем консоль под размер игрового поля
                 ConsoleWindowConfigurator.Configure(fieldWidth, fieldHeight);
 
                 // Создаём и запускаем игру

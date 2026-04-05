@@ -1,25 +1,23 @@
-using gameSnake.Servises;
-
 namespace gameSnake.Utils
 {
     /// <summary>
-    /// Вычисляет размеры игрового поля на основе габаритов сервисных сообщений.
+    /// Вычисляет размеры игрового поля на основе максимальных размеров сообщений.
     /// </summary>
     public static class FieldSizeCalculator
     {
         private const int BorderPadding = 4;
 
         /// <summary>
-        /// Вычисляет размеры игрового поля.
+        /// Вычисляет размеры игрового поля на основе максимальных размеров сообщений.
         /// </summary>
+        /// <param name="maxMessageWidth">Максимальная ширина сообщения</param>
+        /// <param name="maxMessageHeight">Максимальная высота сообщения</param>
         /// <returns>Размеры игрового поля (ширина, высота)</returns>
-        public static (int width, int height) Calculate()
+        public static (int width, int height) Calculate(int maxMessageWidth, int maxMessageHeight)
         {
-            var messages = MessageRegistry.GetAll();
-            var (fieldWidth, fieldHeight) = MessageSizer.GetMaxSize(messages);
             return (
-                fieldWidth + BorderPadding,
-                fieldHeight + BorderPadding
+                maxMessageWidth + BorderPadding,
+                maxMessageHeight + BorderPadding
             );
         }
     }
