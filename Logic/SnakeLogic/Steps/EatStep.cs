@@ -1,4 +1,6 @@
+using gameSnake.Attributes;
 using gameSnake.Core.State;
+using gameSnake.Interfaces;
 using gameSnake.Models;
 
 namespace gameSnake.Logic.SnakeLogic.Steps

@@ -1,6 +1,6 @@
 using gameSnake.Core.State;
 
-namespace gameSnake.Logic.SnakeLogic.Steps
+namespace gameSnake.Interfaces
 {
     /// <summary>
     /// Шаг обновления игрового состояния.
