@@ -7,7 +7,7 @@ namespace gameSnake.Logic.SnakeLogic
     /// Шаг проверки столкновений: определяет столкновение змейки со стеной или собственным телом.
     /// </summary>
     [GameStepOrder(2)]
-    public class CollisionStep : IGameStep
+    public class CollisionStep : IUpdateStep
     {
         /// <summary>
         /// Проверяет столкновение змейки со стеной или собственным телом.

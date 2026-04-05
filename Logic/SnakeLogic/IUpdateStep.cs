@@ -6,7 +6,7 @@ namespace gameSnake.Logic.SnakeLogic
     /// Шаг обновления игрового состояния.
     /// Каждый шаг выполняет одну часть игровой логики.
     /// </summary>
-    public interface IGameStep
+    public interface IUpdateStep
     {
         /// <summary>
         /// Применяет шаг к состоянию игры.

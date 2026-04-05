@@ -7,7 +7,7 @@ namespace gameSnake.Logic.SnakeLogic
     /// Шаг движения змейки: вычисляет новую позицию головы и добавляет её к телу.
     /// </summary>
     [GameStepOrder(0)]
-    public class MoveStep : IGameStep
+    public class SnakeMoveStep : IUpdateStep
     {
         /// <summary>
         /// Вычисляет новую позицию головы и добавляет её к телу змейки.

@@ -8,7 +8,7 @@ namespace gameSnake.Logic.SnakeLogic
     /// Если еда не съедена, удаляет хвост змейки.
     /// </summary>
     [GameStepOrder(1)]
-    public class EatStep : IGameStep
+    public class EatStep : IUpdateStep
     {
         /// <summary>
         /// Проверяет поедание еды, обновляет счёт и создаёт новую еду.

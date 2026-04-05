@@ -6,11 +6,11 @@ namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
     /// Основная логика игры: обновление состояния змейки.
-    /// Автоматически обнаруживает шаги (IGameStep) через рефлексию и сортирует их по атрибуту [GameStepOrder].
+    /// Автоматически обнаруживает шаги обновления (IUpdateStep) через рефлексию и сортирует их по атрибуту [GameStepOrder].
     /// </summary>
     public class SnakeGameLogic : IGameLogic
     {
-        private readonly IGameStep[] _steps;
+        private readonly IUpdateStep[] _steps;
 
         /// <summary>
         /// Создаёт логику игры и автоматически обнаруживает все шаги в текущей сборке.
@@ -36,24 +36,24 @@ namespace gameSnake.Logic.SnakeLogic
         }
 
         /// <summary>
-        /// Автоматически обнаруживает все классы, реализующие IGameStep, в текущей сборке.
+        /// Автоматически обнаруживает все классы, реализующие IUpdateStep, в текущей сборке.
         /// Сортирует их по атрибуту [GameStepOrder].
         /// </summary>
         /// <returns>Отсортированный массив шагов</returns>
-        private static IGameStep[] DiscoverSteps()
+        private static IUpdateStep[] DiscoverSteps()
         {
-            var steps = new List<(int Order, IGameStep Step)>();
+            var steps = new List<(int Order, IUpdateStep Step)>();
 
             // Находим все типы в текущей сборке
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                // Проверяем, что тип реализует IGameStep и имеет атрибут GameStepOrder
-                if (typeof(IGameStep).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
+                // Проверяем, что тип реализует IUpdateStep и имеет атрибут GameStepOrder
+                if (typeof(IUpdateStep).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
                 {
                     var attr = type.GetCustomAttribute<GameStepOrderAttribute>();
                     if (attr != null)
                     {
-                        var step = (IGameStep)Activator.CreateInstance(type)!;
+                        var step = (IUpdateStep)Activator.CreateInstance(type)!;
                         steps.Add((attr.Order, step));
                     }
                 }
