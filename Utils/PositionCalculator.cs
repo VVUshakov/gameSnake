@@ -34,14 +34,49 @@ namespace gameSnake.Utils
             int centerX = fieldWidth / 2;
             int centerY = fieldHeight / 2;
 
-            Point headPosition = direction switch
+            // Границы рамки
+            int frameLeft = 0;
+            int frameRight = fieldWidth - 1;
+            int frameTop = 0;
+            int frameBottom = fieldHeight - 1;
+
+            // Доступная область (между рамками)
+            int playableLeft = frameLeft + 1;
+            int playableRight = frameRight - 1;
+            int playableTop = frameTop + 1;
+            int playableBottom = frameBottom - 1;
+
+            Point headPosition;
+            switch (direction)
             {
-                Direction.Right => new Point(Min(Max(finalSnakeLength, centerX), fieldWidth - 2), centerY),
-                Direction.Left  => new Point(Max(Min(fieldWidth - 1 - finalSnakeLength, centerX), 1), centerY),
-                Direction.Down  => new Point(centerX, Min(Max(finalSnakeLength, centerY), fieldHeight - 2)),
-                Direction.Up    => new Point(centerX, Max(Min(fieldHeight - 1 - finalSnakeLength, centerY), 1)),
-                _               => new Point(centerX, centerY)
-            };
+                case Direction.Right:
+                    int maxX = Max(finalSnakeLength, centerX);
+                    int rightX = Min(maxX, playableRight);
+                    headPosition = new Point(rightX, centerY);
+                    break;
+
+                case Direction.Left:
+                    int minX = Min(playableRight - finalSnakeLength, centerX);
+                    int leftX = Max(minX, playableLeft);
+                    headPosition = new Point(leftX, centerY);
+                    break;
+
+                case Direction.Down:
+                    int maxY = Max(finalSnakeLength, centerY);
+                    int downY = Min(maxY, playableBottom);
+                    headPosition = new Point(centerX, downY);
+                    break;
+
+                case Direction.Up:
+                    int minY = Min(playableBottom - finalSnakeLength, centerY);
+                    int upY = Max(minY, playableTop);
+                    headPosition = new Point(centerX, upY);
+                    break;
+
+                default:
+                    headPosition = new Point(centerX, centerY);
+                    break;
+            }
 
             return (headPosition, finalSnakeLength);
         }
@@ -93,4 +128,3 @@ namespace gameSnake.Utils
         private static int Max(int a, int b) => a > b ? a : b;
     }
 }
-
