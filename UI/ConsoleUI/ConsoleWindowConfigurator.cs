@@ -3,7 +3,7 @@ using gameSnake.Interfaces;
 namespace gameSnake.UI.ConsoleUI
 {
     /// <summary>
-    /// Настраивает размер окна консоли под игровое поле.
+    /// Настраивает окно консоли: размер, видимость курсора.
     /// </summary>
     public class ConsoleWindowConfigurator : IWindowConfigurator
     {
@@ -11,7 +11,7 @@ namespace gameSnake.UI.ConsoleUI
         private const int HeightPadding = 6;
 
         /// <summary>
-        /// Устанавливает размер окна консоли с учётом отступов.
+        /// Устанавливает размер окна консоли и скрывает курсор.
         /// </summary>
         /// <param name="fieldWidth">Ширина игрового поля</param>
         /// <param name="fieldHeight">Высота игрового поля</param>
@@ -20,6 +20,7 @@ namespace gameSnake.UI.ConsoleUI
             Console.SetWindowSize(
                 fieldWidth + WidthPadding,
                 fieldHeight + HeightPadding);
+            Console.CursorVisible = false;
         }
     }
 }
