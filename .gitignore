@@ -56,6 +56,10 @@ nunit-*.xml
 [Rr]eleasePS/
 dlldata.c
 
+# Backup files
+*.Backup.tmp
+*.bak
+
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
 
