@@ -13,6 +13,6 @@ namespace gameSnake.Interfaces
         bool IsRestartRequested { get; set; }
         bool IsPaused { get; set; }
         Direction CurrentDirection { get; set; }
-        GameMessage? ActiveMessage { get; set; }
+        GameMessageType? ActiveMessage { get; set; }
     }
 }

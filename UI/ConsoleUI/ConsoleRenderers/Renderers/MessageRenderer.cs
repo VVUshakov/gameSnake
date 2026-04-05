@@ -1,11 +1,12 @@
 using gameSnake.Models;
+using gameSnake.Servises;
 using gameSnake.Utils;
 
 namespace gameSnake.UI.ConsoleUI.ConsoleRenderers.Renderers
 {
     /// <summary>
     /// Отвечает за отрисовку сервисных сообщений поверх игрового поля.
-    /// Не зависит от источника текста — получает строки как параметр.
+    /// Определяет контент и цвет по типу сообщения.
     /// </summary>
     public static class MessageRenderer
     {
@@ -15,7 +16,7 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers.Renderers
         /// <param name="field">Игровое поле для расчёта позиции</param>
         /// <param name="headerHeight">Высота заголовка для смещения</param>
         /// <param name="message">Тип сервисного сообщения</param>
-        public static void Draw(PlayingField field, int headerHeight, GameMessage message)
+        public static void Draw(PlayingField field, int headerHeight, GameMessageType message)
         {
             string[] lines = MessageStyleProvider.GetContent(message);
             ConsoleColor color = MessageStyleProvider.GetColor(message);

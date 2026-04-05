@@ -3,7 +3,7 @@ namespace gameSnake.Models
     /// <summary>
     /// Тип сервисного сообщения, отображаемого поверх игрового поля.
     /// </summary>
-    public enum GameMessage
+    public enum GameMessageType
     {
         /// <summary>
         /// Пауза

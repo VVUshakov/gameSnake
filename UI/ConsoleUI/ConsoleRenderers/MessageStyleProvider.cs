@@ -13,15 +13,15 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
         /// </summary>
         /// <param name="message">Тип сервисного сообщения</param>
         /// <returns>Массив строк с текстом сообщения</returns>
-        public static string[] GetContent(GameMessage message)
+        public static string[] GetContent(GameMessageType message)
         {
             switch (message)
             {
-                case GameMessage.Pause:
+                case GameMessageType.Pause:
                     return GameMessages.GetPauseMessage();
-                case GameMessage.GameOver:
+                case GameMessageType.GameOver:
                     return GameMessages.GetGameOverMessage();
-                case GameMessage.Win:
+                case GameMessageType.Win:
                     return GameMessages.GetWinMessage();
                 default:
                     return Array.Empty<string>();
@@ -33,15 +33,15 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
         /// </summary>
         /// <param name="message">Тип сервисного сообщения</param>
         /// <returns>Цвет для отрисовки сообщения</returns>
-        public static ConsoleColor GetColor(GameMessage message)
+        public static ConsoleColor GetColor(GameMessageType message)
         {
             switch (message)
             {
-                case GameMessage.Pause:
+                case GameMessageType.Pause:
                     return RenderConstants.PauseColor;
-                case GameMessage.GameOver:
+                case GameMessageType.GameOver:
                     return RenderConstants.GameOverColor;
-                case GameMessage.Win:
+                case GameMessageType.Win:
                     return RenderConstants.GameWinColor;
                 default:
                     return RenderConstants.DefaultMessageColor;

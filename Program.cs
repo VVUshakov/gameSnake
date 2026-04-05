@@ -22,14 +22,14 @@ namespace gameSnake
 
             while (true)
             {
-                // Вычисляем максимальные размеры сервисных сообщений
+                // Вычисляем размеры сообщений
                 var messages = MessageRegistry.GetAll();
-                var (maxMessageWidth, maxMessageHeight) = MessageSizer.GetMaxSize(messages);
+                var (maxMsgWidth, maxMsgHeight) = MessageSizer.GetMaxSize(messages);
 
-                // Вычисляем размеры игрового поля (с учетом габаритов сервисных сообщений)
-                (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate(maxMessageWidth, maxMessageHeight);
+                // Вычисляем размеры поля
+                (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate(maxMsgWidth, maxMsgHeight);
 
-                // Подстраиваем консоль под размер игрового поля
+                // Подстраиваем консоль под поле
                 ConsoleWindowConfigurator.Configure(fieldWidth, fieldHeight);
 
                 // Создаём и запускаем игру

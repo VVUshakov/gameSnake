@@ -28,7 +28,7 @@ namespace gameSnake.Logic.SnakeLogic.Steps
                 if (!state.Food.IsSuccess)
                 {
                     state.Flags.IsWin = true;
-                    state.ActiveMessage = GameMessage.Win;
+                    state.ActiveMessage = GameMessageType.Win;
                     return true;
                 }
             }

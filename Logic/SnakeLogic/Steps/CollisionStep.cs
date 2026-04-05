@@ -21,7 +21,7 @@ namespace gameSnake.Logic.SnakeLogic.Steps
             if (CollisionDetector.HasCollision(state.Snake, state.Field))
             {
                 state.Flags.IsGameOver = true;
-                state.ActiveMessage = GameMessage.GameOver;
+                state.ActiveMessage = GameMessageType.GameOver;
                 return true;
             }
             return false;

@@ -24,7 +24,7 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
                 case ConsoleKey.P:
                 case ConsoleKey.Spacebar:
                     inputState.IsPaused = !inputState.IsPaused;
-                    inputState.ActiveMessage = inputState.IsPaused ? GameMessage.Pause : null;
+                    inputState.ActiveMessage = inputState.IsPaused ? GameMessageType.Pause : null;
                     break;
                 case ConsoleKey.Escape:
                     inputState.IsExit = true;
