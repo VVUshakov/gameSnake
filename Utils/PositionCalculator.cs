@@ -44,9 +44,11 @@ namespace gameSnake.Utils
                 ? Min(snakeLength, availableWidth)
                 : Min(snakeLength, availableHeight);
 
+            // Центр игрового поля
             int centerX = fieldWidth / 2;
             int centerY = fieldHeight / 2;
 
+            // Рассчитывает позицию головы, чтобы змейка была отцентрирована на игровом поле
             Point headPosition;
             switch (direction)
             {
