@@ -1,6 +1,7 @@
 using ITimer = gameSnake.Interfaces.ITimer;
 using gameSnake.UI.ConsoleUI.InputHandlers;
 using gameSnake.UI.ConsoleUI.ConsoleRenderers;
+using gameSnake.Core.Engine;
 using gameSnake.Core;
 using gameSnake.Interfaces;
 using gameSnake.Logic.SnakeLogic;

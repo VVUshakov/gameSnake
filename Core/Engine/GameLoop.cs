@@ -3,7 +3,7 @@ using ITimer = gameSnake.Interfaces.ITimer;
 using gameSnake.Models;
 using static System.Console;
 
-namespace gameSnake.Core
+namespace gameSnake.Core.Engine
 {
     /// <summary>
     /// Игровой цикл. Управляет отрисовкой, вводом и обновлением состояния игры.

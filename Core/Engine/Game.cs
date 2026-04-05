@@ -4,7 +4,7 @@ using ITimer = gameSnake.Interfaces.ITimer;
 using gameSnake.Servises;
 using gameSnake.Utils;
 
-namespace gameSnake.Core
+namespace gameSnake.Core.Engine
 {
     /// <summary>
     /// Управляет жизненным циклом игры: инициализация, запуск, перезапуск.
