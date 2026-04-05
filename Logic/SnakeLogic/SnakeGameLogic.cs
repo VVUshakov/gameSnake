@@ -1,53 +1,66 @@
-﻿using GameState = gameSnake.Core.State.GameState;
+﻿using System.Reflection;
+using gameSnake.Core.State;
 using gameSnake.Interfaces;
-using gameSnake.Logic.SnakeLogic;
-using gameSnake.Models;
 
 namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
     /// Основная логика игры: обновление состояния змейки.
-    /// Делегирует подзадачи отдельным компонентам: движению, еде, коллизиям.
+    /// Автоматически обнаруживает шаги (IGameStep) через рефлексию и сортирует их по атрибуту [GameStepOrder].
     /// </summary>
     public class SnakeGameLogic : IGameLogic
     {
+        private readonly IGameStep[] _steps;
+
         /// <summary>
-        /// Обновляет состояние игры: перемещает змейку, проверяет столкновения,
-        /// обрабатывает поедание еды.
+        /// Создаёт логику игры и автоматически обнаруживает все шаги в текущей сборке.
+        /// Шаги сортируются по атрибуту [GameStepOrder] (от меньшего к большему).
+        /// </summary>
+        public SnakeGameLogic()
+        {
+            _steps = DiscoverSteps();
+        }
+
+        /// <summary>
+        /// Обновляет состояние игры, последовательно применяя все обнаруженные шаги.
         /// </summary>
         /// <param name="state">Текущее состояние игры</param>
         public void Update(GameState state)
         {
             if (state.Flags.IsGameOver || state.Flags.IsWin || state.Flags.IsPaused) return;
 
-            // 1. Движение змейки
-            Point newHead = SnakeMovement.CalculateNewHead(state.Snake.Head, state.CurrentDirection);
-            state.Snake.Body.Add(newHead);
-
-            // 2. Проверка еды
-            if (FoodHandler.IsFoodEaten(state.Snake, state.Food))
+            foreach (var step in _steps)
             {
-                state.Header.Score += state.Food.PointsValue;
-                state.Food = FoodHandler.RespawnFood(state.Field, state.Snake);
+                if (step.Apply(state)) return;
+            }
+        }
 
-                if (!state.Food.IsSuccess)
+        /// <summary>
+        /// Автоматически обнаруживает все классы, реализующие IGameStep, в текущей сборке.
+        /// Сортирует их по атрибуту [GameStepOrder].
+        /// </summary>
+        /// <returns>Отсортированный массив шагов</returns>
+        private static IGameStep[] DiscoverSteps()
+        {
+            var steps = new List<(int Order, IGameStep Step)>();
+
+            // Находим все типы в текущей сборке
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                // Проверяем, что тип реализует IGameStep и имеет атрибут GameStepOrder
+                if (typeof(IGameStep).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
                 {
-                    state.Flags.IsWin = true;
-                    state.ActiveMessage = GameMessage.Win;
-                    return;
+                    var attr = type.GetCustomAttribute<GameStepOrderAttribute>();
+                    if (attr != null)
+                    {
+                        var step = (IGameStep)Activator.CreateInstance(type)!;
+                        steps.Add((attr.Order, step));
+                    }
                 }
             }
-            else
-            {
-                state.Snake.Body.Remove(state.Snake.Tail);
-            }
 
-            // 3. Проверка столкновений
-            if (CollisionDetector.HasCollision(state.Snake, state.Field))
-            {
-                state.Flags.IsGameOver = true;
-                state.ActiveMessage = GameMessage.GameOver;
-            }
+            // Сортируем по порядку и возвращаем
+            return steps.OrderBy(x => x.Order).Select(x => x.Step).ToArray();
         }
     }
 }
