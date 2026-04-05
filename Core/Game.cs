@@ -16,6 +16,13 @@ namespace gameSnake.Core
         private readonly IGameLogic _gameLogic;
         private readonly ITimer _timer;
 
+        /// <summary>
+        /// Создаёт экземпляр игры с указанными зависимостями.
+        /// </summary>
+        /// <param name="renderer">Рендерер для отрисовки игры</param>
+        /// <param name="inputHandler">Обработчик пользовательского ввода</param>
+        /// <param name="gameLogic">Логика игры</param>
+        /// <param name="timer">Таймер для управления скоростью игры</param>
         public Game(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic, ITimer timer)
         {
             _renderer = renderer;
@@ -39,6 +46,11 @@ namespace gameSnake.Core
             }
         }
 
+        /// <summary>
+        /// Создаёт начальное состояние игры: вычисляет размеры поля,
+        /// настраивает консоль и инициализирует игровые объекты.
+        /// </summary>
+        /// <returns>Готовое начальное состояние игры</returns>
         private static GameState CreateGameState()
         {
             var messages = MessageRegistry.GetAll();
