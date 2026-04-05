@@ -1,4 +1,5 @@
-using GameState = gameSnake.Core.State.GameState;
+using gameSnake.Core.State;
+using gameSnake.Interfaces;
 using gameSnake.Models;
 
 namespace gameSnake.UI.ConsoleUI.InputHandlers
@@ -12,21 +13,21 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
         /// Обрабатывает игровую команду.
         /// </summary>
         /// <param name="key">Нажатая клавиша</param>
-        /// <param name="state">Текущее состояние игры</param>
-        public static void Handle(ConsoleKey key, GameState state)
+        /// <param name="inputState">Часть состояния, реагирующая на ввод</param>
+        public static void Handle(ConsoleKey key, IInputState inputState)
         {
             switch (key)
             {
                 case ConsoleKey.Enter:
-                    state.Flags.IsRestartRequested = true;
+                    inputState.IsRestartRequested = true;
                     break;
                 case ConsoleKey.P:
                 case ConsoleKey.Spacebar:
-                    state.Flags.IsPaused = !state.Flags.IsPaused;
-                    state.ActiveMessage = state.Flags.IsPaused ? GameMessage.Pause : null;
+                    inputState.IsPaused = !inputState.IsPaused;
+                    inputState.ActiveMessage = inputState.IsPaused ? GameMessage.Pause : null;
                     break;
                 case ConsoleKey.Escape:
-                    state.Flags.IsExit = true;
+                    inputState.IsExit = true;
                     break;
             }
         }

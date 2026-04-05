@@ -1,4 +1,5 @@
-﻿using gameSnake.Models;
+﻿using gameSnake.Interfaces;
+using gameSnake.Models;
 
 namespace gameSnake.Core.State
 {
@@ -6,7 +7,7 @@ namespace gameSnake.Core.State
     /// Состояние игры. Содержит флаги, настройки и игровые объекты.
     /// Обязательные игровые объекты задаются через конструктор.
     /// </summary>
-    public class GameState
+    public class GameState : IInputState
     {
         /// <summary>
         /// Управляющие флаги
@@ -32,6 +33,25 @@ namespace gameSnake.Core.State
         /// Задаётся игровой логикой, рендерер только отображает.
         /// </summary>
         public GameMessage? ActiveMessage { get; set; }
+
+        // Реализация IInputState — делегирование к Flags
+        bool IInputState.IsExit
+        {
+            get => Flags.IsExit;
+            set => Flags.IsExit = value;
+        }
+
+        bool IInputState.IsRestartRequested
+        {
+            get => Flags.IsRestartRequested;
+            set => Flags.IsRestartRequested = value;
+        }
+
+        bool IInputState.IsPaused
+        {
+            get => Flags.IsPaused;
+            set => Flags.IsPaused = value;
+        }
 
         public GameState(Header header, PlayingField field, Snake snake, Food food)
         {

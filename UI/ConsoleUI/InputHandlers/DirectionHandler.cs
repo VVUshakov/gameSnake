@@ -1,4 +1,4 @@
-using GameState = gameSnake.Core.State.GameState;
+using gameSnake.Interfaces;
 using gameSnake.Models;
 
 namespace gameSnake.UI.ConsoleUI.InputHandlers
@@ -13,24 +13,25 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
         /// Обрабатывает клавишу направления.
         /// </summary>
         /// <param name="key">Нажатая клавиша</param>
-        /// <param name="state">Текущее состояние игры</param>
-        public static void Handle(ConsoleKey key, GameState state)
+        /// <param name="inputState">Часть состояния, реагирующая на ввод</param>
+        /// <param name="snakeLength">Длина змейки (для проверки разворота на 180)</param>
+        public static void Handle(ConsoleKey key, IInputState inputState, int snakeLength)
         {
-            if (state.Flags.IsPaused) return;
+            if (inputState.IsPaused) return;
 
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    ChangeDirection(state, Direction.Up, Direction.Down);
+                    ChangeDirection(inputState, Direction.Up, Direction.Down, snakeLength);
                     break;
                 case ConsoleKey.DownArrow:
-                    ChangeDirection(state, Direction.Down, Direction.Up);
+                    ChangeDirection(inputState, Direction.Down, Direction.Up, snakeLength);
                     break;
                 case ConsoleKey.LeftArrow:
-                    ChangeDirection(state, Direction.Left, Direction.Right);
+                    ChangeDirection(inputState, Direction.Left, Direction.Right, snakeLength);
                     break;
                 case ConsoleKey.RightArrow:
-                    ChangeDirection(state, Direction.Right, Direction.Left);
+                    ChangeDirection(inputState, Direction.Right, Direction.Left, snakeLength);
                     break;
             }
         }
@@ -40,14 +41,15 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
         /// Разворот запрещён, если длина змейки больше 1 и текущее направление
         /// не противоположно новому.
         /// </summary>
-        /// <param name="state">Текущее состояние игры</param>
+        /// <param name="inputState">Часть состояния, реагирующая на ввод</param>
         /// <param name="newDir">Новое направление движения</param>
         /// <param name="oppositeDir">Противоположное направление (запрещённое)</param>
-        private static void ChangeDirection(GameState state, Direction newDir, Direction oppositeDir)
+        /// <param name="snakeLength">Длина змейки</param>
+        private static void ChangeDirection(IInputState inputState, Direction newDir, Direction oppositeDir, int snakeLength)
         {
-            if (state.Snake.Body.Count > 1 && state.CurrentDirection != oppositeDir)
+            if (snakeLength > 1 && inputState.CurrentDirection != oppositeDir)
             {
-                state.CurrentDirection = newDir;
+                inputState.CurrentDirection = newDir;
             }
         }
     }

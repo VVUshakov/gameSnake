@@ -1,17 +1,15 @@
-using GameState = gameSnake.Core.State.GameState;
-using gameSnake.Models;
-
 namespace gameSnake.Interfaces
 {
     /// <summary>
-    /// Интерфейс обработчика ввода.
-    /// Определяет метод обработки пользовательского ввода.
+    /// Обрабатывает пользовательский ввод.
     /// </summary>
     public interface IInputHandler
     {
         /// <summary>
-        /// Обрабатывает пользовательский ввод и обновляет состояние игры.
+        /// Обрабатывает ввод и применяет команды.
         /// </summary>
-        void ProcessInput(GameState state);
+        /// <param name="inputState">Часть состояния, реагирующая на ввод</param>
+        /// <param name="snakeLength">Длина змейки (для проверки разворота на 180)</param>
+        void ProcessInput(IInputState inputState, int snakeLength);
     }
 }

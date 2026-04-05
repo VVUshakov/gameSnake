@@ -37,7 +37,7 @@ namespace gameSnake.Core
 
         private void Update(State.GameState state)
         {
-            _inputHandler.ProcessInput(state);
+            _inputHandler.ProcessInput(state, state.Snake.Body.Count);
             if (!state.Flags.IsPaused) _gameLogic.Update(state);
         }
     }

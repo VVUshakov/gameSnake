@@ -1,5 +1,4 @@
-﻿using GameState = gameSnake.Core.State.GameState;
-using gameSnake.Interfaces;
+﻿using gameSnake.Interfaces;
 using gameSnake.UI.ConsoleUI.InputHandlers;
 
 namespace gameSnake.UI.ConsoleUI.InputHandlers
@@ -11,16 +10,17 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
     public class ConsoleInputHandler : IInputHandler
     {
         /// <summary>
-        /// Считывает и обрабатывает нажатия клавиш
+        /// Считывает и обрабатывает нажатия клавиш.
         /// </summary>
-        /// <param name="state">Текущее состояние игры</param>
-        public void ProcessInput(GameState state)
+        /// <param name="inputState">Часть состояния, реагирующая на ввод</param>
+        /// <param name="snakeLength">Длина змейки (для проверки разворота на 180)</param>
+        public void ProcessInput(IInputState inputState, int snakeLength)
         {
             ConsoleKey? key = InputReader.ReadKey();
             if (!key.HasValue) return;
 
-            GameCommandHandler.Handle(key.Value, state);
-            DirectionHandler.Handle(key.Value, state);
+            GameCommandHandler.Handle(key.Value, inputState);
+            DirectionHandler.Handle(key.Value, inputState, snakeLength);
         }
     }
 }
