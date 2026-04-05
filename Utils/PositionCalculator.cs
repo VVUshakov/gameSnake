@@ -23,17 +23,6 @@ namespace gameSnake.Utils
             int snakeLength,
             Direction direction)
         {
-            int availableWidth = fieldWidth - 2;
-            int availableHeight = fieldHeight - 2;
-
-            // Ограничиваем длину змейки доступным пространством
-            int finalSnakeLength = direction == Direction.Left || direction == Direction.Right
-                ? Min(snakeLength, availableWidth)
-                : Min(snakeLength, availableHeight);
-
-            int centerX = fieldWidth / 2;
-            int centerY = fieldHeight / 2;
-
             // Границы рамки
             int frameLeft = 0;
             int frameRight = fieldWidth - 1;
@@ -45,6 +34,18 @@ namespace gameSnake.Utils
             int playableRight = frameRight - 1;
             int playableTop = frameTop + 1;
             int playableBottom = frameBottom - 1;
+
+            // Размеры доступной области
+            int availableWidth = playableRight - playableLeft;
+            int availableHeight = playableBottom - playableTop;
+
+            // Ограничиваем длину змейки доступным пространством
+            int finalSnakeLength = direction == Direction.Left || direction == Direction.Right
+                ? Min(snakeLength, availableWidth)
+                : Min(snakeLength, availableHeight);
+
+            int centerX = fieldWidth / 2;
+            int centerY = fieldHeight / 2;
 
             Point headPosition;
             switch (direction)
