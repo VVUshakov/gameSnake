@@ -1,4 +1,5 @@
 using State = gameSnake.Core.State.GameState;
+using ITimer = gameSnake.Interfaces.ITimer;
 using gameSnake.UI.ConsoleUI.InputHandlers;
 using gameSnake.UI.ConsoleUI.ConsoleRenderers;
 using gameSnake.Core;
@@ -16,7 +17,8 @@ namespace gameSnake
             IGameRenderer renderer = new ConsoleRenderer();
             IInputHandler input = new ConsoleInputHandler();
             IGameLogic logic = new SnakeGameLogic();
-            GameLoop gameLoop = new GameLoop(renderer, input, logic);
+            ITimer timer = new SystemTimer();
+            GameLoop gameLoop = new GameLoop(renderer, input, logic, timer);
 
             while (true)
             {

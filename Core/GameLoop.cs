@@ -1,4 +1,5 @@
 ﻿using gameSnake.Interfaces;
+using ITimer = gameSnake.Interfaces.ITimer;
 using gameSnake.Models;
 using static System.Console;
 
@@ -12,12 +13,14 @@ namespace gameSnake.Core
         private readonly IGameRenderer _renderer;
         private readonly IInputHandler _inputHandler;
         private readonly IGameLogic _gameLogic;
+        private readonly ITimer _timer;
 
-        public GameLoop(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic)
+        public GameLoop(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic, ITimer timer)
         {
             _renderer = renderer;
             _inputHandler = inputHandler;
             _gameLogic = gameLogic;
+            _timer = timer;
         }
 
         /// <summary>
@@ -31,7 +34,7 @@ namespace gameSnake.Core
                 _renderer.Clear();
                 _renderer.Render(state);
                 Update(state);
-                Thread.Sleep(state.Settings.Fps);
+                _timer.Sleep(state.Settings.Fps);
             }
         }
 
