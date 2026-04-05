@@ -85,22 +85,6 @@ namespace gameSnake.Utils
         }
 
         /// <summary>
-        /// Проверяет, помещается ли змейка в игровое поле при заданном направлении.
-        /// </summary>
-        /// <param name="fieldWidth">Ширина игрового поля</param>
-        /// <param name="fieldHeight">Высота игрового поля</param>
-        /// <param name="snakeLength">Длина змейки</param>
-        /// <param name="direction">Направление движения змейки</param>
-        /// <returns>True, если змейка помещается</returns>
-        public static bool CanPlaceSnake(int fieldWidth, int fieldHeight, int snakeLength, Direction direction)
-        {
-            int available = direction == Direction.Left || direction == Direction.Right
-                ? fieldWidth - 2
-                : fieldHeight - 2;
-            return snakeLength <= available;
-        }
-
-        /// <summary>
         /// Рассчитывает позицию для центрирования сообщения на игровом поле.
         /// </summary>
         /// <param name="fieldWidth">Ширина игрового поля</param>
