@@ -1,6 +1,6 @@
 using gameSnake.Interfaces;
 
-namespace gameSnake.Utils
+namespace gameSnake.UI.ConsoleUI
 {
     /// <summary>
     /// Настраивает размер окна консоли под игровое поле.
