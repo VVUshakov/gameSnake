@@ -1,11 +1,10 @@
 ﻿using gameSnake.Interfaces;
-using gameSnake.UI.ConsoleUI.InputHandlers;
 
 namespace gameSnake.UI.ConsoleUI.InputHandlers
 {
     /// <summary>
     /// Обрабатывает ввод с клавиатуры в консоли.
-    /// Координирует InputReader, GameCommandHandler и DirectionHandler.
+    /// Делегирует обработку KeyBindings.
     /// </summary>
     public class ConsoleInputHandler : IInputHandler
     {
@@ -19,8 +18,7 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
             ConsoleKey? key = InputReader.ReadKey();
             if (!key.HasValue) return;
 
-            GameCommandHandler.Handle(key.Value, inputState);
-            DirectionHandler.Handle(key.Value, inputState, snakeLength);
+            KeyBindings.Handle(key.Value, inputState, snakeLength);
         }
     }
 }
