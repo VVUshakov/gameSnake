@@ -1,10 +1,10 @@
+using gameSnake.Core.Factories;
 using gameSnake.Models;
-using gameSnake.Utils;
 
 namespace gameSnake.Logic.SnakeLogic
 {
     /// <summary>
-    /// Обработчик еды: проверка совпадения координат и создания через FoodSpawner.
+    /// Обработчик еды: проверка совпадения координат и создания через FoodFactory.
     /// </summary>
     public static class FoodHandler
     {
@@ -27,6 +27,6 @@ namespace gameSnake.Logic.SnakeLogic
         /// <param name="snake">Змейка (для исключения её позиции)</param>
         /// <returns>Новый объект еды</returns>
         public static Food RespawnFood(PlayingField field, Snake snake)
-            => FoodSpawner.CreateFood(field, snake);
+            => FoodFactory.CreateFood(field, snake);
     }
 }

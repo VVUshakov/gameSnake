@@ -1,15 +1,19 @@
 using gameSnake.Models;
 
-namespace gameSnake.Utils
+namespace gameSnake.Core.Factories
 {
     /// <summary>
     /// Отвечает за размещение еды на игровом поле.
     /// </summary>
-    public static class FoodSpawner
+    public static class FoodFactory
     {
         /// <summary>
         /// Создаёт еду в случайном свободном месте на поле.
         /// </summary>
+        /// <param name="field">Игровое поле</param>
+        /// <param name="snake">Змейка (для исключения её позиций)</param>
+        /// <param name="random">Генератор случайных чисел (по умолчанию — новый Random)</param>
+        /// <returns>Новый объект еды</returns>
         public static Food CreateFood(PlayingField field, Snake snake, Random? random = null)
         {
             random ??= new Random();
@@ -22,19 +26,15 @@ namespace gameSnake.Utils
         /// </summary>
         private static Point? FindFreePosition(PlayingField field, Snake snake, Random random)
         {
-            // Ограничиваем количество попыток
             int maxAttempts = 1000;
 
-            for(int attempt = 0; attempt < maxAttempts; attempt++)
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                // Создаем координаты для новой еды
                 int x = random.Next(field.Left + 1, field.Right);
                 int y = random.Next(field.Top + 1, field.Bottom);
                 Point candidate = new Point(x, y);
 
-                // Если координаты не пересекаются со змейкой, возвращаем результат,
-                // иначе повторяем пока есть попытки
-                if(!snake.Contains(candidate))
+                if (!snake.Contains(candidate))
                     return candidate;
             }
 

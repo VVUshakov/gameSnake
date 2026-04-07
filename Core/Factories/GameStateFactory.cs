@@ -1,7 +1,8 @@
+using gameSnake.Core.State;
 using gameSnake.Models;
 using gameSnake.Utils;
 
-namespace gameSnake.Core
+namespace gameSnake.Core.Factories
 {
     /// <summary>
     /// Фабрика для создания начального состояния игры.
@@ -16,7 +17,7 @@ namespace gameSnake.Core
         /// <param name="fieldHeight">Высота игрового поля</param>
         /// <param name="initialSnakeLength">Начальная длина змейки (по умолчанию 3)</param>
         /// <returns>Готовое начальное состояние игры</returns>
-        public static State.GameState Create(
+        public static GameState Create(
             int fieldWidth,
             int fieldHeight,
             int initialSnakeLength = 3)
@@ -26,11 +27,11 @@ namespace gameSnake.Core
             var (headPosition, finalSnakeLength) = PositionCalculator.CalculateCenteredHeadPosition(
                 field.Width, field.Height, initialSnakeLength, Direction.Right);
 
-            Snake snake = new Snake(headPosition, Direction.Right, finalSnakeLength);
-            Food food = FoodSpawner.CreateFood(field, snake);
+            Snake snake = SnakeFactory.Create(headPosition, Direction.Right, finalSnakeLength);
+            Food food = FoodFactory.CreateFood(field, snake);
             Header header = new Header();
 
-            return new State.GameState(header, field, snake, food);
+            return new GameState(header, field, snake, food);
         }
     }
 }
