@@ -1,6 +1,6 @@
 using gameSnake.Attributes;
 
-namespace gameSnake.Servises
+namespace gameSnake.Servises.MessageServise
 {
     /// <summary>
     /// Содержит текст сервисных сообщений игры

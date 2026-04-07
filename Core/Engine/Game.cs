@@ -1,8 +1,8 @@
 using gameSnake.Core.State;
 using gameSnake.Interfaces;
 using ITimer = gameSnake.Interfaces.ITimer;
-using gameSnake.Servises;
 using gameSnake.Utils;
+using gameSnake.Servises.MessageServise;
 
 namespace gameSnake.Core.Engine
 {

@@ -1,5 +1,5 @@
 using gameSnake.Models;
-using gameSnake.Servises;
+using gameSnake.Servises.MessageServise;
 
 namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
 {
