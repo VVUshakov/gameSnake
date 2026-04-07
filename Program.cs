@@ -1,27 +1,32 @@
-using ITimer = gameSnake.Interfaces.ITimer;
-using gameSnake.UI.ConsoleUI;
-using gameSnake.UI.ConsoleUI.InputHandlers;
-using gameSnake.UI.ConsoleUI.ConsoleRenderers;
-using gameSnake.Core.Engine;
-using gameSnake.Core;
-using gameSnake.Core.Factories;
-using gameSnake.Interfaces;
-using gameSnake.Logic.SnakeLogic;
+using Microsoft.AspNetCore.Builder;
+using System.Net.WebSockets;
+using gameSnake.Server.Session;
 
-namespace gameSnake
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/", () => "GameSnake WebSocket Server. Connect to /ws to play.");
+
+app.UseWebSockets();
+
+app.Map("/ws", async context =>
 {
-    public class Program
+    if (context.WebSockets.IsWebSocketRequest)
     {
-        static void Main()
+        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        using var session = new WebSocketGameSession(webSocket);
+        session.Start();
+
+        // Ждём, пока соединение не закроется
+        while (webSocket.State == WebSocketState.Open)
         {
-            IGameRenderer renderer = new ConsoleRenderer();
-            IInputHandler input = new ConsoleInputHandler();
-            IGameLogic logic = new SnakeGameLogic();
-            ITimer timer = new SystemTimer();
-            IWindowConfigurator windowConfigurator = new ConsoleWindowConfigurator();
-            
-            var game = new Game(renderer, input, logic, timer, windowConfigurator);
-            game.Run();
+            await Task.Delay(1000);
         }
     }
-}
+    else
+    {
+        context.Response.StatusCode = 400;
+    }
+});
+
+app.Run();

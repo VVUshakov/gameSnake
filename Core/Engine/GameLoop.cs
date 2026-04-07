@@ -38,7 +38,7 @@ namespace gameSnake.Core.Engine
             }
         }
 
-        private void Update(State.GameState state)
+        public void Update(State.GameState state)
         {
             _inputHandler.ProcessInput(state, state.Snake.Body.Count);
             if (!state.Flags.IsPaused) _gameLogic.Update(state);
