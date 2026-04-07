@@ -18,7 +18,7 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
             ConsoleKey? key = InputReader.ReadKey();
             if (!key.HasValue) return;
 
-            KeyBindings.Handle(key.Value, inputState, snakeLength);
+            KeyActionProvider.Handle(key.Value, inputState, snakeLength);
         }
     }
 }

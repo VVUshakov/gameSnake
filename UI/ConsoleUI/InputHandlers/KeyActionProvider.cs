@@ -4,12 +4,12 @@ using gameSnake.Models;
 namespace gameSnake.UI.ConsoleUI.InputHandlers
 {
     /// <summary>
-    /// Маппинг клавиш на игровые действия.
-    /// Одна точка регистрации — добавление клавиши = одна строка в словаре.
+    /// Предоставляет действия для клавиш ввода.
+    /// Регистрация клавиш через словарь — добавление = одна строка.
     /// </summary>
-    public static class KeyBindings
+    public static class KeyActionProvider
     {
-        private static readonly Dictionary<ConsoleKey, Action<IInputState, int>> _bindings = new()
+        private static readonly Dictionary<ConsoleKey, Action<IInputState, int>> _actions = new()
         {
             [ConsoleKey.Enter]      = (s, _) => s.IsRestartRequested = true,
             [ConsoleKey.Escape]     = (s, _) => s.IsExit = true,
@@ -22,11 +22,11 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
         };
 
         /// <summary>
-        /// Применяет действие, привязанное к клавише.
+        /// Возвращает действие для клавиши и применяет его.
         /// </summary>
         public static void Handle(ConsoleKey key, IInputState state, int snakeLength)
         {
-            if (_bindings.TryGetValue(key, out var action))
+            if (_actions.TryGetValue(key, out var action))
                 action(state, snakeLength);
         }
 
