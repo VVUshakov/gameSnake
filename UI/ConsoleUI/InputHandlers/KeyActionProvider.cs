@@ -5,7 +5,7 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
 {
     /// <summary>
     /// Предоставляет действия для клавиш ввода.
-    /// Хранит словарь маппинга <see cref="ConsoleKey"/> к делегатам действий.
+    /// Хранит словарь маппинга (установления соответствия) <see cref="ConsoleKey"/> к делегатам действий.
     /// Регистрация новой клавиши = одна строка в словаре — без изменения методов.
     /// </summary>
     public static class KeyActionProvider
@@ -17,16 +17,16 @@ namespace gameSnake.UI.ConsoleUI.InputHandlers
         private static readonly Dictionary<ConsoleKey, Action<IInputState, int>> _actions = new()
         {
             // Команды
-            [ConsoleKey.Enter]    = (s, _) => s.IsRestartRequested = true,
-            [ConsoleKey.Escape]   = (s, _) => s.IsExit = true,
+            [ConsoleKey.Enter]    = (state, _) => state.IsRestartRequested = true,
+            [ConsoleKey.Escape]   = (state, _) => state.IsExit = true,
             [ConsoleKey.P]        = TogglePause,
             [ConsoleKey.Spacebar] = TogglePause,
 
             // Направления
-            [ConsoleKey.UpArrow]    = (s, l) => TrySetDirection(s, Direction.Up, Direction.Down, l),
-            [ConsoleKey.DownArrow]  = (s, l) => TrySetDirection(s, Direction.Down, Direction.Up, l),
-            [ConsoleKey.LeftArrow]  = (s, l) => TrySetDirection(s, Direction.Left, Direction.Right, l),
-            [ConsoleKey.RightArrow] = (s, l) => TrySetDirection(s, Direction.Right, Direction.Left, l),
+            [ConsoleKey.UpArrow]    = (state, snakeLength) => TrySetDirection(state, Direction.Up, Direction.Down, snakeLength),
+            [ConsoleKey.DownArrow]  = (state, snakeLength) => TrySetDirection(state, Direction.Down, Direction.Up, snakeLength),
+            [ConsoleKey.LeftArrow]  = (state, snakeLength) => TrySetDirection(state, Direction.Left, Direction.Right, snakeLength),
+            [ConsoleKey.RightArrow] = (state, snakeLength) => TrySetDirection(state, Direction.Right, Direction.Left, snakeLength),
         };
 
         /// <summary>
