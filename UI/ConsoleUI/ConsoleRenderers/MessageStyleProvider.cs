@@ -19,13 +19,13 @@ namespace gameSnake.UI.ConsoleUI.ConsoleRenderers
         /// <summary>
         /// Возвращает текст сообщения по его типу.
         /// </summary>
-        public static string[] GetContent(GameMessageType message)
-            => _styles.TryGetValue(message, out var s) ? s.Content() : Array.Empty<string>();
+        public static string[] GetContent(GameMessageType messageType)
+            => _styles.TryGetValue(messageType, out var message) ? message.Content() : Array.Empty<string>();
 
         /// <summary>
         /// Возвращает цвет сообщения по его типу.
         /// </summary>
-        public static ConsoleColor GetColor(GameMessageType message)
-            => _styles.TryGetValue(message, out var s) ? s.Color : RenderConstants.DefaultMessageColor;
+        public static ConsoleColor GetColor(GameMessageType messageType)
+            => _styles.TryGetValue(messageType, out var message) ? message.Color : RenderConstants.DefaultMessageColor;
     }
 }
