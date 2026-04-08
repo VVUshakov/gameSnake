@@ -15,7 +15,7 @@ app.Map("/ws", async context =>
     if (context.WebSockets.IsWebSocketRequest)
     {
         using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        var sessionId = SessionManager.Register(webSocket);
+        Guid sessionId = SessionManager.Register(webSocket);
 
         // Ждём, пока клиент не отключится
         while (webSocket.State == WebSocketState.Open)
