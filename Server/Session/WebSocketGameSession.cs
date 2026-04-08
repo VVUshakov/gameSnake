@@ -1,16 +1,19 @@
 using System.Net.WebSockets;
 using gameSnake.Core.Engine;
 using gameSnake.Core.Factories;
+using gameSnake.Core.State;
 using gameSnake.Interfaces;
 using gameSnake.Logic.SnakeLogic;
 using gameSnake.Server.InputHandlers;
 using gameSnake.Server.Renderers;
+using gameSnake.Servises.MessageServise;
+using gameSnake.Utils;
 
 namespace gameSnake.Server.Session
 {
     /// <summary>
     /// Управляет одной игровой сессией WebSocket-подключения.
-    /// Запускает Game в фоновом потоке и корректно завершает при отключении.
+    /// Запускает Game для каждого раунда и перезапускает при запросе клиента.
     /// </summary>
     public class WebSocketGameSession : IDisposable
     {
@@ -22,6 +25,7 @@ namespace gameSnake.Server.Session
         private readonly WebSocket _webSocket;
         private CancellationTokenSource? _disconnectToken;
         private Task? _gameTask;
+        private WebSocketInputHandler? _inputHandler;
 
         public WebSocketGameSession(WebSocket webSocket)
         {
@@ -29,27 +33,50 @@ namespace gameSnake.Server.Session
         }
 
         /// <summary>
-        /// Запускает игровой цикл в фоновом потоке.
+        /// Запускает игровые циклы в фоновом потоке.
+        /// При перезапуске создаёт новое состояние и запускает заново.
         /// </summary>
         public void Start()
         {
             _disconnectToken = new CancellationTokenSource();
-            _gameTask = Task.Run(() => RunGame(_disconnectToken.Token), _disconnectToken.Token);
+            _gameTask = Task.Run(() => RunSession(_disconnectToken.Token), _disconnectToken.Token);
         }
 
-        private void RunGame(CancellationToken ct)
+        private void RunSession(CancellationToken ct)
         {
             try
             {
-                var renderer = new WebSocketRenderer(_webSocket);
-                var inputHandler = new WebSocketInputHandler(_webSocket, ct);
-                var windowConfigurator = new NoOpWindowConfigurator();
+                _inputHandler = new WebSocketInputHandler(_webSocket, ct);
 
-                var game = new Game(renderer, inputHandler, new SnakeGameLogic(), new Core.SystemTimer(), windowConfigurator);
-                game.Run();
+                while (!ct.IsCancellationRequested)
+                {
+                    var state = CreateGameState();
+                    var game = CreateGame(_inputHandler);
+                    game.Run(state);
+
+                    if (state.Flags.IsExit || !state.Flags.IsRestartRequested)
+                        break;
+                }
             }
-            catch (WebSocketException) { }
-            catch (OperationCanceledException) { }
+            finally
+            {
+                _inputHandler?.Dispose();
+            }
+        }
+
+        private static GameState CreateGameState()
+        {
+            var messages = MessageRegistry.GetAll();
+            var (maxMsgWidth, maxMsgHeight) = MessageSizer.GetMaxSize(messages);
+            (int fieldWidth, int fieldHeight) = FieldSizeCalculator.Calculate(maxMsgWidth, maxMsgHeight);
+
+            return GameStateFactory.Create(fieldWidth, fieldHeight);
+        }
+
+        private Game CreateGame(WebSocketInputHandler inputHandler)
+        {
+            var renderer = new WebSocketRenderer(_webSocket);
+            return new Game(renderer, inputHandler, new SnakeGameLogic(), new Core.SystemTimer());
         }
 
         /// <summary>
