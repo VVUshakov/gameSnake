@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ConsoleClient\**" />
     <Compile Remove="Servise\**" />
-    <EmbeddedResource Remove="Servise\**" />
-    <None Remove="Servise\**" />
+    <Compile Remove="Core\**" />
+    <Compile Remove="Logic\**" />
+    <Compile Remove="Server\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\gameSnake.csproj" />
   </ItemGroup>
 
 </Project>
