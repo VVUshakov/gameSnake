@@ -796,10 +796,38 @@ dotnet run
 | `http://localhost:5000/stats` | `{"players":0}` (без подключённых игроков)           |
 
 ### Тест WebSocket (через браузерную консоль)
+
+> **Как открыть консоль браузера:**
+> 1. Открой `http://localhost:5000/` в браузере (Chrome, Firefox, Edge)
+> 2. Нажми **F12** (или **Ctrl + Shift + I**)
+> 3. Перейди на вкладку **Console** (Консоль)
+> 
+> В строку ввода внизу консоли вставь код по одной строке:
+
 ```javascript
+// 1. Подключаемся к серверу
 const ws = new WebSocket("ws://localhost:5000/ws");
-ws.onmessage = (e) => console.log(JSON.parse(e.data));
+
+// 2. При подключении — отправляем команду движения
 ws.onopen = () => ws.send(JSON.stringify({type:"move", direction:"right"}));
+
+// 3. При получении данных — выводим в консоль
+ws.onmessage = (e) => console.log(JSON.parse(e.data));
+```
+
+**Что должно произойти:**
+- В консоли появится JSON с состоянием игры — `snake`, `food`, `score`
+- Змейка будет двигаться вправо, ты увидишь как меняются координаты
+
+**Другие команды для теста:**
+```javascript
+ws.send(JSON.stringify({type:"pause"}));       // Пауза
+ws.send(JSON.stringify({type:"move", direction:"up"}));    // Вверх
+ws.send(JSON.stringify({type:"move", direction:"down"}));  // Вниз
+ws.send(JSON.stringify({type:"move", direction:"left"}));  // Влево
+ws.send(JSON.stringify({type:"move", direction:"right"})); // Вправо
+ws.send(JSON.stringify({type:"restart"}));     // Перезапуск
+ws.send(JSON.stringify({type:"exit"}));        // Выход
 ```
 
 ---
