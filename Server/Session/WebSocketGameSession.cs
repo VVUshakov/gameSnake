@@ -1,7 +1,6 @@
 using System.Net.WebSockets;
-using gameSnake.Core.Factories;
 using gameSnake.Core.Engine;
-using gameSnake.Core.State;
+using gameSnake.Core.Factories;
 using gameSnake.Interfaces;
 using gameSnake.Logic.SnakeLogic;
 using gameSnake.Server.InputHandlers;
@@ -10,13 +9,17 @@ using gameSnake.Server.Renderers;
 namespace gameSnake.Server.Session
 {
     /// <summary>
-    /// Управляет одной игровой сессией для WebSocket-подключения.
-    /// Создаёт зависимости, запускает Game и корректно завершает сессию.
+    /// Управляет одной игровой сессией WebSocket-подключения.
+    /// Запускает Game в фоновом потоке и корректно завершает при отключении.
     /// </summary>
     public class WebSocketGameSession : IDisposable
     {
+        /// <summary>
+        /// Уникальный идентификатор сессии.
+        /// </summary>
+        public Guid Id { get; } = Guid.NewGuid();
+
         private readonly WebSocket _webSocket;
-        private WebSocketInputHandler? _inputHandler;
         private CancellationTokenSource? _disconnectToken;
         private Task? _gameTask;
 
@@ -26,13 +29,11 @@ namespace gameSnake.Server.Session
         }
 
         /// <summary>
-        /// Запускает игровой цикл для данного WebSocket-подключения.
+        /// Запускает игровой цикл в фоновом потоке.
         /// </summary>
         public void Start()
         {
-            _inputHandler = new WebSocketInputHandler(_webSocket);
             _disconnectToken = new CancellationTokenSource();
-
             _gameTask = Task.Run(() => RunGame(_disconnectToken.Token), _disconnectToken.Token);
         }
 
@@ -40,40 +41,28 @@ namespace gameSnake.Server.Session
         {
             try
             {
-                var messages = Servises.MessageServise.MessageRegistry.GetAll();
-                var (maxMsgWidth, maxMsgHeight) = Utils.MessageSizer.GetMaxSize(messages);
-                (int fieldWidth, int fieldHeight) = Utils.FieldSizeCalculator.Calculate(maxMsgWidth, maxMsgHeight);
-
                 var renderer = new WebSocketRenderer(_webSocket);
-                IWindowConfigurator windowConfigurator = new NoOpWindowConfigurator();
-                windowConfigurator.Configure(fieldWidth, fieldHeight);
+                var inputHandler = new WebSocketInputHandler(_webSocket, ct);
+                var windowConfigurator = new NoOpWindowConfigurator();
 
-                GameState state = GameStateFactory.Create(fieldWidth, fieldHeight);
-                var gameLoop = new GameLoop(renderer, _inputHandler!, new SnakeGameLogic(), new Core.SystemTimer());
-
-                while (!ct.IsCancellationRequested
-                       && !state.Flags.IsExit
-                       && !state.Flags.IsRestartRequested)
-                {
-                    renderer.Clear();
-                    renderer.Render(state);
-
-                    _inputHandler!.ProcessInput(state, state.Snake.Body.Count);
-                    if (!state.Flags.IsPaused)
-                        gameLoop.Update(state);
-
-                    Thread.Sleep(state.Settings.Fps);
-                }
+                var game = new Game(renderer, inputHandler, new SnakeGameLogic(), new Core.SystemTimer(), windowConfigurator);
+                game.Run();
             }
             catch (WebSocketException) { }
             catch (OperationCanceledException) { }
         }
 
+        /// <summary>
+        /// Корректно останавливает сессию и дожидается завершения фонового потока.
+        /// </summary>
         public void Dispose()
         {
             _disconnectToken?.Cancel();
-            _inputHandler?.Dispose();
-            _gameTask?.Wait(TimeSpan.FromSeconds(2));
+            try
+            {
+                _gameTask?.Wait(TimeSpan.FromSeconds(3));
+            }
+            catch (AggregateException) { }
         }
     }
 }

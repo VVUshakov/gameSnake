@@ -10,26 +10,41 @@ namespace gameSnake.Server.InputHandlers
     /// <summary>
     /// Обработчик ввода, получающий команды через WebSocket.
     /// Читает команды из очереди, заполняемой фоновым читателем.
+    /// При отключении клиента помечает выход из игры.
     /// </summary>
     public class WebSocketInputHandler : IInputHandler, IDisposable
     {
         private readonly ConcurrentQueue<ClientCommand> _commandQueue = new();
-        private readonly CancellationTokenSource _cts = new();
+        private readonly CancellationToken _cancellationToken;
+        private readonly WebSocket _webSocket;
+        private readonly Task _readTask;
 
-        public WebSocketInputHandler(WebSocket webSocket)
+        public WebSocketInputHandler(WebSocket webSocket, CancellationToken cancellationToken)
         {
-            _ = Task.Run(() => ReadLoop(webSocket, _cts.Token));
+            _webSocket = webSocket;
+            _cancellationToken = cancellationToken;
+            _readTask = Task.Run(() => ReadLoop(cancellationToken));
         }
 
         public void ProcessInput(IInputState inputState, int snakeLength)
         {
+            if (_cancellationToken.IsCancellationRequested)
+                inputState.IsExit = true;
+
             while (_commandQueue.TryDequeue(out var command))
             {
                 ApplyCommand(command, inputState, snakeLength);
             }
         }
 
-        public void Dispose() => _cts.Cancel();
+        public void Dispose()
+        {
+            try
+            {
+                _readTask.Wait(TimeSpan.FromSeconds(2));
+            }
+            catch (AggregateException) { }
+        }
 
         private void ApplyCommand(ClientCommand command, IInputState state, int snakeLength)
         {
@@ -76,14 +91,14 @@ namespace gameSnake.Server.InputHandlers
                 state.CurrentDirection = newDir;
         }
 
-        private async Task ReadLoop(WebSocket webSocket, CancellationToken ct)
+        private async Task ReadLoop(CancellationToken ct)
         {
             var buffer = new byte[1024];
-            while (!ct.IsCancellationRequested && webSocket.State == WebSocketState.Open)
+            while (!ct.IsCancellationRequested && _webSocket.State == WebSocketState.Open)
             {
                 try
                 {
-                    var result = await webSocket.ReceiveAsync(
+                    var result = await _webSocket.ReceiveAsync(
                         new ArraySegment<byte>(buffer), ct);
 
                     if (result.MessageType == WebSocketMessageType.Close)
