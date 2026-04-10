@@ -1,7 +1,5 @@
 ﻿using gameSnake.Interfaces;
 using ITimer = gameSnake.Interfaces.ITimer;
-using gameSnake.Models;
-using static System.Console;
 
 namespace gameSnake.Core.Engine
 {
@@ -15,6 +13,13 @@ namespace gameSnake.Core.Engine
         private readonly IGameLogic _gameLogic;
         private readonly ITimer _timer;
 
+        /// <summary>
+        /// Создаёт экземпляр игрового цикла с указанными зависимостями.
+        /// </summary>
+        /// <param name="renderer">Рендерер для отрисовки кадров</param>
+        /// <param name="inputHandler">Обработчик пользовательского ввода</param>
+        /// <param name="gameLogic">Логика игры для обновления состояния</param>
+        /// <param name="timer">Таймер для контроля частоты кадров</param>
         public GameLoop(IGameRenderer renderer, IInputHandler inputHandler, IGameLogic gameLogic, ITimer timer)
         {
             _renderer = renderer;
@@ -27,6 +32,7 @@ namespace gameSnake.Core.Engine
         /// Запускает игровой цикл для одного состояния игры.
         /// Возвращает управление, когда игра окончена или запрошен перезапуск.
         /// </summary>
+        /// <param name="state">Состояние игры для данного цикла</param>
         public void Run(State.GameState state)
         {
             while (!state.Flags.IsExit && !state.Flags.IsRestartRequested)
@@ -38,6 +44,10 @@ namespace gameSnake.Core.Engine
             }
         }
 
+        /// <summary>
+        /// Выполняет один шаг обновления: обрабатывает ввод и обновляет игровую логику.
+        /// </summary>
+        /// <param name="state">Текущее состояние игры</param>
         private void Update(State.GameState state)
         {
             _inputHandler.ProcessInput(state, state.Snake.Body.Count);
