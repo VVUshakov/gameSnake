@@ -52,10 +52,10 @@ namespace gameSnake.Logic.SnakeLogic
                 // Проверяем, что тип реализует IUpdateStep и имеет атрибут GameStepOrder
                 if (typeof(IUpdateStep).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
                 {
-                    var attr = type.GetCustomAttribute<GameStepOrderAttribute>();
+                    GameStepOrderAttribute? attr = type.GetCustomAttribute<GameStepOrderAttribute>();
                     if (attr != null)
                     {
-                        var step = (IUpdateStep)Activator.CreateInstance(type)!;
+                        IUpdateStep step = (IUpdateStep)Activator.CreateInstance(type)!;
                         steps.Add((attr.Order, step));
                     }
                 }

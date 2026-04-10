@@ -8,10 +8,14 @@ namespace gameSnake.Attributes
     public class GameStepOrderAttribute : Attribute
     {
         /// <summary>
-        /// Порядок выполнения шага.
+        /// Получает порядок выполнения шага.
         /// </summary>
         public int Order { get; }
 
+        /// <summary>
+        /// Создаёт атрибут с указанным порядком выполнения.
+        /// </summary>
+        /// <param name="order">Порядок выполнения шага (меньше — раньше)</param>
         public GameStepOrderAttribute(int order)
         {
             Order = order;
