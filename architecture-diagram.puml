@@ -1,0 +1,489 @@
+@startuml GameSnake Architecture
+
+skinparam linetype ortho
+skinparam style strictuml
+
+title <b>Змейка (Snake Game) - Диаграмма классов и взаимодействий</b>\n<b>ГОСТ 19.701-90</b>
+
+' ============================================
+' ЦВЕТА И СТИЛИ
+' ============================================
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontSize 13
+
+' Стиль для интерфейсов
+skinparam interface {
+  BackgroundColor #E8F4FD
+  BorderColor #2196F3
+  FontColor #1565C0
+  StereotypeFontColor #1565C0
+}
+
+' Стиль для классов
+skinparam class {
+  BackgroundColor #F5F5F5
+  BorderColor #424242
+  FontColor #212121
+  AttributeFontColor #616161
+}
+
+' Стиль для enum
+skinparam enum {
+  BackgroundColor #FFF3E0
+  BorderColor #FF9800
+}
+
+' Стиль для атрибутов
+skinparam stereotype {
+  BackgroundColor #F3E5F5
+  BorderColor #9C27B0
+}
+
+' ============================================
+' ИНТЕРФЕЙСЫ
+' ============================================
+package "Interfaces" #E8F4FD {
+
+  interface IGameRenderer {
+    + Clear()
+    + Render(state : GameState)
+  }
+
+  interface IInputHandler {
+    + ProcessInput(state : IInputState, snakeLength : int)
+  }
+
+  interface IGameLogic {
+    + Update(state : GameState)
+  }
+
+  interface ITimer {
+    + Sleep(milliseconds : int)
+  }
+
+  interface IWindowConfigurator {
+    + Configure(fieldWidth : int, fieldHeight : int)
+  }
+
+  interface IInputState {
+    {field} + IsExit : bool
+    {field} + IsRestartRequested : bool
+    {field} + IsPaused : bool
+    {field} + CurrentDirection : Direction
+    {field} + ActiveMessage : GameMessageType?
+  }
+
+  interface IUpdateStep {
+    + Apply(state : GameState) : bool
+  }
+}
+
+' ============================================
+' CORE ENGINE
+' ============================================
+package "Core.Engine" #E3F2FD {
+
+  class Game {
+    - renderer : IGameRenderer
+    - inputHandler : IInputHandler
+    - gameLogic : IGameLogic
+    - timer : ITimer
+    - windowConfigurator : IWindowConfigurator
+    + Run()
+    - CreateGameState() : GameState
+  }
+
+  class GameLoop {
+    - renderer : IGameRenderer
+    - inputHandler : IInputHandler
+    - gameLogic : IGameLogic
+    - timer : ITimer
+    + Run(state : GameState)
+    - Update(state : GameState)
+  }
+}
+
+package "Core.State" #E3F2FD {
+
+  class GameState {
+    + Flags : GameFlags
+    + Settings : GameSettings
+    + Header : Header
+    + CurrentDirection : Direction
+    + Field : PlayingField
+    + Snake : Snake
+    + Food : Food
+    + ActiveMessage : GameMessageType?
+  }
+
+  class GameFlags {
+    + IsExit : bool
+    + IsGameOver : bool
+    + IsWin : bool
+    + IsPaused : bool
+    + IsRestartRequested : bool
+  }
+
+  class GameSettings {
+    + Fps : int = 100
+  }
+}
+
+package "Core" #E3F2FD {
+  class SystemTimer
+}
+
+' ============================================
+' FACTORIES
+' ============================================
+package "Core.Factories" #E3F2FD {
+
+  class GameStateFactory <<static>> {
+    + Create(fieldWidth : int, fieldHeight : int, initialSnakeLength : int) : GameState
+  }
+
+  class SnakeFactory <<static>> {
+    + Create(headPosition : Point, direction : Direction, snakeLength : int) : Snake
+  }
+
+  class FoodFactory <<static>> {
+    + CreateFood(field : PlayingField, snake : Snake, random : Random?) : Food
+    - FindFreePosition(...) : Point?
+  }
+}
+
+' ============================================
+' MODELS
+' ============================================
+package "Models" #FFF9C4 {
+
+  class Snake {
+    + Body : List<Point>
+    + Head : Point
+    + Tail : Point
+    + Contains(point : Point) : bool
+  }
+
+  class Food {
+    + Position : Point?
+    + PointsValue : int = 10
+    + IsSuccess : bool
+  }
+
+  class PlayingField {
+    + Width : int
+    + Height : int
+    + Left : int
+    + Right : int
+    + Top : int
+    + Bottom : int
+    + IsBorder(point : Point) : bool
+    + IsInside(point : Point) : bool
+  }
+
+  class Header {
+    + Score : int = 0
+    + Level : int = 1
+    + Lives : int = 1
+  }
+
+  record struct Point {
+    + X : int
+    + Y : int
+  }
+
+  enum Direction {
+    Up
+    Down
+    Left
+    Right
+  }
+
+  enum GameMessageType {
+    Pause
+    GameOver
+    Win
+  }
+}
+
+' ============================================
+' LOGIC
+' ============================================
+package "Logic.SnakeLogic" #E8F5E9 {
+
+  class SnakeGameLogic {
+    - steps : IUpdateStep[]
+    + Update(state : GameState)
+    - DiscoverSteps() : IUpdateStep[]
+  }
+
+  class SnakeMoveStep {
+    + Apply(state : GameState) : bool
+  }
+
+  class EatStep {
+    + Apply(state : GameState) : bool
+  }
+
+  class CollisionStep {
+    + Apply(state : GameState) : bool
+  }
+
+  class SnakeMovement <<static>> {
+    + CalculateNewHead(head : Point, direction : Direction) : Point
+  }
+
+  class CollisionDetector <<static>> {
+    + HasCollision(snake : Snake, field : PlayingField) : bool
+  }
+
+  class FoodHandler <<static>> {
+    + IsFoodEaten(snake : Snake, food : Food) : bool
+    + RespawnFood(field : PlayingField, snake : Snake) : Food
+  }
+}
+
+' ============================================
+' UI
+' ============================================
+package "UI.ConsoleUI" #FCE4EC {
+
+  class ConsoleRenderer {
+    + Clear()
+    + Render(state : GameState)
+  }
+
+  class ConsoleInputHandler {
+    + ProcessInput(state : IInputState, snakeLength : int)
+  }
+
+  class ConsoleWindowConfigurator {
+    + Configure(fieldWidth : int, fieldHeight : int)
+  }
+}
+
+package "UI.ConsoleUI.InputHandlers" #FCE4EC {
+
+  class InputReader <<static>> {
+    + ReadKey() : ConsoleKey?
+  }
+
+  class KeyActionProvider <<static>> {
+    - actions : Dictionary<ConsoleKey, Action>
+    + Handle(key : ConsoleKey, state : IInputState, snakeLength : int)
+    - TogglePause(state : IInputState)
+    - TrySetDirection(key : ConsoleKey, state : IInputState, snakeLength : int)
+  }
+}
+
+package "UI.ConsoleUI.ConsoleRenderers" #FCE4EC {
+
+  class HeaderRenderer <<static>> {
+    + Draw(header : Header)
+  }
+
+  class FieldRenderer <<static>> {
+    + Draw(field : PlayingField, headerHeight : int)
+  }
+
+  class SnakeRenderer <<static>> {
+    + Draw(snake : Snake, field : PlayingField, headerHeight : int)
+  }
+
+  class FoodRenderer <<static>> {
+    + Draw(food : Food, field : PlayingField, headerHeight : int)
+  }
+
+  class MessageRenderer <<static>> {
+    + Draw(field : PlayingField, headerHeight : int, message : GameMessageType)
+    - DrawCenteredMessage(...)
+  }
+
+  class HeaderFormatter <<static>> {
+    + FormatLines(header : Header) : List<string>
+    + GetHeight(header : Header) : int
+  }
+
+  class MessageStyleProvider <<static>> {
+    + GetContent(message : GameMessageType) : string[]
+    + GetColor(message : GameMessageType) : ConsoleColor
+  }
+
+  class RenderConstants <<static>> {
+    {static} BorderChar = '#'
+    {static} SnakeHead = 'O'
+    {static} SnakeBody = '*'
+    {static} FoodSymbol = '@'
+  }
+}
+
+' ============================================
+' SERVICES
+' ============================================
+package "Services.MessageService" #F3E5F5 {
+
+  class GameMessages <<static>> {
+    {static} GetPauseMessage() : string[]
+    {static} GetGameOverMessage() : string[]
+    {static} GetWinMessage() : string[]
+  }
+
+  class MessageRegistry <<static>> {
+    + GetAll() : List<string[]>
+  }
+}
+
+' ============================================
+' UTILS
+' ============================================
+package "Utils" #E0F2F1 {
+
+  class FieldSizeCalculator <<static>> {
+    + Calculate(maxMsgWidth : int, maxMsgHeight : int) : (int, int)
+  }
+
+  class MessageSizer <<static>> {
+    + GetSize(lines : string[]) : (int, int)
+    + GetMaxSize(messages : IEnumerable<string[]>) : (int, int)
+  }
+
+  class PositionCalculator <<static>> {
+    + CalculateCenteredHeadPosition(...) : (Point, int)
+    + CalculateCenteredMessagePosition(...) : Point
+  }
+}
+
+' ============================================
+' ATTRIBUTES
+' ============================================
+package "Attributes" #FFF3E0 {
+
+  class GameStepOrderAttribute <<attribute>> {
+    {field} Order : int
+  }
+
+  class HeaderInfoAttribute <<attribute>>
+  
+  class MessageInfoAttribute <<attribute>>
+}
+
+' ============================================
+' СВЯЗИ: РЕАЛИЗАЦИЯ ИНТЕРФЕЙСОВ
+' ============================================
+GameState ..|> IInputState : реализует
+SystemTimer ..|> ITimer : реализует
+ConsoleWindowConfigurator ..|> IWindowConfigurator : реализует
+ConsoleInputHandler ..|> IInputHandler : реализует
+ConsoleRenderer ..|> IGameRenderer : реализует
+SnakeGameLogic ..|> IGameLogic : реализует
+SnakeMoveStep ..|> IUpdateStep : реализует
+EatStep ..|> IUpdateStep : реализует
+CollisionStep ..|> IUpdateStep : реализует
+
+' ============================================
+' СВЯЗИ: НАСЛЕДОВАНИЕ АТРИБУТОВ
+' ============================================
+SnakeMoveStep ..> GameStepOrderAttribute : <<аннотация>>
+EatStep ..> GameStepOrderAttribute : <<аннотация>>
+CollisionStep ..> GameStepOrderAttribute : <<аннотация>>
+Header ..> HeaderInfoAttribute : <<аннотация>>
+GameMessages ..> MessageInfoAttribute : <<аннотация>>
+
+' ============================================
+' СВЯЗИ: КОМПОЗИЦИЯ/АГРЕГАЦИЯ
+' ============================================
+Game o-- IGameRenderer
+Game o-- IInputHandler
+Game o-- IGameLogic
+Game o-- ITimer
+Game o-- IWindowConfigurator
+
+GameLoop o-- IGameRenderer
+GameLoop o-- IInputHandler
+GameLoop o-- IGameLogic
+GameLoop o-- ITimer
+
+GameState *-- GameFlags
+GameState *-- GameSettings
+GameState *-- Header
+GameState *-- PlayingField
+GameState *-- Snake
+GameState *-- Food
+
+Snake *-- Point
+PlayingField *-- Point
+Food *-- Point
+
+SnakeGameLogic o-- IUpdateStep
+
+' ============================================
+' СВЯЗИ: ЗАВИСИМОСТИ
+' ============================================
+Game ..> GameLoop : создаёт
+Game ..> GameStateFactory : использует
+Game ..> MessageRegistry : использует
+Game ..> MessageSizer : использует
+Game ..> FieldSizeCalculator : использует
+
+GameStateFactory ..> SnakeFactory : использует
+GameStateFactory ..> FoodFactory : использует
+GameStateFactory ..> PositionCalculator : использует
+
+SnakeMoveStep ..> SnakeMovement : использует
+EatStep ..> FoodHandler : использует
+CollisionStep ..> CollisionDetector : использует
+
+FoodHandler ..> FoodFactory : использует
+
+ConsoleInputHandler ..> InputReader : использует
+ConsoleInputHandler ..> KeyActionProvider : использует
+
+KeyActionProvider ..> IInputState : обновляет
+
+ConsoleRenderer ..> HeaderRenderer : вызывает
+ConsoleRenderer ..> FieldRenderer : вызывает
+ConsoleRenderer ..> SnakeRenderer : вызывает
+ConsoleRenderer ..> FoodRenderer : вызывает
+ConsoleRenderer ..> MessageRenderer : вызывает
+ConsoleRenderer ..> HeaderFormatter : использует
+
+MessageRenderer ..> MessageStyleProvider : использует
+MessageRenderer ..> PositionCalculator : использует
+MessageRenderer ..> MessageSizer : использует
+
+MessageStyleProvider ..> GameMessages : вызывает
+MessageRegistry ..> GameMessages : сканирует
+
+HeaderFormatter ..> HeaderInfoAttribute : рефлексия
+
+FieldSizeCalculator ..> MessageSizer : использует
+
+' ============================================
+' ТЕГИ
+' ============================================
+note top of IUpdateStep
+  <b>Chain of Responsibility</b>
+  Шаги выполняются последовательно
+  в порядке GameStepOrderAttribute:
+  0. SnakeMoveStep
+  1. EatStep
+  2. CollisionStep
+end note
+
+note right of Game
+  <b>Главный класс</b>
+  Управляет жизненным циклом игры:
+  - Инициализация
+  - Цикл с перезапуском
+  - Создание GameState
+end note
+
+note bottom of SnakeGameLogic
+  <b>Reflection-based Discovery</b>
+  Автоматически находит все классы
+  реализующие IUpdateStep с атрибутом
+  GameStepOrderAttribute
+end note
+
+@enduml
