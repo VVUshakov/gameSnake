@@ -188,7 +188,7 @@ package "Models" #FFF9C4 {
     + Lives : int = 1
   }
 
-  record struct Point {
+  class Point {
     + X : int
     + Y : int
   }

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архитектура SnakeGame - Технический отчет</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .mermaid { background: white; padding: 20px; border-radius: 12px; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans leading-relaxed">
+
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        <!-- Заголовок -->
+        <header class="text-center mb-16">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-4">
+                SnakeGame Architecture
+            </h1>
+            <p class="text-xl text-slate-400">Технический анализ структуры и взаимодействия компонентов C# проекта</p>
+        </header>
+
+        <!-- Интерактивный проводник по архитектуре -->
+        <section class="mb-20" x-data="{ 
+            activeLayer: null,
+            layers: [
+                {
+                    id: 'engine',
+                    title: 'Engine (Ядро)',
+                    color: 'bg-blue-600',
+                    desc: 'Управляет жизненным циклом и ритмом игры.',
+                    classes: 'Game, GameLoop, SystemTimer'
+                },
+                {
+                    id: 'logic',
+                    title: 'Logic (Логика)',
+                    color: 'bg-emerald-600',
+                    desc: 'Обработка правил через цепочку IUpdateStep.',
+                    classes: 'SnakeGameLogic, MoveStep, EatStep, CollisionStep'
+                },
+                {
+                    id: 'ui',
+                    title: 'UI (Интерфейс)',
+                    color: 'bg-purple-600',
+                    desc: 'Визуализация состояния в консоли.',
+                    classes: 'ConsoleRenderer, FieldRenderer, SnakeRenderer'
+                },
+                {
+                    id: 'input',
+                    title: 'Input (Ввод)',
+                    color: 'bg-amber-600',
+                    desc: 'Обработка нажатий и управление направлением.',
+                    classes: 'ConsoleInputHandler, KeyActionProvider'
+                }
+            ]
+        }">
+            <h2 class="text-2xl font-bold mb-8 border-l-4 border-blue-500 pl-4">1. Интерактивная схема слоев</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <template x-for="layer in layers" :key="layer.id">
+                    <button 
+                        @click="activeLayer = (activeLayer === layer.id ? null : layer.id)"
+                        :class="activeLayer === layer.id ? layer.color + ' scale-105 shadow-xl' : 'bg-slate-800 hover:bg-slate-700'"
+                        class="p-6 rounded-2xl transition-all duration-300 text-left border border-slate-700"
+                    >
+                        <h3 class="font-bold text-lg mb-2" x-text="layer.title"></h3>
+                        <p class="text-xs opacity-70" x-text="layer.desc"></p>
+                    </button>
+                </template>
+            </div>
+
+            <!-- Детали слоя -->
+            <div x-show="activeLayer" x-cloak x-transition class="bg-slate-800 rounded-3xl p-8 border border-slate-700">
+                <template x-if="activeLayer === 'engine'">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-blue-400 font-bold mb-4 uppercase text-sm tracking-widest">Основные классы</h4>
+                            <ul class="space-y-4">
+                                <li><strong class="text-white">Game</strong> — Фасад. Создает состояние и запускает цикл.</li>
+                                <li><strong class="text-white">GameLoop</strong> — Диспетчер кадров. Вызывает Render -> Input -> Update.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <p class="text-sm italic text-slate-400">"Ядро системы обеспечивает инверсию управления (IoC), работая с интерфейсами IGameRenderer и IGameLogic вместо конкретных классов."</p>
+                        </div>
+                    </div>
+                </template>
+                <template x-if="activeLayer === 'logic'">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-emerald-400 font-bold mb-4 uppercase text-sm tracking-widest">Механика работы</h4>
+                            <p class="text-slate-300 mb-4">Класс <strong>SnakeGameLogic</strong> использует рефлексию для сборки списка <strong>IUpdateStep</strong>.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 px-3 py-1 rounded-full text-xs">SnakeMoveStep (0)</span>
+                                <span class="bg-slate-700 px-3 py-1 rounded-full text-xs">EatStep (1)</span>
+                                <span class="bg-slate-700 px-3 py-1 rounded-full text-xs">CollisionStep (2)</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 text-sm">
+                            <p class="mb-2 text-white font-bold">Алгоритм обновления:</p>
+                            <ol class="list-decimal list-inside space-y-1 text-slate-400">
+                                <li>Рассчитать новую голову</li>
+                                <li>Проверить наличие еды</li>
+                                <li>Проверить столкновение</li>
+                            </ol>
+                        </div>
+                    </div>
+                </template>
+                <template x-if="activeLayer === 'ui'">
+                    <div>
+                        <h4 class="text-purple-400 font-bold mb-4 uppercase text-sm tracking-widest">Система отрисовки</h4>
+                        <p class="text-slate-300 mb-6"><strong>ConsoleRenderer</strong> координирует вывод. Каждому элементу выделен свой статический отрисовщик для соблюдения принципа единственной ответственности.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="text-center p-3 bg-slate-900 rounded-lg">FieldRenderer</div>
+                            <div class="text-center p-3 bg-slate-900 rounded-lg">SnakeRenderer</div>
+                            <div class="text-center p-3 bg-slate-900 rounded-lg">FoodRenderer</div>
+                            <div class="text-center p-3 bg-slate-900 rounded-lg">HeaderRenderer</div>
+                        </div>
+                    </div>
+                </template>
+                <template x-if="activeLayer === 'input'">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-amber-400 font-bold mb-4 uppercase text-sm tracking-widest">Обработка клавиш</h4>
+                            <p class="text-slate-300">Класс <strong>KeyActionProvider</strong> сопоставляет перечисление <code>ConsoleKey</code> с делегатами <code>Action</code>.</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 text-sm">
+                            <p class="text-white mb-2">Защита логики:</p>
+                            <p class="text-slate-400 italic">Змейка не может развернуться на 180° в движении, если ее длина больше 1 сегмента.</p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </section>
+
+        <!-- Mermaid Диаграммы -->
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold mb-8 border-l-4 border-emerald-500 pl-4">2. Диаграмма взаимодействия (Sequence)</h2>
+            <div class="mermaid shadow-2xl">
+                sequenceDiagram
+                    participant GL as GameLoop
+                    participant CR as ConsoleRenderer
+                    participant IH as ConsoleInputHandler
+                    participant SGL as SnakeGameLogic
+                    participant Steps as IUpdateStep[]
+
+                    Note over GL: Начало итерации
+                    GL->>CR: Clear()
+                    GL->>CR: Render(GameState)
+                    CR->>CR: Отрисовка всех сущностей
+                    GL->>IH: ProcessInput(inputState)
+                    IH->>IH: Проверка клавиш и смена Direction
+                    alt Не на паузе
+                        GL->>SGL: Update(GameState)
+                        loop Для каждого шага
+                            SGL->>Steps: Apply(GameState)
+                            Note right of Steps: Move -> Eat -> Collision
+                        end
+                    end
+                    GL->>GL: Sleep(FPS)
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold mb-8 border-l-4 border-purple-500 pl-4">3. Диаграмма классов (Class Diagram)</h2>
+            <div class="mermaid shadow-2xl">
+                classDiagram
+                    direction TB
+                    class Game { +Run() }
+                    class GameLoop { +Run(GameState) }
+                    class GameState { +Snake, +Food, +Field, +Flags }
+                    class IGameLogic { <<interface>> +Update() }
+                    class SnakeGameLogic { -IUpdateStep[] _steps }
+                    class IUpdateStep { <<interface>> +Apply() }
+
+                    Game --> GameLoop
+                    GameLoop --> GameState
+                    GameLoop --> IGameLogic
+                    SnakeGameLogic ..|> IGameLogic
+                    SnakeGameLogic o-- IUpdateStep
+                    IUpdateStep <|.. SnakeMoveStep
+                    IUpdateStep <|.. EatStep
+                    IUpdateStep <|.. CollisionStep
+            </div>
+        </section>
+
+        <!-- Подвал -->
+        <footer class="text-center text-slate-500 border-t border-slate-800 pt-8">
+            <p>Отчет сгенерирован для анализа проекта SnakeGame</p>
+            <p class="text-xs mt-2">Используемые технологии: C#, Alpine.js, Tailwind CSS, Mermaid.js</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+</body>
+</html>

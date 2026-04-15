@@ -1,0 +1,461 @@
+@startuml GameSnake Architecture
+
+skinparam linetype ortho
+skinparam style strictuml
+
+' Горизонтальный layout
+left to right direction
+
+title <b>Змейка (Snake Game) - Архитектура проекта</b>\n<b>ГОСТ 19.701-90</b>
+
+' ============================================
+' СТИЛИ
+' ============================================
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+
+skinparam interface {
+  BackgroundColor #E8F4FD
+  BorderColor #2196F3
+  FontColor #1565C0
+}
+
+skinparam class {
+  BackgroundColor #F5F5F5
+  BorderColor #424242
+  FontColor #212121
+}
+
+skinparam enum {
+  BackgroundColor #FFF3E0
+  BorderColor #FF9800
+}
+
+skinparam arrow {
+  Color #424242
+  Thickness 2
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #999999
+}
+
+' Увеличенное вертикальное расстояние
+skinparam nodesep 30
+skinparam ranksep 120
+
+' ============================================
+' УРОВЕНЬ 1: ENTRY POINT
+' ============================================
+rectangle "Entry Point" #E3F2FD {
+  class Program <<entry>> {
+    + Main()
+  }
+}
+
+' ============================================
+' УРОВЕНЬ 2: CORE ENGINE
+' ============================================
+rectangle "Core Engine" #BBDEFB {
+
+  class Game {
+    + Run()
+    - CreateGameState()
+  }
+
+  class GameLoop {
+    + Run(state)
+    - Update(state)
+  }
+
+  Game --> GameLoop : создаёт
+}
+
+Program --> Game : запускает
+
+' ============================================
+' УРОВЕНЬ 3: INTERFACES
+' ============================================
+rectangle "Interfaces" #E8F5E9 {
+
+  interface IGameRenderer {
+    + Clear()
+    + Render(state)
+  }
+
+  interface IInputHandler {
+    + ProcessInput()
+  }
+
+  interface IGameLogic {
+    + Update(state)
+  }
+
+  interface ITimer {
+    + Sleep(ms)
+  }
+
+  interface IWindowConfigurator {
+    + Configure(w, h)
+  }
+
+  interface IInputState {
+    + IsExit
+    + IsRestart
+    + IsPaused
+    + Direction
+    + Message
+  }
+
+  interface IUpdateStep {
+    + Apply(state) : bool
+  }
+}
+
+Game o-- IGameRenderer
+Game o-- IInputHandler
+Game o-- IGameLogic
+Game o-- ITimer
+Game o-- IWindowConfigurator
+
+GameLoop o-- IGameRenderer
+GameLoop o-- IInputHandler
+GameLoop o-- IGameLogic
+GameLoop o-- ITimer
+
+' ============================================
+' УРОВЕНЬ 4: РЕАЛИЗАЦИИ
+' ============================================
+rectangle "Реализации" #FFF9C4 {
+
+  class ConsoleRenderer {
+    + Clear()
+    + Render(state)
+  }
+
+  class ConsoleInputHandler {
+    + ProcessInput()
+  }
+
+  class ConsoleWindowConfigurator {
+    + Configure()
+  }
+
+  class SystemTimer {
+    + Sleep()
+  }
+
+  class SnakeGameLogic {
+    - steps[]
+    + Update()
+    - DiscoverSteps()
+  }
+
+  class SnakeMoveStep {
+    + Apply()
+  }
+
+  class EatStep {
+    + Apply()
+  }
+
+  class CollisionStep {
+    + Apply()
+  }
+
+  class InputReader <<static>> {
+    + ReadKey()
+  }
+
+  class KeyActionProvider <<static>> {
+    + Handle()
+    - TogglePause()
+    - SetDirection()
+  }
+
+  ConsoleRenderer ..|> IGameRenderer
+  ConsoleInputHandler ..|> IInputHandler
+  ConsoleWindowConfigurator ..|> IWindowConfigurator
+  SystemTimer ..|> ITimer
+  SnakeGameLogic ..|> IGameLogic
+  SnakeMoveStep ..|> IUpdateStep
+  EatStep ..|> IUpdateStep
+  CollisionStep ..|> IUpdateStep
+
+  ConsoleInputHandler --> InputReader
+  ConsoleInputHandler --> KeyActionProvider
+  KeyActionProvider --> IInputState
+
+  SnakeGameLogic o-- IUpdateStep
+  SnakeMoveStep -down-> SnakeMovement
+  EatStep -down-> FoodHandler
+  CollisionStep -down-> CollisionDetector
+}
+
+' ============================================
+' УРОВЕНЬ 5: STATE & MODELS
+' ============================================
+rectangle "State & Models" #FCE4EC {
+
+  class GameState {
+    + Flags
+    + Settings
+    + Header
+    + Field
+    + Snake
+    + Food
+    + Direction
+    + Message
+  }
+
+  class GameFlags {
+    + IsExit
+    + IsGameOver
+    + IsWin
+    + IsPaused
+    + IsRestart
+  }
+
+  class GameSettings {
+    + Fps = 100
+  }
+
+  class Header {
+    + Score
+    + Level
+    + Lives
+  }
+
+  class Snake {
+    + Body
+    + Head
+    + Tail
+  }
+
+  class Food {
+    + Position
+    + PointsValue
+    + IsSuccess
+  }
+
+  class PlayingField {
+    + Width
+    + Height
+    + IsBorder()
+  }
+
+  class Point {
+    + X
+    + Y
+  }
+
+  enum Direction {
+    Up, Down
+    Left, Right
+  }
+
+  enum GameMessageType {
+    Pause
+    GameOver
+    Win
+  }
+
+  GameState *-- GameFlags
+  GameState *-- GameSettings
+  GameState *-- Header
+  GameState *-- PlayingField
+  GameState *-- Snake
+  GameState *-- Food
+
+  IInputState <.. GameState
+
+  Snake *-- Point
+  Food *-- Point
+}
+
+' ============================================
+' УРОВЕНЬ 6: УТИЛИТЫ И СЕРВИСЫ
+' ============================================
+rectangle "Утилиты и Сервисы" #E0F2F1 {
+
+  class GameStateFactory <<static>> {
+    + Create()
+  }
+
+  class SnakeFactory <<static>> {
+    + Create()
+  }
+
+  class FoodFactory <<static>> {
+    + CreateFood()
+  }
+
+  class PositionCalculator <<static>> {
+    + CenterHead()
+    + CenterMessage()
+  }
+
+  class FieldSizeCalculator <<static>> {
+    + Calculate()
+  }
+
+  class MessageSizer <<static>> {
+    + GetSize()
+    + GetMaxSize()
+  }
+
+  class MessageRegistry <<static>> {
+    + GetAll()
+  }
+
+  class GameMessages <<static>> {
+    + GetPause()
+    + GetGameOver()
+    + GetWin()
+  }
+
+  GameStateFactory --> SnakeFactory
+  GameStateFactory --> FoodFactory
+  GameStateFactory --> PositionCalculator
+
+  MessageRegistry --> GameMessages
+}
+
+Game ..> GameStateFactory
+Game --> MessageRegistry
+Game --> MessageSizer
+Game --> FieldSizeCalculator
+
+' ============================================
+' УРОВЕНЬ 7: ЛОГИКА
+' ============================================
+rectangle "Логика (вспомогательные функции)" #E8F5E9 {
+
+  class SnakeMovement <<static>> {
+    + CalcNewHead()
+  }
+
+  class CollisionDetector <<static>> {
+    + HasCollision()
+  }
+
+  class FoodHandler <<static>> {
+    + IsEaten()
+    + Respawn()
+  }
+}
+
+' Связи: Логика ← Реализации (шаги используют эти функции)
+SnakeMoveStep -down-> SnakeMovement
+EatStep -down-> FoodHandler
+CollisionStep -down-> CollisionDetector
+FoodHandler -down-> FoodFactory
+
+' ============================================
+' УРОВЕНЬ 8: РЕНДЕРЕРЫ
+' ============================================
+rectangle "Рендереры" #FCE4EC {
+
+  class HeaderRenderer <<static>> {
+    + Draw()
+  }
+
+  class FieldRenderer <<static>> {
+    + Draw()
+  }
+
+  class SnakeRenderer <<static>> {
+    + Draw()
+  }
+
+  class FoodRenderer <<static>> {
+    + Draw()
+  }
+
+  class MessageRenderer <<static>> {
+    + Draw()
+  }
+
+  class HeaderFormatter <<static>> {
+    + FormatLines()
+  }
+
+  class MessageStyleProvider <<static>> {
+    + GetContent()
+    + GetColor()
+  }
+
+  ConsoleRenderer --> HeaderRenderer
+  ConsoleRenderer --> FieldRenderer
+  ConsoleRenderer --> SnakeRenderer
+  ConsoleRenderer --> FoodRenderer
+  ConsoleRenderer --> MessageRenderer
+
+  MessageRenderer --> MessageStyleProvider
+  MessageRenderer --> PositionCalculator
+  MessageRenderer --> MessageSizer
+
+  MessageStyleProvider --> GameMessages
+}
+
+' ============================================
+' УРОВЕНЬ 9: АТРИБУТЫ
+' ============================================
+rectangle "Атрибуты" #F3E5F5 {
+
+  class GameStepOrderAttribute <<attribute>> {
+    + Order
+  }
+
+  class HeaderInfoAttribute <<attribute>>
+  class MessageInfoAttribute <<attribute>>
+}
+
+SnakeMoveStep ..> GameStepOrderAttribute
+EatStep ..> GameStepOrderAttribute
+CollisionStep ..> GameStepOrderAttribute
+
+Header ..> HeaderInfoAttribute
+GameMessages ..> MessageInfoAttribute
+
+' ============================================
+' ТЕГИ
+' ============================================
+note top of Program
+  <b>Точка входа</b>
+  Создаёт реализации и
+  запускает Game.Run()
+end note
+
+note bottom of Game
+  <b>Главный класс</b>
+  - Инициализация
+  - Цикл с перезапуском
+  - Создание GameState
+end note
+
+note bottom of SnakeGameLogic
+  <b>Chain of Responsibility</b>
+  Автоматически находит IUpdateStep
+  через рефлексию:
+  0 → SnakeMoveStep
+  1 → EatStep
+  2 → CollisionStep
+end note
+
+note bottom of GameState
+  <b>Центральное состояние</b>
+  Разделяется между логикой,
+  рендером и вводом
+end note
+
+note bottom of SnakeMovement
+  <b>Логика</b> — чистые функции
+  Используются шагами из "Реализации":
+  - SnakeMovement → SnakeMoveStep
+  - CollisionDetector → CollisionStep
+  - FoodHandler → EatStep
+end note
+
+@enduml
